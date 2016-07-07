@@ -1,0 +1,109 @@
+﻿@{
+    ViewBag.Title = "代购社区";
+}
+
+
+<div class="clearfix">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-xs-4 col-md-3">
+                <a class="btn btn-moxiDefault" href="/Topic/add"> <span class="glyphicon glyphicon-edit"></span> 发布需求</a>
+            </div>
+
+            <div class="col-md-5" style="padding-left:0px">
+
+                @using (Html.BeginForm("search", "Topic", FormMethod.Get, new { @class = "form-search" }))
+                {
+                    <div class="input-group">
+                        <span class="input-group-addon">  <span class="glyphicon glyphicon-search "></span></span>
+                        <input class="form-control" name="q" type="text" value="@ViewBag.q" placeholder="搜索需求">
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel-heading node-heading" data-toggle="collapse" data-target="#demo">
+    分类导航
+</div>
+
+<div id="demo" class="collapse in">
+    <div class="row node-list">
+        <div class="node media">
+            <label class="media-left">移动测试</label>
+            <span class="nodes media-body">
+                <span class="name"><a title="Robotium" data-id="39" href="/topics/node39">Robotium</a></span>
+                <span class="name"><a title="Appium" data-id="23" href="/topics/node23">Appium</a></span>
+                <span class="name"><a title="Android CTS" data-id="42" href="/topics/node42">Android CTS</a></span>
+                <span class="name"><a title="其他测试框架" data-id="31" href="/topics/node31">其他测试框架</a></span>
+                <span class="name"><a title="移动性能测试" data-id="32" href="/topics/node32">移动性能测试</a></span>
+                <span class="name"><a title="移动测试基础" data-id="33" href="/topics/node33">移动测试基础</a></span>
+                <span class="name"><a title="移动安全测试" data-id="34" href="/topics/node34">移动安全测试</a></span>
+                <span class="name"><a title="Calabash" data-id="35" href="/topics/node35">Calabash</a></span>
+                <span class="name"><a title="新手区" data-id="36" href="/topics/node36">新手区</a></span>
+                <span class="name"><a title="Android 开发基础" data-id="45" href="/topics/node45">Android 开发基础</a></span>
+                <span class="name"><a title="MonkeyRunner" data-id="54" href="/topics/node54">MonkeyRunner</a></span>
+                <span class="name"><a title="MonkeyTalk" data-id="43" href="/topics/node43">MonkeyTalk</a></span>
+                <span class="name"><a title="iOS 测试" data-id="51" href="/topics/node51">iOS 测试</a></span>
+                <span class="name"><a title="Selendroid" data-id="52" href="/topics/node52">Selendroid</a></span>
+                <span class="name"><a title="UiAutomator" data-id="53" href="/topics/node53">UiAutomator</a></span>
+                <span class="name"><a title="Macaca" data-id="68" href="/topics/node68">Macaca</a></span>
+                <span class="name"><a title="Selenium WebDriver" data-id="73" href="/topics/node73">Selenium</a></span>
+                <span class="name"><a title="Espresso" data-id="74" href="/topics/node74">Espresso</a></span>
+            </span>
+        </div>
+        <div class="node media">
+            <label class="media-left">游戏测试</label>
+            <span class="nodes media-body">
+                <span class="name"><a title="Linux" data-id="65" href="/topics/node65">Linux</a></span>
+                <span class="name"><a title="接口协议" data-id="66" href="/topics/node66">接口协议</a></span>
+            </span>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="panel panel-default topics-sort">
+    <span style="padding:0px 20px;font-weight:bold;">节点</span>
+    <div class="btn-group">
+
+  <button type="button" class="btn btn-default active">时间排序 <span class="glyphicon glyphicon-arrow-up"></span></button>
+  <button type="button" class="btn btn-default">按钮 2</button>
+  <button type="button" class="btn btn-default">按钮 3</button>
+</div>
+  
+</div>
+
+<table class="topics table">
+
+    <thead>
+        <tr>
+            <th width="55%">需求内容</th>
+            <th>预算(元)</th>
+            <th>用户昵称</th>
+            <th>解决方案</th>
+            <th>评论</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Tanmay</td>
+            <td>Bangalore</td>
+            <td>Tanmay</td>
+            <td>1</td>
+            <td>2</td>
+        </tr>
+        <tr>
+            <td>Tanmay</td>
+            <td>Bangalore</td>
+            <td>Tanmay</td>
+            <td>2</td>
+            <td>1</td>
+        </tr>
+    </tbody>
+</table>
+
+@Html.Pagination((int)1, (int)100, (int)20)
