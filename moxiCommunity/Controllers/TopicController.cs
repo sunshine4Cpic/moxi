@@ -19,5 +19,11 @@ namespace moxiCommunity.Controllers
             ViewBag.q = q;
             return View("Index");
         }
+
+        [Authorize]
+        public ActionResult add()
+        {
+            return View();
+        }
     }
 }

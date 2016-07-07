@@ -169,7 +169,7 @@ textarea {
 .topics.table thead tr th{
     background-color:#eeeeee;
 }
-ul.topics-sort{
+.panel.topics-sort{
     border-top:3px solid #ff3d3b;
     margin:10px 0px;
      border-radius:0px;
