@@ -8,6 +8,7 @@ using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json;
+using moxiCommunity.Models;
 
 namespace moxiCommunity.Controllers
 {
@@ -34,13 +35,29 @@ namespace moxiCommunity.Controllers
                 return View(model);
             }
 
-            var user =  moxiLogin(model.UserName, model.Password);
+            var user = moxiLogin(model.UserName, model.Password);
             if (!user.IsSuccess)
             {
                 ModelState.AddModelError("", "用户名或密码错误。");
                 return View(model);
             }
-          
+
+            //注册本地用户
+            var moxiUser = user.ReturnObjects.result;
+            moxiAgentBuyEntities db = new moxiAgentBuyEntities();
+            var localUser = db.CommunityUser.FirstOrDefault(t => t.ID == moxiUser.UserID);
+            if (localUser == null)
+            {
+                CommunityUser u = new CommunityUser();
+                u.Name = moxiUser.UserName;
+                u.ID = moxiUser.UserID;
+                u.UserLoginToken = moxiUser.UserLoginToken;
+                u.joinDate = DateTime.Now;
+                db.CommunityUser.Add(u);
+
+            }
+            db.SaveChanges();
+
 
             ClaimsIdentity _identity = new ClaimsIdentity("ApplicationCookie");
             _identity.AddClaim(new Claim(ClaimTypes.Name, user.ReturnObjects.result.UserName));
@@ -51,22 +68,22 @@ namespace moxiCommunity.Controllers
 
             _identity.AddClaim(new Claim(ClaimTypes.Role, "user"));
 
-           
+
             var auth = new AuthenticationProperties() { IssuedUtc = DateTime.UtcNow, ExpiresUtc = DateTime.UtcNow.AddDays(30) };
 
-          
+
 
             HttpContext.GetOwinContext().Authentication.SignOut("ApplicationCookie");
             HttpContext.GetOwinContext().Authentication.SignIn(auth, _identity);
 
-
-            if (Url.IsLocalUrl(ReturnUrl))
-            {
-                return Redirect(ReturnUrl);
-            }
+            //跳转到请求页面
+            //if (Url.IsLocalUrl(ReturnUrl))
+            //{
+            //    return Redirect(ReturnUrl);
+            //}
             return Redirect("/");
 
-           
+
 
         }
 
@@ -92,11 +109,11 @@ namespace moxiCommunity.Controllers
             var response = _httpClient.PostAsync("api/Login/Login", new FormUrlEncodedContent(parameters)).Result;
             var responseValue = response.Content.ReadAsStringAsync().Result;
 
-            return  JsonConvert.DeserializeObject<loginModel>(responseValue);
+            return JsonConvert.DeserializeObject<loginModel>(responseValue);
 
 
         }
 
-        
+
     }
 }

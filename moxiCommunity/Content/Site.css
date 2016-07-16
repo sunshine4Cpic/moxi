@@ -1,8 +1,9 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
-    
-      font-family: Helvetica,Arial,"PingFang SC","Hiragino Sans GB","Source Han Sans CN",Roboto,"Heiti SC","Microsoft Yahei",sans-serif;
+    background:#f5f5f5;
+    font: "微软雅黑",tahoma, arial, \5b8b\4f53;
+      /*font-family: Helvetica,Arial,"PingFang SC","Hiragino Sans GB","Source Han Sans CN",Roboto,"Heiti SC","Microsoft Yahei",sans-serif;*/
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -45,9 +46,9 @@ textarea {
     box-shadow: inset 0 0 2px rgba(0,0,0,.12);
 }
  .navbar-inverse .navbar-toggle:hover, .navbar-inverse .navbar-toggle:focus {
-    background: #075fb6;
-    background: -webkit-linear-gradient(top,#055fb8,#095fb3);
-    background: linear-gradient(to bottom,#055fb8,#095fb3);
+    background: #ff0000;
+    background: -webkit-linear-gradient(top,#ff0000,#db0000);
+    background: linear-gradient(to bottom,#ff0000,#db0000);
     box-shadow: inset 0 0 2px rgba(0,0,0,.12);
 }
  .navbar-inverse .navbar-nav > li > a:hover, .navbar-inverse .navbar-nav > li > a:focus {
@@ -58,7 +59,20 @@ textarea {
  a {
     color: #333;
 }
+ .panel{
+      border-radius:0px !important;
+       -webkit-box-shadow: 2px 2px 2px #cbcbcb;  
+  -moz-box-shadow: 2px 2px 2px #cbcbcb;  
+  box-shadow: 2px 2px 2px #cbcbcb;  
+ }
 
+.panel .panel{
+     
+       -webkit-box-shadow:0px 0px 0px;
+  -moz-box-shadow:0px 0px 0px;
+  box-shadow: 0px 0px 0px;
+ }
+ 
 
 @media (max-width: 767px) {
     .navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
@@ -70,7 +84,7 @@ textarea {
     }
 
     .navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
-        border-color: #044e97;
+        border-color: #ffffff;
     }
 
     .navbar-nav .open .dropdown-menu {
@@ -87,12 +101,39 @@ textarea {
     color: #333;
 }
 
-.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
-    color: #333;
-    background-color: #317DDA;
+
+.moxi--{
+    border-bottom: 1px solid #ff3d3b;
+    padding:10px 0px;
+}
+.moxi-- span{
+    color:#ff3d3b;
+    font-weight:bold;
+    border-bottom: 2px solid #ff3d3b;
+    padding:10px 0px;
+}
+
+.moxi-border{
+    border: 1px solid #ff3d3b;
+}
+
+.info {
+    font-size:12px;
+    margin-bottom:6px;
+    color: #aaa;
 }
 
 /*整体风格  end*/
+
+/*图标*/
+.icon-mark{
+   padding-right: 12px; 
+    background: url(img/icon-mark_6324efc.png) right 6px no-repeat;
+}    
+
+
+
+
 
 /*默认按钮风格*/
 .btn-moxiDefault{
@@ -107,6 +148,10 @@ textarea {
     border-color: #f21a18;
 }
 
+.btn{
+    padding: 5px 18px;
+}
+
 .btn.active{
     color: #ff3d3b;
 }
@@ -118,7 +163,7 @@ textarea {
 
 /*导航节点*/
 .node-list .node .media-left {
-    min-width: 130px;
+    min-width: 150px;
 }
 .node-list .node label {
     font-weight: normal;
@@ -127,7 +172,7 @@ textarea {
 }
 .node-list .node .name {
     margin-bottom: 10px;
-    width: 120px;
+    width: 150px;
     display: block;
     float: left;
     text-align: left;
@@ -160,14 +205,12 @@ textarea {
 .node-heading{
     cursor: pointer;
     border-bottom: 1px solid #ff3d3b;
-    margin:5px;
-    margin-bottom:10px;
     font-weight:bold;
 }
 
 /*topics 相关*/
 .topics.table thead tr th{
-    background-color:#eeeeee;
+    background-color:#E2E2E2;
 }
 .panel.topics-sort{
     border-top:3px solid #ff3d3b;
@@ -188,6 +231,7 @@ textarea {
 .pagination {
     margin: 0;
 }
+
 /*手机优化*/
 @media (max-width: 480px) {
     .avatar-48 {
@@ -210,3 +254,133 @@ textarea {
             float: right;
         }
 }
+
+
+
+.addForm [type=text],.addForm textarea{
+    width:100%;
+    max-width:none;
+}
+
+/*验证控件,显示样式*/
+.input-validation-error {
+    border: 1px dotted red;
+}
+
+.topics .topic .info {
+    color: #aaa;
+    font-size: 10px;
+    font-weight:normal;
+    margin-top:5px;
+}
+
+.topics .topic td{
+        font-weight: bold;
+        overflow:hidden; 
+        text-overflow:ellipsis;
+        background-color:#fff;
+}
+
+
+
+.modal .modal-header{
+    background-color: #fe6260;
+    color:#ffffff;
+}
+
+
+/*topic页*/
+
+
+.topicView{
+   
+  
+ -webkit-box-shadow: 2px 2px 2px #aaa;  
+  -moz-box-shadow: 2px 2px 2px #aaa;  
+  box-shadow: 2px 2px 2px #aaa;  
+}
+
+.topicView .title{
+    font-weight: bold;
+    margin-bottom:5px;
+    font-size:24px;
+}
+
+.topicView>.panel-body{
+    padding-top:0px;
+}
+
+.topicView .info .user{
+    margin-right:30px;
+}
+
+.topicView .panel-body .panel{
+    margin-bottom:5px;
+}
+
+#topicReplyTab li{
+    font-weight:bold;
+}
+
+#topicReplyTab li.active > a{
+    background-color:#ff3d3b;
+    color:#fff;
+}
+
+.Adopt{
+   background: url(img/Adopt.png) right no-repeat;
+}
+
+#Solutions .panel{
+    margin-bottom:10px;
+}
+
+
+ #replies{
+     margin-top:20px;
+ }
+ /*回复显示*/
+ #replies .reply {
+    padding: 10px 15px;
+    position: relative;
+    border-bottom: 1px solid #eee;
+    padding-left: 74px;
+}
+ #replies .reply .infos {
+    min-height: 48px;
+}
+
+ #replies .reply .avatar {
+    text-align: center;
+    position: absolute;
+    top: 10px;
+    left: 15px;
+}
+#replies .panel-body {
+    padding: 0px;
+}
+
+
+#replies .name
+{
+    color:#ff3d3b;
+}
+
+#replies .info {
+    font-size:12px;
+    margin-bottom:6px;
+    color: #aaa;
+}
+
+/*头像相关*/
+.avatar-48 {
+    width: 48px;
+    height: 48px;
+    border-radius: 2px;
+}
+.avatar .uface, .avatar .media-object {
+    border-radius: 120px;
+}
+
+
+

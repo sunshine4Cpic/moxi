@@ -1,0 +1,33 @@
+﻿@using moxiCommunity.ViewModels
+@model TopicReplyAddModel
+
+
+<div id="topicReply">
+    <div class="col-xs-12"><p><label>发表评论 </label><span class="info"> 文明上网理性发言</span></p></div>
+    @if (User.Identity.IsAuthenticated)
+    {
+        using (Html.BeginForm("Reply", "Topic", FormMethod.Post, new { @class = "form-horizontal addForm" }))
+        {
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(m => m.topicID)
+            <div class="col-xs-12">
+                @Html.TextAreaFor(m => m.body, new { @class = "form-control moxi-border", @rows = "5" })
+                @Html.ValidationMessageFor(m => m.body, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-xs-12 ">
+                <p>
+                    <input type="submit" value="发表评论" class="btn btn-moxiDefault pull-right" />
+                </p>
+            </div>
+
+        }
+    }
+    else
+    {
+        <div style="padding:20px;">
+            需要 <a class="btn btn-moxiDefault" href="/user/login">登录</a> 后回复方可回复, 如果你还没有账号你可以 <a class="btn btn-primary" href="#">注册</a> 一个帐号。
+        </div>
+    }
+</div>
+

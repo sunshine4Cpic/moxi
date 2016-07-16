@@ -1,0 +1,150 @@
+﻿@using moxiCommunity.ViewModels
+@model topicViewModel
+@{
+    ViewBag.Title = "帖子";
+}
+
+<div class="row">
+    <div class="col-md-9">
+        <div class="panel topicView">
+            <div class="panel-heading">
+                <div class="title"> @Model.title</div>
+                <div class="info"><span class="user">@Model.User.Name</span><span>发布于：@Model.creatDate</span></div>
+            </div>
+
+            <div class="panel-body">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        @Model.body
+                    </div>
+                </div>
+                <div class="pull-right">预算：@Model.budget 元</div>
+            </div>
+
+        </div>
+
+
+
+        <ul id="topicReplyTab" class="nav nav-tabs">
+            <li class="active">
+                <a href="#Solutions" data-toggle="tab">
+                    解决方案
+                </a>
+            </li>
+            <li><a href="#repliesTab" data-toggle="tab">评论</a></li>
+
+        </ul>
+        <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade in active" id="Solutions">
+
+              
+                @foreach (var m in Model.Solutions)
+                {
+                    string css = "moxi-- ";
+                    if (m.state == 1) { css += "Adopt"; }
+
+                    <div class="panel">
+                        <div class="panel-body">
+                            <p class="@css"><span>解决方案 </span></p>
+
+                            @foreach (var s in m.Solutions)
+                            {
+                                <p> <label>商品链接：</label> <a target="_blank" href="@s.goodsLink"> @s.goodsLink</a></p>
+                                <p> 推荐理由： @s.reason</p>
+                            }
+
+                            
+
+
+                            @if (User.Identity.userID() == Model.User.ID && Model.state != 1)
+                            {
+                                <a class="btn btn-moxiDefault" method="post" href="adopt/@m.ID">采用该解决方案</a>
+                            }
+
+                        </div>
+                    </div>
+
+                }
+                <br />
+                
+                    @Html.Partial("_BuySolutionAdd", new BuySolutionAddModel { topicID = Model.ID })
+
+
+
+            </div>
+            <div class="tab-pane fade" id="repliesTab">
+                <div class="panel">
+                    <div class="panel-body">
+
+                        @Html.Partial("_TopicReplyAdd", new TopicReplyAddModel { topicID = Model.ID })
+
+                        <div id="replies">
+                            <p class="moxi--"><span>全部评论 </span></p>
+
+                            @foreach (var s in Model.replies.Where(t => t.Solutions.Count == 0))
+                            {
+
+                                <div class="reply">
+                                    <div class="avatar"><a href="#"><img class="media-object avatar-48" src="/Content/img/auto.jpg"></a></div>
+                                    <div class="infos">
+                                        <div class="info">
+                                            <span class="name">
+                                                @s.User.Name
+                                            </span> ·
+                                            <span class="time">
+                                                @s.creatDate
+                                            </span>
+                                        </div>
+
+                                        <div class="panel-body">
+                                            <p>@s.body</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            }
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <div class="col-md-3">
+
+        <div class="panel panel-default clearfix">
+            <div class="panel-body">
+                <div class="btn-group pull-left">
+                    推广1
+                </div>
+
+
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">推广</div>
+            <div class="panel-body">
+                推广2
+            </div>
+        </div>
+
+
+        <div class="panel panel-default">
+            <div class="panel-heading">推广</div>
+            <ul class="list-group">
+                <li class="list-group-item">推广1</li>
+                <li class="list-group-item">推广2</li>
+                <li class="list-group-item">推广3</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
