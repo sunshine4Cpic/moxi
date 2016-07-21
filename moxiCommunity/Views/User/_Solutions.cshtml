@@ -1,0 +1,47 @@
+﻿@using moxiCommunity.ViewModels
+@model List<userSolutionModel>
+
+<ul class="nav nav-tabs">
+    <li><a href="/user/userinfo">代购需求</a></li>
+    <li class="active"><a href="/user/Solutions">解决方案</a></li>
+    <li><a href="/user/Replys">回复</a></li>
+</ul>
+<div id="tabPanel">
+    <div class="panel panel-default">
+        <ul class="list-group">
+            @foreach (var m in Model)
+            {
+                string css = "";
+                if (m.state < 1) { css = "deleted"; }
+
+                <li class="list-group-item reply @css">
+                    @if (m.state < 1)
+                    {
+                        <i class="fa fa-question-circle pull-right" data-toggle="popover" data-placement="left" data-content="右侧的 Popover 中的一些内容" title="删除原因"></i>
+                    }
+
+                    <div class="title media-heading">
+                        <a title="@m.topicTitle" href="/topic/@m.topicID">@m.topicTitle</a>
+                        <span class="info"><span class="timeago "> 推荐于 @m.createDate</span></span>
+                    </div>
+                    <div>
+                        <p class="goodsLink"> <b>商品链接：</b> <a target="_blank" href="@m.goodsLink"> @m.goodsLink</a></p>
+                        <p> 推荐理由： @m.body</p>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+
+<script>
+    $(function () {
+
+        $("[data-toggle='popover']").popover();
+
+       
+
+
+    });
+
+</script>

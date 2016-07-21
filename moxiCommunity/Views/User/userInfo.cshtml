@@ -1,0 +1,74 @@
+﻿@using moxiCommunity.ViewModels;
+@model userInfoModel
+
+
+@section Scripts {
+    
+    
+}
+
+
+<div class="row">
+    <div class="sidebar col-md-4">
+        <div class="panel profile panel-default">
+            <div class="panel-body">
+                <div class="media">
+                    <div class="avatar media-left">
+
+                        <div class="image">
+                            <img class="media-object avatar-120" id="userAvatar" src="@Model.Avatar" />
+                        </div>
+
+                    </div>
+                    <div class="media-body">
+                        <div class="item">
+                            @Model.userName (@Model.Name)
+                            <span class="opts pull-right">
+                            </span>
+                        </div>
+                        <div class="item number">
+                            第 <span>@Model.ID</span> 位会员 / <span title="注册日期">@Model.creatDate.ToString("yyyy-MM-dd")</span>
+                        </div>
+                        <div class="item counts">
+                            <span>@Model.topicCount</span> 篇帖子 • <span>@Model.replyCount</span> 条回帖 • <span>0</span> 积分
+                        </div>
+                        <div class="item social">
+                            @*<button type="button" class="btn btn-primary" id="uploadF"><img style="width:20px;margin-right:10px;display:none;" src="~/Content/images/loading.gif" />更换头像</button>*@
+
+                        </div>
+                    </div>
+                </div>
+                <div class="follow-info row">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default" id="user_qrcode">
+            <div class="panel-heading">个人二维码</div>
+            <div class="panel-body">
+
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="col-md-8">
+
+        @if (ViewBag.action == "Topics")
+        {
+            @Html.Partial("_Topics", ViewBag.panelList as object);
+        }
+        else if (ViewBag.action == "Replys")
+        {
+            @Html.Partial("_Replys", ViewBag.panelList as object);
+        }
+        else if (ViewBag.action == "Solutions")
+        {
+            @Html.Partial("_Solutions", ViewBag.panelList as object);
+        }
+
+    </div>
+
+</div>

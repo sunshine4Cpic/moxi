@@ -27,7 +27,9 @@ namespace moxiCommunity.Models
     
         public virtual DbSet<BuyDemand> BuyDemand { get; set; }
         public virtual DbSet<BuySolution> BuySolution { get; set; }
+        public virtual DbSet<BuySolutionHandle> BuySolutionHandle { get; set; }
         public virtual DbSet<CommunityUser> CommunityUser { get; set; }
+        public virtual DbSet<eventEnum> eventEnum { get; set; }
         public virtual DbSet<Topic> Topic { get; set; }
         public virtual DbSet<TopicReply> TopicReply { get; set; }
     }

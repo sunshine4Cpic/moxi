@@ -1,0 +1,44 @@
+﻿@using moxiCommunity.ViewModels
+@model SolutionHandleModel
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="SolutionHandleModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            @using (Html.BeginForm(ViewBag.actionName as string, "Solution", FormMethod.Post, new { @id = "SolutionWarnForm", @class = "form-horizontal addForm" }))
+            {
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 id="SHMtitle">
+                        删除解决方案
+                    </h4>
+                </div>
+                <div class="modal-body">
+                     @Html.HiddenFor(m => m.bsID)
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.body, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-9 col-xs-12">
+                            @Html.TextAreaFor(m => m.body, new { @class = "form-control", @placeholder = "所填内容不超过500字", @rows = "10" })
+                            @Html.ValidationMessageFor(m => m.body, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">
+                        关闭
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        提交更改
+                    </button>
+                </div>
+            }
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+

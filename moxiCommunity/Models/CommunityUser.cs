@@ -18,18 +18,25 @@ namespace moxiCommunity.Models
         public CommunityUser()
         {
             this.BuySolution = new HashSet<BuySolution>();
+            this.BuySolutionHandle = new HashSet<BuySolutionHandle>();
             this.Topic = new HashSet<Topic>();
             this.TopicReply = new HashSet<TopicReply>();
         }
     
         public int ID { get; set; }
+        public Nullable<int> moxiID { get; set; }
         public string Name { get; set; }
         public string UserLoginToken { get; set; }
         public System.DateTime joinDate { get; set; }
         public string avatar { get; set; }
+        public int lv { get; set; }
+        public string userName { get; set; }
+        public string password { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BuySolution> BuySolution { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BuySolutionHandle> BuySolutionHandle { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Topic> Topic { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

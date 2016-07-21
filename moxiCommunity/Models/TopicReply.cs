@@ -20,8 +20,7 @@ namespace moxiCommunity.Models
         public int userID { get; set; }
         public System.DateTime creatDate { get; set; }
         public int floor { get; set; }
-        public Nullable<int> state { get; set; }
-        public Nullable<int> type { get; set; }
+        public int state { get; set; }
     
         public virtual CommunityUser CommunityUser { get; set; }
         public virtual Topic Topic { get; set; }

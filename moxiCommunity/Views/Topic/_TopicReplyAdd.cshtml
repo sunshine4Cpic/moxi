@@ -3,23 +3,23 @@
 
 
 <div id="topicReply">
-    <div class="col-xs-12"><p><label>发表评论 </label><span class="info"> 文明上网理性发言</span></p></div>
+    <p><label>发表评论 </label><span class="info"> 文明上网理性发言</span></p>
     @if (User.Identity.IsAuthenticated)
     {
         using (Html.BeginForm("Reply", "Topic", FormMethod.Post, new { @class = "form-horizontal addForm" }))
         {
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             @Html.HiddenFor(m => m.topicID)
-            <div class="col-xs-12">
+            <p>
                 @Html.TextAreaFor(m => m.body, new { @class = "form-control moxi-border", @rows = "5" })
                 @Html.ValidationMessageFor(m => m.body, "", new { @class = "text-danger" })
-            </div>
+            </p>
 
-            <div class="col-xs-12 ">
+            
                 <p>
                     <input type="submit" value="发表评论" class="btn btn-moxiDefault pull-right" />
                 </p>
-            </div>
+           
 
         }
     }

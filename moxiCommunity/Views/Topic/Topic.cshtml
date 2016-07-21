@@ -36,38 +36,72 @@
         </ul>
         <div id="myTabContent" class="tab-content">
             <div class="tab-pane fade in active" id="Solutions">
-
-              
-                @foreach (var m in Model.Solutions)
+                @foreach (var m in Model.Solutions.OrderByDescending(t=>t.state).ThenByDescending(t => t.ID))
                 {
-                    string css = "moxi-- ";
-                    if (m.state == 1) { css += "Adopt"; }
+                    string css = "";
+                    if (m.state == 2) { css = " Adopt"; }
 
-                    <div class="panel">
+                    <div class="panel" data-id="@m.ID">
                         <div class="panel-body">
-                            <p class="@css"><span>解决方案 </span></p>
-
-                            @foreach (var s in m.Solutions)
+                            @if (m.User.lv == 99)
                             {
-                                <p> <label>商品链接：</label> <a target="_blank" href="@s.goodsLink"> @s.goodsLink</a></p>
-                                <p> 推荐理由： @s.reason</p>
+                                <p class="@("moxi--" + css)"><span>摩西解决方案 </span></p>
                             }
-
-                            
-
-
-                            @if (User.Identity.userID() == Model.User.ID && Model.state != 1)
+                            else
                             {
-                                <a class="btn btn-moxiDefault" method="post" href="adopt/@m.ID">采用该解决方案</a>
-                            }
+                                <div class="@("userInfo" + css)">
+                                    <div class="avatar media-left">
+                                        <img class="media-object avatar-48" src="@m.User.avatar">
+                                    </div>
+                                    <div class="infos media-body">
+                                        <div class="title media-heading">
+                                            <span> 用户：@m.User.Name</span> <span>推荐的方案</span>
 
+                                        </div>
+                                        <div class="info">
+                                            时间：@m.creatDate
+                                        </div>
+
+
+                                    </div>
+
+
+                                </div>
+                            }
+                            <p class="goodsLink"> <b>商品链接：</b> <a target="_blank" href="@m.goodsLink"> @m.goodsLink</a></p>
+                            <p> 推荐理由： @m.body</p>
+                            <div class="opts">
+
+                                @if (User.Identity.userID() == Model.User.ID && Model.state != 2)
+                                {
+                                    <a class="btn btn-moxiDefault" method="post" href="/topic/adopt/@m.ID">采用该解决方案</a>
+
+                                }
+
+                                @if (User.IsInRole("admin") && m.state != 2)
+                                {
+                                    @*<i class="fa fa-warning" title="不合规方案" data-toggle="modal" data-target="#warnModel" data-id="@m.ID"></i>*@
+
+                                    <button class="btn btn-danger" data-toggle="modal" data-target="#SolutionHandleModal" title="删除解决方案" id="AD" data-id="@m.ID"><i class="fa fa-trash"></i>删除</button>
+
+
+                                }
+                                <div class="pull-right">
+
+                                    @if (User.Identity.userID() == m.User.ID && m.state != 2)
+                                    {
+                                        <a class="edit fa fa-pencil" title="修改回帖" href="#"></a>
+                                        <a confirm="确认删除解决方案?" method="post" class="edit fa fa-trash" title="删除解决方案" href="/Solution/delete/@m.ID"></a>
+                                    }
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                 }
                 <br />
-                
-                    @Html.Partial("_BuySolutionAdd", new BuySolutionAddModel { topicID = Model.ID })
+
+                @Html.Partial("_BuySolutionAdd", new BuySolutionAddModel { topicID = Model.ID })
 
 
 
@@ -81,11 +115,11 @@
                         <div id="replies">
                             <p class="moxi--"><span>全部评论 </span></p>
 
-                            @foreach (var s in Model.replies.Where(t => t.Solutions.Count == 0))
+                            @foreach (var s in Model.replies.OrderByDescending(t => t.ID))
                             {
 
                                 <div class="reply">
-                                    <div class="avatar"><a href="#"><img class="media-object avatar-48" src="/Content/img/auto.jpg"></a></div>
+                                    <div class="avatar"><a href="#"><img class="media-object avatar-48" src="@s.User.avatar"></a></div>
                                     <div class="infos">
                                         <div class="info">
                                             <span class="name">
@@ -95,7 +129,6 @@
                                                 @s.creatDate
                                             </span>
                                         </div>
-
                                         <div class="panel-body">
                                             <p>@s.body</p>
                                         </div>
@@ -144,7 +177,41 @@
         </div>
     </div>
 </div>
+@if (User.IsInRole("admin"))
+{
+    @Html.Partial("_SolutionHandle", new SolutionHandleModel(), new ViewDataDictionary { { "actionName", "adminDelete" } });
+}
+
 
 @section Scripts {
+
     @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function () {
+            $("#Solutions .opts #AD").click(function () {
+                var bsID = $(this).attr("data-id");
+                var tar = $(this).attr("data-target");
+                var title = $(this).attr("title");
+                $(tar + " #bsID").val(bsID);
+
+                $(tar + " #SHMtitle").val(title);
+
+            });
+
+            //$('#SolutionWarnForm').submit(function () {
+            //    jQuery.ajax({
+            //        url: $(this).attr("action"),
+            //        data: $(this).serialize(),
+            //        type: "POST",
+            //        beforeSend: function () {
+            //            $('#warnModel').modal('hide');
+            //        },
+            //        success: function (data) {
+            //            $("#Solutions").children("div.panel[data-id='" + data + "']").remove();
+            //        }
+            //    });
+            //    return false;
+            //});
+        });
+    </script>
 }

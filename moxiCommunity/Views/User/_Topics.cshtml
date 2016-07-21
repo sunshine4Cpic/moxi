@@ -1,0 +1,33 @@
+﻿@using moxiCommunity.ViewModels
+@model List<userTopicModel>
+
+<ul class="nav nav-tabs">
+    <li class="active"><a href="/user/userinfo">代购需求</a></li>
+    <li><a href="/user/Solutions">解决方案</a></li>
+    <li><a href="/user/Replys">回复</a></li>
+</ul>
+<div id="tabPanel">
+    <div class="panel panel-default">
+        <ul class="list-group">
+            @foreach (var topic in Model)
+            {
+                string css = "";
+                if (topic.state < 1) { css = "deleted"; }
+
+                <li class="list-group-item topic @css">
+                    <div class="title media-heading">
+                        <a title="@topic.title" href="/topic/@topic.ID">@topic.title</a>
+
+                    </div>
+                    <div class="info">
+                        <span class="node"><a class="node" href="/Topic/node/@topic.nodeID">@moxiCommunity.Controllers.TopicController.getNode(topic.nodeID).proClassName</a></span>
+                        <span class="solution" title="解决方案"><a class="fa fa-gift" href="/topic/@topic.ID"> @topic.solutionCount</a></span>
+                        <span class="reply" title="回复"><a class="fa fa-comment-o" href="/topic/@topic.ID"> @topic.replyCount</a></span>
+                        <span class="timeago pull-right">发布于 @topic.createDate</span>
+
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+</div>

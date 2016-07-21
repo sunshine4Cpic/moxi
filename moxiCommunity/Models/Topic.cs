@@ -27,9 +27,9 @@ namespace moxiCommunity.Models
         public System.DateTime creatDate { get; set; }
         public int replys { get; set; }
         public Nullable<int> suggest { get; set; }
-        public Nullable<int> node { get; set; }
+        public int node { get; set; }
         public int userID { get; set; }
-        public Nullable<int> state { get; set; }
+        public int state { get; set; }
     
         public virtual BuyDemand BuyDemand { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

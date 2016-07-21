@@ -1,0 +1,75 @@
+﻿@using moxiCommunity.ViewModels
+@model topicAddModel
+
+
+@using (Html.BeginForm("Add", "Topic", FormMethod.Post, new { id = "new_topic", @class = "form-horizontal addForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="modal-header">
+        <button type="button" class="close"
+                data-dismiss="modal" aria-hidden="true">
+            &times;
+        </button>
+        <h4>
+            代购需求
+        </h4>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            @Html.LabelFor(m => m.title, new { @class = "col-md-2 control-label" })
+            <div class="col-md-9 col-xs-12">
+                @Html.TextBoxFor(m => m.title, new { @class = "form-control", @placeholder = "所填内容不超过50字" })
+                @Html.ValidationMessageFor(m => m.title, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.nodeID, new { @class = "col-md-2 control-label" })
+            <div class="col-md-9 col-xs-12">
+            
+                    <span class="node-select input-group-btn">
+                        @Html.DropDownListFor(t => t.nodeID, ViewBag.nodesList as List<SelectListItem>, new { @class = "selectpicker", @data_live_search = "true", @data_width = "180px" })
+                    </span>
+                    @Html.ValidationMessageFor(m => m.nodeID, "", new { @class = "text-danger" })
+             
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.budget, new { @class = "col-md-2 control-label" })
+            <div class="col-md-9 col-xs-12">
+                <div class="input-group" style="width:180px">
+                    @Html.TextBoxFor(m => m.budget, new { @class = "form-control", @placeholder = "必填" })
+                    <span class="input-group-addon">元</span>
+                </div>
+                @Html.ValidationMessageFor(m => m.budget, "", new { @class = "text-danger" })
+            </div>
+
+        </div>
+
+
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.body, new { @class = "col-md-2 control-label" })
+            <div class="col-md-9 col-xs-12">
+                @Html.TextAreaFor(m => m.body, new { @class = "form-control", @placeholder = "所填内容不超过500字", @rows = "10" })
+                @Html.ValidationMessageFor(m => m.body, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default"
+                data-dismiss="modal">
+            关闭
+        </button>
+        <button type="submit" class="btn btn-primary">
+            提交更改
+        </button>
+    </div>
+}
+
+
+
+

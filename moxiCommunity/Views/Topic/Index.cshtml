@@ -1,5 +1,5 @@
 ﻿@using moxiCommunity.ViewModels
-@model List<topicPrevModel>
+@model topicIndexViewModel
 @{
     ViewBag.Title = "代购社区";
 }
@@ -15,20 +15,20 @@
                 }
                 else
                 {
-                    <a class="btn btn-moxiDefault" href="/user/login?ReturnUrl=/" > <span class="glyphicon glyphicon-edit"></span> 发布需求</a>
+                    <a class="btn btn-moxiDefault" href="/user/login?ReturnUrl=/"> <span class="glyphicon glyphicon-edit"></span> 发布需求</a>
                 }
 
             </div>
 
             <div class="col-xs-8 col-md-5" style="padding-left:0px">
 
-                @using (Html.BeginForm("search", "Topic", FormMethod.Get, new { @class = "form-search" }))
+                @*@using (Html.BeginForm("search", "Topic", FormMethod.Get, new { @class = "form-search" }))
                 {
                     <div class="input-group">
                         <span class="input-group-addon">  <span class="glyphicon glyphicon-search "></span></span>
                         <input class="form-control" name="q" type="text" value="@ViewBag.q" placeholder="搜索需求">
                     </div>
-                }
+                }*@
 
 
 
@@ -37,22 +37,43 @@
     </div>
 </div>
 <div class="panel">
-    <div class="panel-heading node-heading " data-toggle="collapse" data-target="#demo">
+    <div class="panel-heading node-heading " data-toggle="collapse" data-target="#nodeNav">
         <span class="icon-mark">分类导航</span>
 
     </div>
 
-    <div id="demo" class="panel-body collapse in">
+    <div id="nodeNav" class="panel-body collapse in">
         <div class="row node-list">
+            <div class="node media">
+                <label class="media-left">
+                    @if (Model.selectNode.proClassID == 0)
+                    {
+                        <a class="active" href="/topic/index">全部</a>
+                    }
+                    else
+                    {
+                        <a href="/topic/index">全部</a>
+                    }
 
-            @foreach (moxiCommunity.Models.proNode m in ViewBag.nodes)
+
+                </label>
+            </div>
+            @foreach (var m in Model.nodes)
             {
                 <div class="node media">
                     <label class="media-left">@m.proClassName</label>
                     <span class="nodes media-body">
-                        @foreach (var n in m.ThirdJsons.Take(10))
+                        @foreach (var n in m.ThirdJsons)
                         {
-                            <span class="name"><a title="@n.proClassName" data-id="@n.proClassID" href="/topics/node/@n.proClassID">@n.proClassName</a></span>
+                            if (n.proClassID == Model.selectNode.proClassID)
+                            {
+                                <span class="name"><a class="active" title="@n.proClassName" data-id="@n.proClassID" href="/topic/node/@n.proClassID">@n.proClassName</a></span>
+                            }
+                            else
+                            {
+                                <span class="name"><a title="@n.proClassName" data-id="@n.proClassID" href="/topic/node/@n.proClassID">@n.proClassName</a></span>
+                            }
+
                         }
                     </span>
                 </div>
@@ -63,14 +84,15 @@
 </div>
 
 <div class="panel panel-default topics-sort">
-    <span style="padding:0px 20px;font-weight:bold;">@ViewBag.nodeText</span>
+    <span style="padding:0px 20px;font-weight:bold;">@Model.selectNode.proClassName</span>
     <div class="btn-group">
-
-        <button type="button" class="btn btn-default active">时间排序 <span class="glyphicon glyphicon-arrow-up"></span></button>
-        <button type="button" class="btn btn-default ">热度</button>
+        <button type="button" name="time" class="btn btn-default">时间排序<i></i></button>
+        <button type="button" name="hot"  class="btn btn-default ">热度<i></i></button>
+        <button type="button" name="adopt"  class="btn btn-default"><i class="fa fa-square-o"></i> 已采纳</button>
 
     </div>
-    <button type="button" class="btn btn-default active"><i class="fa fa-check-square-o"></i> 已采纳</button>
+
+
 </div>
 <div class="panel panel-default">
     <table class="topics table" style="table-layout:fixed">
@@ -85,7 +107,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var t in Model)
+            @foreach (var t in Model.topicList)
             {
                 <tr class="topic">
                     <td nowrap><div class="title"><a href="/topic/@t.ID">@t.title</a></div><div class="info">发布于:@t.creatDate</div></td>
@@ -95,13 +117,110 @@
                     <td>@t.replyCnt</td>
                 </tr>
             }
+            @if (Model.topicList.Count == 0)
+            {
+                <tr class="topic">
+                    <td nowrap colspan="5" style="text-align: center;">此节点赞无代购需求</td>
+
+                </tr>
+            }
         </tbody>
     </table>
 </div>
-@Html.Pagination((int)1, (int)100, (int)20)
+@Html.Pagination((int)ViewBag.page, (int)ViewBag.total, (int)ViewBag.row)
 
-@Html.Partial("_topicAdd", new topicAddModel())
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+@Styles.Render("~/Content/bootstrap-select")
+@Scripts.Render("~/bundles/bootstrap-select")
+    <script>
+        $(function () {
+            //添加modal层
+            $("#myModal .modal-content").load("/topic/add", function () {
+                $.validator.unobtrusive.parse($(this));
+                $(".selectpicker").selectpicker({});
+            });
+
+            //排序相关
+            var url = location.pathname;
+            var catchall = url.substring(url.lastIndexOf("/") + 1).split("-")
+
+
+
+            var order = catchall[0];
+            var by = catchall[1];
+            var adopt = catchall[2];
+
+            var timeB = $(".topics-sort button[name='time']");
+            var hotB = $(".topics-sort button[name='hot']");
+            var adoptB = $(".topics-sort button[name='adopt']");
+
+
+            //$(".topics-sort orders button").removeClass("active");
+            //$(".topics-sort orders button i").removeClass();
+
+            if (order == "hot") {
+                hotB.addClass("active");
+                if (by == "asc")
+                    hotB.children("i").addClass("glyphicon glyphicon-arrow-up");
+                else
+                    hotB.children("i").addClass("glyphicon glyphicon-arrow-down");
+
+            }
+            else {
+                timeB.addClass("active");
+                if (by == "asc")
+                    timeB.children("i").addClass("glyphicon glyphicon-arrow-up");
+                else
+                    timeB.children("i").addClass("glyphicon glyphicon-arrow-down");
+
+            }
+
+            if (adopt == "adopt")
+            {
+                adoptB.addClass("active");
+                adoptB.children("i").removeClass();
+                adoptB.children("i").addClass("fa fa-check-square-o");
+            }
+                
+
+
+            timeB.click(sortClick);
+            hotB.click(sortClick);
+            adoptB.click(function () {
+                var adopt = adoptB.children("i").hasClass("fa-check-square-o") ? "false" : "adopt";
+                if (catchall.length == 3){
+                    location.href = order + "-" + by + "-" + adopt;
+                }else
+                {
+                    location.href = url +"/"+ order + "-" + by + "-" + adopt;
+                }
+                
+            })
+
+
+            function sortClick() {
+                var by = $(this).children("i").hasClass("glyphicon-arrow-down") ? "asc" : "desc";
+                var order = $(this).attr("name");
+                var adopt = adoptB.children("i").hasClass("fa-check-square-o") ? "adopt" : "false";
+                if (catchall.length == 3) {
+                    location.href = order + "-" + by + "-" + adopt;
+                } else {
+                    location.href = url + "/" + order + "-" + by + "-" + adopt;
+                }
+            }
+
+        });
+    </script>
 }

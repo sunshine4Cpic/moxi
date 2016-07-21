@@ -1,14 +1,63 @@
-﻿<!DOCTYPE html>
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width" />
-    <title>错误</title>
+    <title></title>
+    <style>
+        div {
+            display: block;
+        }
+
+        .error {
+            margin: 169px auto 0;
+            width: 404px;
+        }
+
+            .error .header {
+                overflow: hidden;
+                font-size: 1.8em;
+                line-height: 1.2;
+                margin: 0 0 .33em .33em;
+            }
+
+            .error .content {
+                padding: 2em 1.25em;
+                border: 1px solid #babbbc;
+                border-radius: 5px;
+                background: #f7f7f7;
+                text-align: center;
+            }
+
+            .error p {
+                margin: 0 0 1.7em;
+                color: #999;
+            }
+    </style>
 </head>
 <body>
-    <hgroup>
-        <h1>错误。</h1>
-        <h2>处理你的请求时出错。</h2>
-    </hgroup>
+    <div class="page">
+        <div class="error">
+            <h1 class="header">
+                @ViewBag.code
+            </h1>
+            <div class="content">
+                <p>
+                    <strong>@ViewBag.msg</strong>
+                </p>
+              
+                <hr>
+                <p>
+                    <a href="/topic/index">返回首页</a>
+                    <span>或者</span>
+                    <a href="javascript:;" id="js-history-back">返回上页</a>
+                </p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

@@ -25,7 +25,9 @@ select,
 textarea {
     max-width: 280px;
 }
-
+i{
+    cursor:pointer;
+}
 
 /*整体风格 红色*/
 .navbar.navbar-fixed-top {
@@ -61,9 +63,9 @@ textarea {
 }
  .panel{
       border-radius:0px !important;
-       -webkit-box-shadow: 2px 2px 2px #cbcbcb;  
-  -moz-box-shadow: 2px 2px 2px #cbcbcb;  
-  box-shadow: 2px 2px 2px #cbcbcb;  
+       -webkit-box-shadow: 1px 1px 1px #cbcbcb;  
+  -moz-box-shadow: 1px 1px 1px #cbcbcb;  
+  box-shadow: 1px 1px 1px #cbcbcb;  
  }
 
 .panel .panel{
@@ -74,7 +76,18 @@ textarea {
  }
  
 
-@media (max-width: 767px) {
+
+
+.navbar-inverse .navbar-toggle {
+    border:none;
+}
+
+.navbar-inverse .navbar-brand
+{
+    color: #333;
+}
+
+/*@media (max-width: 767px) {
     .navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
         color: #333;
     }
@@ -90,16 +103,7 @@ textarea {
     .navbar-nav .open .dropdown-menu {
         background-color:  #fff;
     }
-}
-
-.navbar-inverse .navbar-toggle {
-    border:none;
-}
-
-.navbar-inverse .navbar-brand
-{
-    color: #333;
-}
+}*/
 
 
 .moxi--{
@@ -121,6 +125,21 @@ textarea {
     font-size:12px;
     margin-bottom:6px;
     color: #aaa;
+}
+
+
+
+.bootstrap-select .dropdown-toggle {
+    height:34px;
+     border-radius: 4px !important;
+}
+
+.input-group .form-control
+{
+    position: static;
+}
+.deleted {
+    text-decoration: line-through ;
 }
 
 /*整体风格  end*/
@@ -181,16 +200,9 @@ textarea {
     color: #333;
 }
 
-.media-body, .media-left, .media-right {
-    display: table-cell;
-    vertical-align: top;
-}
-.media, .media-body {
-    overflow: hidden;
-    zoom: 1;
-}
-.media-left, .media>.pull-left {
-    padding-right: 20px;
+#nodeNav a.active {
+    font-weight:bold;
+    color: #ff3d3b;
 }
 
 .index-sections.panel .panel-title a{
@@ -232,28 +244,6 @@ textarea {
     margin: 0;
 }
 
-/*手机优化*/
-@media (max-width: 480px) {
-    .avatar-48 {
-        width: 32px;
-        height: 32px;
-    }
-    .pagination {
-        display: block;
-    }
-    .pagination li {
-        display: none;
-    }
-
-        .pagination li.prev, .pagination li.next {
-            float: left;
-            display: block;
-        }
-
-        .pagination li.next {
-            float: right;
-        }
-}
 
 
 
@@ -327,14 +317,25 @@ textarea {
     color:#fff;
 }
 
-.Adopt{
+.topics.Adopt{
    background: url(img/Adopt.png) right no-repeat;
 }
 
 #Solutions .panel{
     margin-bottom:10px;
 }
+#Solutions .userInfo{
+    margin-bottom:10px;
+        vertical-align: top;
+    position: relative;
+}
+#Solutions .userInfo .title span{
+    margin-right:20px;
+}
 
+.goodsLink{
+    font-size:115%;
+}
 
  #replies{
      margin-top:20px;
@@ -374,13 +375,45 @@ textarea {
 
 /*头像相关*/
 .avatar-48 {
-    width: 48px;
-    height: 48px;
-    border-radius: 2px;
-}
-.avatar .uface, .avatar .media-object {
-    border-radius: 120px;
+    width: 42px;
+    height: 42px;
 }
 
 
+.opts .pull-right a {
+    margin-left: 5px;
+    margin-right: 0px;
+}
 
+.avatar-120 {
+    width: 80px;
+    height: 80px;
+}
+/*userInfo*/
+.sidebar .profile .item {
+    margin-bottom: 5px;
+}
+.number span {
+    color: #666;
+    text-decoration: none;
+}
+
+.info .node {
+    padding: 1px 5px;
+    color: #778087;
+    text-decoration: none;
+    background-color: #f5f5f5;
+}
+
+.info span {
+    margin-right:10px;
+}
+
+.nav-tabs {
+     border-bottom: 0px;
+}
+
+.tooltip
+{
+    width:500px !important;
+}

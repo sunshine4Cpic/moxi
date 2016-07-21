@@ -1,0 +1,29 @@
+﻿@using moxiCommunity.ViewModels
+@model List<userReplyModel>
+
+<ul class="nav nav-tabs">
+    <li><a href="/user/userinfo">代购需求</a></li>
+    <li><a href="/user/Solutions">解决方案</a></li>
+    <li class="active"><a href="/user/Replys">回复</a></li>
+</ul>
+<div id="tabPanel">
+    <div class="panel panel-default">
+        <ul class="list-group">
+            @foreach (var m in Model)
+            {
+                string css = "";
+                if (m.state < 1) { css = "deleted"; }
+
+                <li class="list-group-item reply @css">
+                    <div class="title media-heading">
+                        <a title="@m.topicTitle" href="/topic/@m.topicID">@m.topicTitle</a>
+                        <span class="info"><span class="timeago "> 回复于 @m.createDate</span></span>
+                    </div>
+                    <div>
+                        @m.body
+                </div>
+            </li>
+            }
+        </ul>
+    </div>
+</div>
