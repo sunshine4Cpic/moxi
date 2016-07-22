@@ -242,10 +242,10 @@ namespace moxiCommunity.Controllers
             var ts = db.BuySolution.First(t => t.ID == id);
 
             var tid = ts.topicID.ToString();
-            if (ts.Topic.state == 2 || ts.Topic.state == 0)
+            if (ts.Topic.state !=1)
                 return RedirectToAction(tid.ToString());
 
-            if (ts.userID == User.Identity.userID())
+            if (ts.Topic.userID == User.Identity.userID())
             {
                 ts.state = 2;//1可见 2采纳
                 ts.Topic.state = 2;//需求已采纳
@@ -311,7 +311,7 @@ namespace moxiCommunity.Controllers
             var tic = db.Topic.FirstOrDefault(t => t.ID == md.topicID && t.state > 0);
             if (tic == null) throw new HttpException(404, "page not found");
 
-            tic.replys += 1;
+            //tic.replys += 1;
 
 
             var bs = new BuySolution();

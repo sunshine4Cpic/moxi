@@ -39,7 +39,7 @@
                 @foreach (var m in Model.Solutions.OrderByDescending(t=>t.state).ThenByDescending(t => t.ID))
                 {
                     string css = "";
-                    if (m.state == 2) { css = " Adopt"; }
+                    if (m.state == 2) { css = " AdoptSolution"; }
 
                     <div class="panel" data-id="@m.ID">
                         <div class="panel-body">

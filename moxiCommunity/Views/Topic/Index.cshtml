@@ -23,12 +23,12 @@
             <div class="col-xs-8 col-md-5" style="padding-left:0px">
 
                 @*@using (Html.BeginForm("search", "Topic", FormMethod.Get, new { @class = "form-search" }))
-                {
-                    <div class="input-group">
-                        <span class="input-group-addon">  <span class="glyphicon glyphicon-search "></span></span>
-                        <input class="form-control" name="q" type="text" value="@ViewBag.q" placeholder="搜索需求">
-                    </div>
-                }*@
+                    {
+                        <div class="input-group">
+                            <span class="input-group-addon">  <span class="glyphicon glyphicon-search "></span></span>
+                            <input class="form-control" name="q" type="text" value="@ViewBag.q" placeholder="搜索需求">
+                        </div>
+                    }*@
 
 
 
@@ -87,8 +87,8 @@
     <span style="padding:0px 20px;font-weight:bold;">@Model.selectNode.proClassName</span>
     <div class="btn-group">
         <button type="button" name="time" class="btn btn-default">时间排序<i></i></button>
-        <button type="button" name="hot"  class="btn btn-default ">热度<i></i></button>
-        <button type="button" name="adopt"  class="btn btn-default"><i class="fa fa-square-o"></i> 已采纳</button>
+        <button type="button" name="hot" class="btn btn-default ">热度<i></i></button>
+        <button type="button" name="adopt" class="btn btn-default"><i class="fa fa-square-o"></i> 已采纳</button>
 
     </div>
 
@@ -109,8 +109,15 @@
         <tbody>
             @foreach (var t in Model.topicList)
             {
+
                 <tr class="topic">
-                    <td nowrap><div class="title"><a href="/topic/@t.ID">@t.title</a></div><div class="info">发布于:@t.creatDate</div></td>
+                    <td nowrap>
+                        <div class="@(t.state==2?"AdoptSolution":"")">
+                            <span class="title"><a href="/topic/@t.ID">@t.title</a></span>
+                            <br />
+                            <span class="info">发布于:@t.creatDate</span>
+                        </div>
+                    </td>
                     <td>@t.budget</td>
                     <td>@t.User.Name</td>
                     <td>@t.solutionCnt</td>
@@ -142,8 +149,8 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
-@Styles.Render("~/Content/bootstrap-select")
-@Scripts.Render("~/bundles/bootstrap-select")
+    @Styles.Render("~/Content/bootstrap-select")
+    @Scripts.Render("~/bundles/bootstrap-select")
     <script>
         $(function () {
             //添加modal层
@@ -154,6 +161,7 @@
 
             //排序相关
             var url = location.pathname;
+            if (url == "/") url = "/Topic/Index";
             var catchall = url.substring(url.lastIndexOf("/") + 1).split("-")
 
 
@@ -187,26 +195,24 @@
 
             }
 
-            if (adopt == "adopt")
-            {
+            if (adopt == "adopt") {
                 adoptB.addClass("active");
                 adoptB.children("i").removeClass();
                 adoptB.children("i").addClass("fa fa-check-square-o");
             }
-                
+
 
 
             timeB.click(sortClick);
             hotB.click(sortClick);
             adoptB.click(function () {
                 var adopt = adoptB.children("i").hasClass("fa-check-square-o") ? "false" : "adopt";
-                if (catchall.length == 3){
+                if (catchall.length == 3) {
                     location.href = order + "-" + by + "-" + adopt;
-                }else
-                {
-                    location.href = url +"/"+ order + "-" + by + "-" + adopt;
+                } else {
+                    location.href = url + "/" + order + "-" + by + "-" + adopt;
                 }
-                
+
             })
 
 

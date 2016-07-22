@@ -17,7 +17,7 @@
                 <li class="list-group-item reply @css">
                     @if (m.state < 1)
                     {
-                        <i class="fa fa-question-circle pull-right" data-toggle="popover" data-placement="left" data-content="右侧的 Popover 中的一些内容" title="删除原因"></i>
+                        <i class="fa fa-question-circle pull-right" data-toggle="popover" data-placement="left" data-id="@m.ID" data-content="加载中..." title="删除原因"></i>
                     }
 
                     <div class="title media-heading">
@@ -38,8 +38,20 @@
     $(function () {
 
         $("[data-toggle='popover']").popover();
+        $("[data-toggle='popover']").on('show.bs.popover', function () {
+            var obj = $(this);
+            var id = obj.attr("data-id");
 
-       
+            $.ajax({
+                type: "get",
+                url: "/Solution/deleteCause/" + id,
+                async: false,
+                success: function (data) {
+                    obj.attr("data-content", data);
+                }
+            });
+            
+        })
 
 
     });

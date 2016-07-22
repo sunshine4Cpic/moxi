@@ -79,5 +79,27 @@ namespace moxiCommunity.Controllers
 
             return RedirectToAction(bs.topicID.ToString(), "topic");
         }
+
+        [Authorize]
+        [HttpGet]
+        public string deleteCause(int id)
+        {
+            moxiAgentBuyEntities db = new moxiAgentBuyEntities();
+            int userID = User.Identity.userID();
+            var bs = db.BuySolution.First(t => t.ID == id);
+
+
+            if (bs.userID != User.Identity.userID())
+            {
+                throw new HttpException(500, "异常提交");
+            }
+
+            var s = bs.BuySolutionHandle.LastOrDefault(t=>t.eventID==101);
+
+            if (s == null)
+                return "未知原因";
+            else
+                return s.body;
+        }
     }
 }

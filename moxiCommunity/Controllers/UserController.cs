@@ -187,6 +187,7 @@ namespace moxiCommunity.Controllers
                 u.UserLoginToken = moxiUser.UserLoginToken;
                 u.joinDate = DateTime.Now;
                 u.userName = moxiUser.UserEmail;//email作为帐号;
+                u.avatar = "/Content/img/auto.jpg";
                 Random random = new Random();
                 u.password = random.Next(10000001, 99999999).ToString();//随机密码
                 db.CommunityUser.Add(u);
@@ -199,7 +200,7 @@ namespace moxiCommunity.Controllers
 
             ClaimsIdentity _identity = new ClaimsIdentity("ApplicationCookie");
             _identity.AddClaim(new Claim(ClaimTypes.Name, user.ReturnObjects.result.UserName));
-            _identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.ReturnObjects.result.UserID.ToString()));
+            _identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, localUser.ID.ToString()));
             _identity.AddClaim(new Claim("http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider", "ASP.NET Identity"));
 
             _identity.AddClaim(new Claim("userName", localUser.userName));
