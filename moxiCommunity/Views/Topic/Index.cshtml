@@ -11,24 +11,25 @@
             <div class="col-xs-4 col-md-3">
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <button class="btn btn-moxiDefault" data-toggle="modal" data-target="#myModal"> <span class="glyphicon glyphicon-edit"></span> 发布需求</button>
+                    <button class="btn btn-moxiDefault  btn-lg" data-toggle="modal" data-target="#myModal"> <span class="glyphicon glyphicon-edit"></span> 发布需求</button>
                 }
                 else
                 {
-                    <a class="btn btn-moxiDefault" href="/user/login?ReturnUrl=/"> <span class="glyphicon glyphicon-edit"></span> 发布需求</a>
+                    <a class="btn btn-moxiDefault btn-lg" href="/user/login?ReturnUrl=/"> <span class="glyphicon glyphicon-edit"></span> 发布需求</a>
                 }
 
             </div>
 
-            <div class="col-xs-8 col-md-5" style="padding-left:0px">
+            <div class="col-md-5 pull-right" style="padding-left:0px">
 
-                @*@using (Html.BeginForm("search", "Topic", FormMethod.Get, new { @class = "form-search" }))
+                @using (Html.BeginForm("search", "Topic", FormMethod.Get, new { @class = "form-search" }))
                     {
                         <div class="input-group">
-                            <span class="input-group-addon">  <span class="glyphicon glyphicon-search "></span></span>
-                            <input class="form-control" name="q" type="text" value="@ViewBag.q" placeholder="搜索需求">
+                            
+                            <input class="form-control moxi-border" name="q" type="text" value="@ViewBag.q" placeholder="搜索需求">
+                            <span class="input-group-addon moxi-border" style="background-color:#ff3d3b;color:#ffffff">  <span class="glyphicon glyphicon-search "></span></span>
                         </div>
-                    }*@
+                    }
 
 
 
@@ -36,62 +37,92 @@
         </div>
     </div>
 </div>
-<div class="panel">
-    <div class="panel-heading node-heading " data-toggle="collapse" data-target="#nodeNav">
-        <span class="icon-mark">分类导航</span>
+<div class="panel nodes-panel">
+    <div class="panel-heading " >
+        <div class="node-heading">分类导航
+        @if (Model.selectNode.proClassID > 0)
+        {
+            <span class="moxi-border select-node">@Model.selectNode.proClassName <a href="/" class="fa fa-close"></a></span>
+        }
+            
+        </div>
 
+       
     </div>
-
-    <div id="nodeNav" class="panel-body collapse in">
-        <div class="row node-list">
+    <div id="nodeNav" class="panel-body">
+        <div class="node-list">
             <div class="node media">
-                <label class="media-left">
-                    @if (Model.selectNode.proClassID == 0)
-                    {
-                        <a class="active" href="/topic/index">全部</a>
-                    }
-                    else
-                    {
-                        <a href="/topic/index">全部</a>
-                    }
+                
+                   
+                <a href="/topic/index" class="btn btn-moxiDefault">全部</a>
+                   
 
-
-                </label>
+                
             </div>
-            @foreach (var m in Model.nodes)
+           
+            @foreach (var m in Model.nodes.Take(2))
             {
-                <div class="node media">
-                    <label class="media-left">@m.proClassName</label>
+                <div class="node">
+                    <span class="media-left">@m.proClassName:</span>
                     <span class="nodes media-body">
                         @foreach (var n in m.ThirdJsons)
                         {
-                            if (n.proClassID == Model.selectNode.proClassID)
-                            {
-                                <span class="name"><a class="active" title="@n.proClassName" data-id="@n.proClassID" href="/topic/node/@n.proClassID">@n.proClassName</a></span>
-                            }
-                            else
-                            {
+                           
                                 <span class="name"><a title="@n.proClassName" data-id="@n.proClassID" href="/topic/node/@n.proClassID">@n.proClassName</a></span>
-                            }
-
+                           
                         }
                     </span>
                 </div>
             }
+
+            <div id="nodeCollapse" class="collapse in">
+                @foreach (var m in Model.nodes.Skip(2))
+                {
+                    <div class="node">
+                        <span class="media-left">@m.proClassName:</span>
+                        <span class="nodes media-body">
+                            @foreach (var n in m.ThirdJsons)
+                            {
+                                <span class="name"><a title="@n.proClassName" data-id="@n.proClassID" href="/topic/node/@n.proClassID">@n.proClassName</a></span>
+
+                            }
+                        </span>
+                    </div>
+                }
+            </div>
         </div>
+
     </div>
 
 </div>
+ <div class="node-col info" > <div data-toggle="collapse" data-target="#nodeCollapse"><i class="fa fa-chevron-up"></i><br /><span>收起</span></div></div>
+
+
+@if (Model.topicList.Count == 0)
+{
+    <div class="no-topic panel panel-default">
+
+        <p><img src="~/Content/img/cry_03.png" /></p>
+        <p>抱歉，没有搜到与您匹配的需求</p>
+        <p class="moxi-active">您可以发布需求，让摩西帮你解决</p>
+        <button class="btn btn-moxiDefault" style="width:120px;height:32px;" data-toggle="modal" data-target="#myModal"> 发布需求</button>
+
+    </div>
+}
+else
+{
+
+
+
 
 <div class="panel panel-default topics-sort">
-    <span style="padding:0px 20px;font-weight:bold;">@Model.selectNode.proClassName</span>
     <div class="btn-group">
         <button type="button" name="time" class="btn btn-default">时间排序<i></i></button>
         <button type="button" name="hot" class="btn btn-default ">热度<i></i></button>
         <button type="button" name="adopt" class="btn btn-default"><i class="fa fa-square-o"></i> 已采纳</button>
 
     </div>
-
+    <div class="pull-right" style="padding-top:5px;font-weight:bold;">共找到到<span>@ViewBag.total</span>个需求 &#60;<span class="moxi-active">@ViewBag.page</span>/@(ViewBag.total / ViewBag.row + 1)&#62;</div>
 
 </div>
 <div class="panel panel-default">
@@ -124,17 +155,22 @@
                     <td>@t.replyCnt</td>
                 </tr>
             }
-            @if (Model.topicList.Count == 0)
-            {
-                <tr class="topic">
-                    <td nowrap colspan="5" style="text-align: center;">此节点赞无代购需求</td>
-
-                </tr>
-            }
+            
         </tbody>
     </table>
 </div>
-@Html.Pagination((int)ViewBag.page, (int)ViewBag.total, (int)ViewBag.row)
+<div  style="text-align:center">
+  
+       @Html.Pagination((int)ViewBag.page, (int)ViewBag.total, (int)ViewBag.row)
+    <form action="#" id="pagination-from" class="pagination" method="get">
+        <ul class="pagination fast info"><li><div>共1页,到第 </div><input value="@ViewBag.page" id="fase-input" /><div>页</div><input type="submit" value="跳转" /></li></ul>
+    </form>
+   
+</div>
+
+}
+
+
 
 <!-- 模态框（Modal） -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -158,6 +194,26 @@
                 $.validator.unobtrusive.parse($(this));
                 $(".selectpicker").selectpicker({});
             });
+
+            $('#nodeCollapse').on('hide.bs.collapse', function () {
+                $(".node-col i").removeClass();
+                $(".node-col i").addClass("fa fa-chevron-down");
+                $(".node-col span").html("展开");
+            })
+
+            $('#nodeCollapse').on('show.bs.collapse', function () {
+                $(".node-col i").removeClass();
+                $(".node-col i").addClass("fa fa-chevron-up");
+                $(".node-col span").html("收起");
+            })
+
+            $("#pagination-from").submit(function () {
+                location.href = '?page=' + $('#fase-input').val();
+                return false;
+            })
+            
+
+                
 
             //排序相关
             var url = location.pathname;

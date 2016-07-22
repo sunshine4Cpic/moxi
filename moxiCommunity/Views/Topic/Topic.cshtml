@@ -24,16 +24,16 @@
         </div>
 
 
-
-        <ul id="topicReplyTab" class="nav nav-tabs">
-            <li class="active">
-                <a href="#Solutions" data-toggle="tab">
-                    解决方案
-                </a>
-            </li>
-            <li><a href="#repliesTab" data-toggle="tab">评论</a></li>
-
-        </ul>
+        <div id="topicReplyTab">
+            <ul class="nav nav-tabs center-block">
+                <li class="active">
+                    <a href="#Solutions" data-toggle="tab">
+                        解决方案
+                    </a>
+                </li>
+                <li><a href="#repliesTab" data-toggle="tab">评论</a></li>
+            </ul>
+        </div>
         <div id="myTabContent" class="tab-content">
             <div class="tab-pane fade in active" id="Solutions">
                 @foreach (var m in Model.Solutions.OrderByDescending(t=>t.state).ThenByDescending(t => t.ID))

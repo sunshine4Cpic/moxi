@@ -2,7 +2,7 @@
     "nodes": [
         {
             "proClassID": 83,
-            "proClassName": "母婴/玩具/童装",
+            "proClassName": "母婴用品",
             "depth": "1",
             "ThirdJsons": [
                 {
@@ -69,7 +69,7 @@
         },
         {
             "proClassID": 1,
-            "proClassName": "美妆/个人护理/洗护",
+            "proClassName": "美妆/彩妆",
             "depth": "1",
             "ThirdJsons": [
                 {
@@ -116,7 +116,7 @@
         },
         {
             "proClassID": 162,
-            "proClassName": "男装/女装/内衣/配饰",
+            "proClassName": "男装/西服",
             "depth": "1",
             "ThirdJsons": [
                 {
@@ -193,7 +193,7 @@
         },
         {
             "proClassID": 260,
-            "proClassName": "腕表/首饰/眼镜",
+            "proClassName": "腕表/首饰",
             "depth": "1",
             "ThirdJsons": [
                 {
@@ -260,7 +260,7 @@
         },
         {
             "proClassID": 298,
-            "proClassName": "鞋靴/箱包",
+            "proClassName": "鞋靴/裤袜",
             "depth": "1",
             "ThirdJsons": [
                 {
