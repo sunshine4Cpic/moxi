@@ -1,0 +1,102 @@
+﻿@using moxiCommunity.ViewModels
+@model List<topicPrevModel>
+@{
+    ViewBag.Title = "search";
+}
+
+
+
+<div class="panel clearfix">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-xs-4 col-md-3">
+
+
+            </div>
+
+            <div class="col-md-5 " style="padding-left:0px">
+
+                @using (Html.BeginForm("search", "Topic", FormMethod.Get, new { @class = "form-search" }))
+                {
+                    <div class="input-group">
+                        <input class="form-control moxi-border" name="q" type="text" value="@ViewBag.q" placeholder="搜索需求">
+                        <span class="input-group-addon moxi-border" style="background-color:#ff3d3b;color:#ffffff">  <span class="glyphicon glyphicon-search "></span></span>
+                    </div>
+                }
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@if (Model.Count == 0)
+{
+    <div class="no-topic panel panel-default">
+
+        <p><img src="~/Content/img/cry_03.png" /></p>
+        <p>抱歉，没有搜到与您匹配的需求</p>
+
+    </div>
+}
+else
+{
+    <div class="panel panel-default">
+        <table class="topics table" style="table-layout:fixed">
+
+            <thead>
+                <tr>
+                    <th width="55%">需求内容</th>
+                    <th>预算(元)</th>
+                    <th>用户昵称</th>
+                    <th>解决方案</th>
+                    <th>评论</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var t in Model)
+                {
+
+                    <tr class="topic">
+                        <td nowrap>
+                            <div class="@(t.state==2?"AdoptSolution":"")">
+                                <span class="title"><a href="/topic/Solutions/@t.ID">@t.title</a></span>
+                                <br />
+                                <span class="info small">发布于 : @t.creatDate.ToString("yyyy.MM.dd")</span>
+                            </div>
+                        </td>
+                        <td>@t.budget</td>
+                        <td>@t.User.Name</td>
+                        <td>@t.solutionCnt</td>
+                        <td>@t.replyCnt</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+    <div style="text-align:center">
+
+        @Html.Pagination((int)ViewBag.page, (int)ViewBag.total, (int)ViewBag.row, "&q=" + (string)ViewBag.q)
+
+
+    </div>
+
+}
+
+
+
+
+@section Scripts {
+
+    <script>
+        $(function () {
+            $("#pagination-from").submit(function () {
+                location.href = '?page=' + $('#fase-input').val()+@Html.Raw("\"&q=" + ViewBag.q + "\"");
+                return false;
+            })
+        });
+    </script>
+}

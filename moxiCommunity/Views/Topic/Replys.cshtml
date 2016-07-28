@@ -1,0 +1,126 @@
+﻿@using moxiCommunity.ViewModels
+@model topicViewModel
+@{
+    ViewBag.Title = "帖子";
+}
+
+<div class="row">
+
+    <div class="col-md-3">
+
+        <div class="panel panel-default clearfix">
+            <div class="panel-body">
+                <div class="btn-group pull-left">
+                    推广1
+                </div>
+
+
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">推广</div>
+            <div class="panel-body">
+                推广2
+            </div>
+        </div>
+
+
+        <div class="panel panel-default">
+            <div class="panel-heading">推广</div>
+            <ul class="list-group">
+                <li class="list-group-item">推广1</li>
+                <li class="list-group-item">推广2</li>
+                <li class="list-group-item">推广3</li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="panel topicView">
+            <div class="panel-heading">
+                <div class="title"> @Model.title</div>
+                <div><span class="user">@Model.User.Name</span><span>发布于：@Model.creatDate.ToString("yyyy年MM月dd日 hh:mm:sss")</span></div>
+            </div>
+
+            <div class="panel-body">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        @Model.body
+                    </div>
+                </div>
+                <div class="pull-right">预算：@Model.budget 元</div>
+            </div>
+
+        </div>
+
+
+        <div id="topicReplyTab">
+            <ul class="nav nav-tabs">
+                <li>
+                    <a href="/topic/Solutions/@Model.ID">
+                        解决方案
+                    </a>
+                </li>
+                <li class="active"><a href="#repliesTab" data-toggle="tab">评论</a></li>
+            </ul>
+        </div>
+        <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade in active" id="repliesTab">
+                <div class="panel">
+                    <div class="panel-body">
+
+                        @Html.Partial("_TopicReplyAdd", new TopicReplyAddModel { topicID = Model.ID }, new ViewDataDictionary { { "total", ViewBag.total} })
+
+                        <div id="replies">
+                            
+                            <p class="moxi--"><span class="active">全部评论 </span></p>
+
+                            @foreach (var s in Model.replies)
+                            {
+                                <div class="reply">
+                                    <div class="avatar"><a href="#"><img class="media-object avatar-48" src="@s.User.avatar"></a></div>
+                                    <div class="infos">
+                                        <div class="info">
+                                            <span class="name">
+                                                @s.User.Name
+                                            </span>
+                                            <span class="time small">
+                                                @s.creatDate.ToString("yyyy-M-d")
+                                            </span>
+                                        </div>
+                                        <div class="panel-body">
+                                            <p>@s.body</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            }
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div style="text-align:center">
+
+                @Html.Pagination((int)ViewBag.page, (int)ViewBag.total, (int)ViewBag.row)
+
+
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+</div>
+
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+    </script>
+}

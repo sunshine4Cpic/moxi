@@ -1,0 +1,131 @@
+﻿@using moxiCommunity.ViewModels
+@model List<userDemandsModel>
+<p class="moxi--"><a class="active">需求管理 </a><a href="/user/Solutions">解决方案</a></p>
+
+<div class="checkList">
+    @if (ViewBag.all)
+    {
+        <span class="btn btn-lg active"><i class="fa fa-check-square-o"> </i> 全部</span>
+    }
+    else
+    {
+        <span class="btn btn-lg"><i class="fa fa-square-o"> </i> 全部</span>
+    }
+    @if (ViewBag.a)
+    {
+        <span class="btn btn-lg active"><i class="fa fa-check-square-o"> </i> 已有解决方案</span>
+    }
+    else
+    {
+        <span class="btn btn-lg"><i class="fa fa-square-o"> </i> 已有解决方案</span>
+    }
+    @if (ViewBag.b)
+    {
+        <span class="btn btn-lg active"><i class="fa fa-check-square-o"> </i> 未采纳</span>
+    }
+    else
+    {
+        <span class="btn btn-lg"><i class="fa fa-square-o"> </i> 未采纳</span>
+    }
+    @if (ViewBag.c)
+    {
+        <span class="btn btn-lg active"><i class="fa fa-check-square-o"> </i> 已采纳</span>
+    }
+    else
+    {
+        <span class="btn btn-lg"><i class="fa fa-square-o"> </i> 已采纳</span>
+    }
+</div>
+@foreach (var m in Model)
+{
+    <div class="panel panel-default userDemand">
+        <div class="panel-body @(m.state==2?"AdoptSolution":"")">
+            <p class="info small"> 发布时间 : @m.createDate.ToString("yyyy-MM-dd hh:mm")</p>
+            <p class="f115"> @m.title</p>
+            <p> 预算 : @m.budget 元 </p>
+            <p class="f115">
+                <span class="solutionCount">解决方案<span class="moxi-color">@m.solutionCount</span>个 </span>
+                <span class="btn btn-default btn-xs" data-toggle="collapse" data-target="@("#Demand-"+m.ID)"> 点击展开</span>
+                @if (m.state != 2)
+                {
+                    <span class="btn btn-moxiDefault btn-xs" topicid="@m.ID"> 修改</span>
+                }
+            </p>
+        </div>
+        <div id="@("Demand-"+m.ID)" data-id="@m.ID" class="collapse DemandCollapse">
+
+        </div>
+    </div>
+
+}
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<script>
+    /*异步展开*/
+
+    $('.DemandCollapse').on('show.bs.collapse', function () {
+        var Demand = $(this);
+        Demand.html("<div class='moxi-hr'> <s><i></i></s><hr></div><div id='Solutions'>加载中......</div>");
+        $.ajax({
+            type: "get",
+            url: "/topic/DemandSolutions/" + Demand.attr("data-id"),
+            async: true,
+            success: function (data) {
+                Demand.html(data);
+                aPostInit(Demand.find("a[method=post]"));
+            }
+        });
+    })
+
+    $('.DemandCollapse').on('shown.bs.collapse', function () {
+        $(this).parent().find("[data-toggle='collapse']").html("点击收起");
+    })
+
+    $('.DemandCollapse').on('hidden.bs.collapse', function () {
+        $(this).parent().find("[data-toggle='collapse']").html("点击展开");
+    })
+
+
+    //多选框
+    $(".checkList .btn").click(function () {
+
+
+        if ($(this).hasClass("active"))
+            $(this).removeClass("active")
+        else
+            $(this).addClass("active")
+
+        var rwx = "";
+        $(".checkList .btn").each(function () {
+            if ($(this).hasClass("active"))
+                rwx += "1";
+            else
+                rwx += "0";
+        });
+        location.href = "/user/Demands/" + rwx;
+    })
+
+    $(".btn[topicID]").click(function () {
+        $("#editModal .modal-content").html("<div class='modal-body'>加载中......</div>");
+        var topicID = $(this).attr("topicID");
+        $('#editModal').modal('show');
+        $("#editModal .modal-content").load("/topic/edit/" + topicID, function () {
+            $.validator.unobtrusive.parse($(this));
+            $(".selectpicker").selectpicker({});
+
+        });
+    })
+
+
+
+</script>
+
+
