@@ -1,0 +1,32 @@
+﻿@using moxiCommunity.ViewModels
+@model mySolutionsModel
+
+
+<div class="moxi-hr"> <s><i></i></s><hr /></div>
+<div id="Solutions" class="f115">
+    <p class="f120"><b>详细需求内容 : </b></p>
+    <p>@Model.body</p>
+
+
+    <p class="f120 moxi-color"><b>我的解决方案</b></p>
+    @foreach (var m in Model.mySolutions)
+    {
+        <div>
+            <p> <b>商品链接：</b> <a target="_blank" href="@m.goodsLink"> @m.goodsLink</a></p>
+            <p> 推荐理由： @m.body</p>
+            @if (Model.state == 1)
+            {<div>
+                <button class="btn btn-moxiDefault" sID="@m.ID" >修改该解决方案</button>
+            </div>
+            }
+            @if (m.state == -1)
+            {
+                <div>
+                    <span>&nbsp;</span>
+                    <div class="pull-right"><span class="moxi-color">提示</span> : 因不符合要求的原因，您解决方案审查不通过</div>
+                </div>
+            }
+        </div>
+        <hr />
+    }
+</div>

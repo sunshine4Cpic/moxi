@@ -21,7 +21,9 @@ namespace moxiCommunity
                 url: "{controller}/{action}/{id}/{*catchall}",
                 defaults: new { controller = "Topic", action = "Index", id = UrlParameter.Optional }
             );
-           
+
+          
+
         }
     }
 }

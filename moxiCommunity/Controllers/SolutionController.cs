@@ -42,17 +42,8 @@ namespace moxiCommunity.Controllers
             var bs = db.BuySolution.First(t => t.ID == md.bsID);
             bs.state = -1;//管理员删除
 
-            bs.BuySolutionHandle.Where(t => t.closed == false).All(t => t.closed = true);
-          
+            bs.deleteBody = md.body;
 
-            var bsh = new BuySolutionHandle();
-            bsh.bsID = bs.ID;
-            bsh.body = md.body;
-            bsh.closed = false;
-            bsh.createDate = DateTime.Now;
-            bsh.eventID = 101;
-            bsh.userID = User.Identity.userID();
-            db.BuySolutionHandle.Add(bsh);
             db.SaveChanges();
 
 
@@ -80,26 +71,58 @@ namespace moxiCommunity.Controllers
             return RedirectToAction(bs.topicID.ToString(), "topic");
         }
 
+
+        [HttpPost]
         [Authorize]
-        [HttpGet]
-        public string deleteCause(int id)
+        public ActionResult Edit(BuySolutionEditModel md)
         {
-            moxiAgentBuyEntities db = new moxiAgentBuyEntities();
-            int userID = User.Identity.userID();
-            var bs = db.BuySolution.First(t => t.ID == id);
-
-
-            if (bs.userID != User.Identity.userID())
+            if (!ModelState.IsValid)
             {
                 throw new HttpException(500, "异常提交");
             }
 
-            var s = bs.BuySolutionHandle.LastOrDefault(t=>t.eventID==101);
+            int userID = User.Identity.userID();
+            moxiAgentBuyEntities db = new moxiAgentBuyEntities();
 
-            if (s == null)
-                return "未知原因";
-            else
-                return s.body;
+            //是否有效主题
+            var bs = db.BuySolution.FirstOrDefault(t => t.ID == md.ID && t.userID == userID);
+            if (bs == null) throw new HttpException(404, "page not found");
+
+            //tic.replys += 1;
+
+
+            bs.body = md.body;
+            bs.goodsLink = md.goodsLink;
+
+
+
+            db.SaveChanges();
+
+            var url = Request.ServerVariables["Http_Referer"];
+            return Redirect(url);
         }
+
+
+        [HttpGet]
+        [Authorize]
+        public ActionResult Edit(int id)
+        {
+          
+            int userID = User.Identity.userID();
+            moxiAgentBuyEntities db = new moxiAgentBuyEntities();
+
+            //是否有效主题
+            var bs = db.BuySolution.FirstOrDefault(t => t.ID == id && t.userID == userID);
+            if (bs == null) throw new HttpException(404, "page not found");
+
+            BuySolutionEditModel bem = new BuySolutionEditModel();
+            bem.ID = bs.ID;
+            bem.body = bs.body;
+            bem.goodsLink = bs.goodsLink;
+
+            return PartialView("_BuySolutionEdit", bem);
+        }
+
+       
     }
 }

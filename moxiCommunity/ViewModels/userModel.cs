@@ -9,73 +9,47 @@ namespace moxiCommunity.ViewModels
     public class userInfoModel
     {
 
-        public userInfoModel(string userName)
-        {
-            moxiAgentBuyEntities db = new moxiAgentBuyEntities();
-
-
-
-            var user = db.CommunityUser.First(t => t.userName == userName);
-
-            this.ID = user.ID;
-            this.userName = userName;
-            this.Avatar = user.avatar;
-            this.userName = user.userName;
-            this.Name = user.Name;
-            this.creatDate = user.joinDate;
-
-
-
-            topicCount = db.Topic.Where(t => t.userID == ID && t.state>0).Count();
-
-            replyCount = db.TopicReply.Where(t => t.userID == ID && t.state > 0).Count();
-
-            solutionCount = db.BuySolution.Where(t => t.userID == ID && t.state > 0).Count();
-
-            
-
-        }
-
-
         public int ID { get; set; }
 
         public string Name { get; set; }
 
         public string userName { get; set; }
 
-        public string framework { get; set; }
 
         public string Avatar { get; set; }
 
         public DateTime creatDate { get; set; }
 
-        public int replyCount { get; set; }
+        //暂时不统计
+        //public int replyCount { get; set; }
 
-        public int solutionCount { get; set; }
+        //public int solutionCount { get; set; }
 
-        public int topicCount { get; set; }
+        //public int topicCount { get; set; }
 
 
+        public List<userDemandsModel> Demands { get; set; }
 
     }
 
-    public class userTopicModel
+    public class userDemandsModel
     {
         public int ID { get; set; }
 
         public string title { get; set; }
         public int state { get; set; }
 
+
         public DateTime createDate { get; set; }
         public int replyCount { get; set; }
-
-
         public int solutionCount { get; set; }
+
+        public int budget { get; set; }
 
         public int nodeID { get; set; }
     }
 
-    public class userSolutionModel
+    public class userSolutionsModel
     {
         public int ID { get; set; }
         public int topicID { get; set; }
@@ -101,6 +75,29 @@ namespace moxiCommunity.ViewModels
         public int state { get; set; }
 
         public DateTime createDate { get; set; }
+
+    }
+
+    public class DemandSolutionsModel
+    {
+        public int ID { get; set; }
+        public string body { get; set; }
+
+        public int state { get; set; }
+
+        public List<SolutionModel> userSolutions { get; set; }
+
+        public List<SolutionModel> moxiSolutions { get; set; }
+    }
+
+    public class mySolutionsModel
+    {
+        public int ID { get; set; }
+        public string body { get; set; }
+
+        public int state { get; set; }
+
+        public List<SolutionInfoModel> mySolutions { get; set; }
 
     }
 

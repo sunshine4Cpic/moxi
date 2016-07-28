@@ -10,7 +10,7 @@ namespace System.Web.Mvc
     {
 
 
-        public static HtmlString Pagination(this HtmlHelper helper, int page, int total, int rows)
+        public static HtmlString Pagination(this HtmlHelper helper, int page, int total, int rows,string getP="")
         {
 
             int lastPage = total / rows + 1;
@@ -23,17 +23,17 @@ namespace System.Web.Mvc
 
             sb.Append("<ul class=\"pagination\">");
             if (prev < 1)
-                sb.Append("<li class=\"prev previous_page disabled\"><a rel=\"prev\" href=\"#\">← 上一页</a></li>");
+                sb.Append("<li class=\"prev previous_page disabled\"><a rel=\"prev\" href=\"#\">上一页</a></li>");
             else
-                sb.Append("<li class=\"prev previous_page\"><a rel=\"prev\" href=\"?page=" + prev + "\">← 上一页</a></li>");
+                sb.Append("<li class=\"prev previous_page\"><a rel=\"prev\" href=\"?page=" + prev + getP + "\">上一页</a></li>");
 
 
             for (int i = 1; i < 4; i++)
             {
                 if (i == page)
-                    sb.Append(PaginationLi(i, lastPage, true));
+                    sb.Append(PaginationLi(i, lastPage, true, getP));
                 else
-                    sb.Append(PaginationLi(i, lastPage));
+                    sb.Append(PaginationLi(i, lastPage, false, getP));
 
             }
             if (page > 6)
@@ -43,9 +43,9 @@ namespace System.Web.Mvc
             {
 
                 if (i == page)
-                    sb.Append(PaginationLi(i, lastPage, true));
+                    sb.Append(PaginationLi(i, lastPage, true, getP));
                 else
-                    sb.Append(PaginationLi(i, lastPage));
+                    sb.Append(PaginationLi(i, lastPage, false, getP));
 
             }
 
@@ -59,12 +59,17 @@ namespace System.Web.Mvc
             }
 
             if (next > lastPage)
-                sb.Append("<li class=\"next next_page disabled\"><a rel=\"next\" href=\"#\">下一页 →</a></li>");
+                sb.Append("<li class=\"next next_page disabled\"><a rel=\"next\" href=\"#\">下一页</a></li>");
             else
-                sb.Append("<li class=\"next next_page\"><a rel=\"next\" href=\"?page=" + next + "\">下一页 →</a></li>");
+                sb.Append("<li class=\"next next_page\"><a rel=\"next\" href=\"?page=" + next + getP + "\">下一页</a></li>");
 
-            
+
             sb.Append(" </ul>");
+
+            sb.Append("<form action=\"#\" id=\"pagination-from\" class=\"pagination\" method=\"get\">");
+
+            sb.Append(" <ul class=\"pagination fast info\"><li><div>共1页,到第 </div><input value=\"" + page + "\" id=\"fase-input\" /><div>页</div><input type=\"submit\" value=\"确定\" /></li></ul>");
+            sb.Append("</form>");
 
 
 
@@ -72,18 +77,18 @@ namespace System.Web.Mvc
         }
 
 
-        private static string PaginationLi(int pg, bool active = false)
+        private static string PaginationLi(int pg, bool active = false,string getP = "")
         {
             if (active)
-                return "<li class=\"active\"><a href=\"?page=" + pg + "\">" + pg + "</a></li>";
+                return "<li class=\"active\"><a href=\"?page=" + pg + getP + "\">" + pg + "</a></li>";
             else
-                return "<li><a href=\"?page=" + pg + "\">" + pg + "</a></li>";
+                return "<li><a href=\"?page=" + pg + getP + "\">" + pg + "</a></li>";
         }
 
-        private static string PaginationLi(int pg, int lastPage, bool active = false)
+        private static string PaginationLi(int pg, int lastPage, bool active = false, string getP = "")
         {
             if (lastPage >= pg)
-                return PaginationLi(pg, active);
+                return PaginationLi(pg, active, getP);
             return "";
         }
 
@@ -93,6 +98,6 @@ namespace System.Web.Mvc
 
 
     }
-    
-   
+
+
 }

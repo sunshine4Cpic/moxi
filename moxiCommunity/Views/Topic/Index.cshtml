@@ -23,13 +23,12 @@
             <div class="col-md-5 pull-right" style="padding-left:0px">
 
                 @using (Html.BeginForm("search", "Topic", FormMethod.Get, new { @class = "form-search" }))
-                    {
-                        <div class="input-group">
-                            
-                            <input class="form-control moxi-border" name="q" type="text" value="@ViewBag.q" placeholder="搜索需求">
-                            <span class="input-group-addon moxi-border" style="background-color:#ff3d3b;color:#ffffff">  <span class="glyphicon glyphicon-search "></span></span>
-                        </div>
-                    }
+                {
+                    <div class="input-group">
+                        <input class="form-control moxi-border" name="q" type="text" value="" placeholder="搜索需求">
+                        <span class="input-group-addon moxi-border" style="background-color:#ff3d3b;color:#ffffff">  <span class="glyphicon glyphicon-search "></span></span>
+                    </div>
+                }
 
 
 
@@ -38,28 +37,29 @@
     </div>
 </div>
 <div class="panel nodes-panel">
-    <div class="panel-heading " >
-        <div class="node-heading">分类导航
-        @if (Model.selectNode.proClassID > 0)
-        {
-            <span class="moxi-border select-node">@Model.selectNode.proClassName <a href="/" class="fa fa-close"></a></span>
-        }
-            
+    <div class="panel-heading ">
+        <div class="node-heading">
+            分类导航
+            @if (Model.selectNode.proClassID > 0)
+            {
+                <span class="moxi-border select-node">@Model.selectNode.proClassName <a href="/" class="fa fa-close"></a></span>
+            }
+
         </div>
 
-       
+
     </div>
     <div id="nodeNav" class="panel-body">
         <div class="node-list">
             <div class="node media">
-                
-                   
-                <a href="/topic/index" class="btn btn-moxiDefault">全部</a>
-                   
 
-                
+
+                <a href="/topic/index" class="btn btn-moxiDefault btn-sm">全部</a>
+
+
+
             </div>
-           
+
             @foreach (var m in Model.nodes.Take(2))
             {
                 <div class="node">
@@ -67,9 +67,9 @@
                     <span class="nodes media-body">
                         @foreach (var n in m.ThirdJsons)
                         {
-                           
-                                <span class="name"><a title="@n.proClassName" data-id="@n.proClassID" href="/topic/node/@n.proClassID">@n.proClassName</a></span>
-                           
+
+                            <span class="name"><a title="@n.proClassName" data-id="@n.proClassID" href="/topic/node/@n.proClassID">@n.proClassName</a></span>
+
                         }
                     </span>
                 </div>
@@ -95,7 +95,7 @@
     </div>
 
 </div>
- <div class="node-col info" > <div data-toggle="collapse" data-target="#nodeCollapse"><i class="fa fa-chevron-up"></i><br /><span>收起</span></div></div>
+<div class="node-col info"> <div data-toggle="collapse" data-target="#nodeCollapse"><i class="fa fa-chevron-up"></i><br /><span>收起</span></div></div>
 
 
 @if (Model.topicList.Count == 0)
@@ -111,62 +111,56 @@
 }
 else
 {
-
-
-
-
-<div class="panel panel-default topics-sort">
-    <div class="btn-group">
-        <button type="button" name="time" class="btn btn-default">时间排序<i></i></button>
-        <button type="button" name="hot" class="btn btn-default ">热度<i></i></button>
-        <button type="button" name="adopt" class="btn btn-default"><i class="fa fa-square-o"></i> 已采纳</button>
+    <div class="panel panel-default topics-sort">
+        <div class="btn-group">
+            <button type="button" name="time" class="btn btn-default">时间排序<i></i></button>
+            <button type="button" name="hot" class="btn btn-default ">热度<i></i></button>
+            <button type="button" name="adopt" class="btn btn-default"><i class="fa fa-square-o"></i> 已采纳</button>
+            <button type="button" name="have" class="btn btn-default"><i class="fa fa-square-o"></i> 已有解决方案</button>
+        </div>
+        <div class="pull-right" style="padding-top:5px;font-weight:bold;">共找到到<span>@ViewBag.total</span>个需求 &#60;<span class="moxi-active">@ViewBag.page</span>/@(ViewBag.total / ViewBag.row + 1)&#62;</div>
 
     </div>
-    <div class="pull-right" style="padding-top:5px;font-weight:bold;">共找到到<span>@ViewBag.total</span>个需求 &#60;<span class="moxi-active">@ViewBag.page</span>/@(ViewBag.total / ViewBag.row + 1)&#62;</div>
+    <div class="panel panel-default">
+        <table class="topics table" style="table-layout:fixed">
 
-</div>
-<div class="panel panel-default">
-    <table class="topics table" style="table-layout:fixed">
-
-        <thead>
-            <tr>
-                <th width="55%">需求内容</th>
-                <th>预算(元)</th>
-                <th>用户昵称</th>
-                <th>解决方案</th>
-                <th>评论</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var t in Model.topicList)
-            {
-
-                <tr class="topic">
-                    <td nowrap>
-                        <div class="@(t.state==2?"AdoptSolution":"")">
-                            <span class="title"><a href="/topic/@t.ID">@t.title</a></span>
-                            <br />
-                            <span class="info">发布于:@t.creatDate</span>
-                        </div>
-                    </td>
-                    <td>@t.budget</td>
-                    <td>@t.User.Name</td>
-                    <td>@t.solutionCnt</td>
-                    <td>@t.replyCnt</td>
+            <thead>
+                <tr>
+                    <th width="55%">需求内容</th>
+                    <th>预算(元)</th>
+                    <th>用户昵称</th>
+                    <th>解决方案</th>
+                    <th>评论</th>
                 </tr>
-            }
-            
-        </tbody>
-    </table>
-</div>
-<div  style="text-align:center">
-  
-       @Html.Pagination((int)ViewBag.page, (int)ViewBag.total, (int)ViewBag.row)
-    <form action="#" id="pagination-from" class="pagination" method="get">
-        <ul class="pagination fast info"><li><div>共1页,到第 </div><input value="@ViewBag.page" id="fase-input" /><div>页</div><input type="submit" value="跳转" /></li></ul>
-    </form>
-   
-</div>
+            </thead>
+            <tbody>
+                @foreach (var t in Model.topicList)
+                {
+
+                    <tr class="topic">
+                        <td nowrap>
+                            <div class="@(t.state==2?"AdoptSolution":"")">
+                                <span class="title"><a href="/topic/Solutions/@t.ID">@t.title</a></span>
+                                <br />
+                                <span class="info small">发布于 : @t.creatDate.ToString("yyyy.MM.dd")</span>
+                            </div>
+                        </td>
+                        <td>@t.budget</td>
+                        <td>@t.User.Name</td>
+                        <td>@t.solutionCnt</td>
+                        <td>@t.replyCnt</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+    <div style="text-align:center">
+
+        @Html.Pagination((int)ViewBag.page, (int)ViewBag.total, (int)ViewBag.row)
+
+
+    </div>
 
 }
 
@@ -207,13 +201,10 @@ else
                 $(".node-col span").html("收起");
             })
 
-            $("#pagination-from").submit(function () {
-                location.href = '?page=' + $('#fase-input').val();
-                return false;
-            })
-            
 
-                
+
+
+
 
             //排序相关
             var url = location.pathname;
@@ -225,10 +216,12 @@ else
             var order = catchall[0];
             var by = catchall[1];
             var adopt = catchall[2];
+            var have = catchall[3];
 
             var timeB = $(".topics-sort button[name='time']");
             var hotB = $(".topics-sort button[name='hot']");
             var adoptB = $(".topics-sort button[name='adopt']");
+            var haveB = $(".topics-sort button[name='have']");
 
 
             //$(".topics-sort orders button").removeClass("active");
@@ -257,18 +250,32 @@ else
                 adoptB.children("i").addClass("fa fa-check-square-o");
             }
 
+            if (have == "have") {
+                haveB.addClass("active");
+                haveB.children("i").removeClass();
+                haveB.children("i").addClass("fa fa-check-square-o");
+            }
+
 
 
             timeB.click(sortClick);
             hotB.click(sortClick);
             adoptB.click(function () {
                 var adopt = adoptB.children("i").hasClass("fa-check-square-o") ? "false" : "adopt";
-                if (catchall.length == 3) {
-                    location.href = order + "-" + by + "-" + adopt;
+                if (catchall.length == 4) {
+                    location.href = order + "-" + by + "-" + adopt + "-" + have;
                 } else {
-                    location.href = url + "/" + order + "-" + by + "-" + adopt;
+                    location.href = url + "/" + order + "-" + by + "-" + adopt + "-" + have;
                 }
+            })
 
+            haveB.click(function () {
+                var have = haveB.children("i").hasClass("fa-check-square-o") ? "false" : "have";
+                if (catchall.length == 4) {
+                    location.href = order + "-" + by + "-" + adopt + "-" + have;
+                } else {
+                    location.href = url + "/" + order + "-" + by + "-" + adopt + "-" + have;
+                }
             })
 
 
@@ -276,10 +283,11 @@ else
                 var by = $(this).children("i").hasClass("glyphicon-arrow-down") ? "asc" : "desc";
                 var order = $(this).attr("name");
                 var adopt = adoptB.children("i").hasClass("fa-check-square-o") ? "adopt" : "false";
-                if (catchall.length == 3) {
-                    location.href = order + "-" + by + "-" + adopt;
+                var have = adoptB.children("i").hasClass("fa-check-square-o") ? "have" : "false";
+                if (catchall.length == 4) {
+                    location.href = order + "-" + by + "-" + adopt+"-"+ have;
                 } else {
-                    location.href = url + "/" + order + "-" + by + "-" + adopt;
+                    location.href = url + "/" + order + "-" + by + "-" + adopt+"-" + have;
                 }
             }
 

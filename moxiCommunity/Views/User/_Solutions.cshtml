@@ -1,59 +1,72 @@
 ﻿@using moxiCommunity.ViewModels
-@model List<userSolutionModel>
+@model List<userDemandsModel>
+<p class="moxi--"><a href="/user/Demands">需求管理 </a><a class="active">解决方案</a></p>
 
-<ul class="nav nav-tabs">
-    <li><a href="/user/userinfo">代购需求</a></li>
-    <li class="active"><a href="/user/Solutions">解决方案</a></li>
-    <li><a href="/user/Replys">回复</a></li>
-</ul>
-<div id="tabPanel">
-    <div class="panel panel-default">
-        <ul class="list-group">
-            @foreach (var m in Model)
-            {
-                string css = "";
-                if (m.state < 1) { css = "deleted"; }
+@foreach (var m in Model)
+{
+    <div class="panel panel-default userDemand">
+        <div class="panel-body">
+            <p class="info small"> 发布时间 : @m.createDate.ToString("yyyy-MM-dd hh:mm")</p>
+            <p class="f115"> @m.title</p>
+            <p> 预算 : @m.budget 元 </p>
+            <p class="f115">
+                <span class="solutionCount">解决方案<span class="moxi-color">@m.solutionCount</span>个 </span>
+                <span class="btn btn-default btn-xs" data-toggle="collapse" data-target="@("#Demand-"+m.ID)"> 点击展开</span>
+            </p>
+        </div>
+        <div id="@("Demand-"+m.ID)" data-id="@m.ID" class="collapse DemandCollapse">
 
-                <li class="list-group-item reply @css">
-                    @if (m.state < 1)
-                    {
-                        <i class="fa fa-question-circle pull-right" data-toggle="popover" data-placement="left" data-id="@m.ID" data-content="加载中..." title="删除原因"></i>
-                    }
-
-                    <div class="title media-heading">
-                        <a title="@m.topicTitle" href="/topic/@m.topicID">@m.topicTitle</a>
-                        <span class="info"><span class="timeago "> 推荐于 @m.createDate</span></span>
-                    </div>
-                    <div>
-                        <p class="goodsLink"> <b>商品链接：</b> <a target="_blank" href="@m.goodsLink"> @m.goodsLink</a></p>
-                        <p> 推荐理由： @m.body</p>
-                    </div>
-                </li>
-            }
-        </ul>
+        </div>
     </div>
+
+}
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
 </div>
 
 <script>
-    $(function () {
+    /*异步展开*/
 
-        $("[data-toggle='popover']").popover();
-        $("[data-toggle='popover']").on('show.bs.popover', function () {
-            var obj = $(this);
-            var id = obj.attr("data-id");
+    $('.DemandCollapse').on('show.bs.collapse', function () {
+        var Demand = $(this);
+        Demand.html("<div class='moxi-hr'> <s><i></i></s><hr></div><div id='Solutions'>加载中......</div>");
+        $.ajax({
+            type: "get",
+            url: "/topic/mySolutions/" + Demand.attr("data-id"),
+            async: true,
+            success: function (data) {
+                Demand.html(data);
+                Demand.find(".btn[sID]").click(function () {
+                    $("#editModal .modal-content").html("<div class='modal-body'>加载中......</div>");
+                    var sID = $(this).attr("sID");
+                    $('#editModal').modal('show');
+                    $("#editModal .modal-content").load("/Solution/edit/" + sID, function () {
+                        $.validator.unobtrusive.parse($(this));
+                    });
+                })
+            }
+        });
+    })
 
-            $.ajax({
-                type: "get",
-                url: "/Solution/deleteCause/" + id,
-                async: false,
-                success: function (data) {
-                    obj.attr("data-content", data);
-                }
-            });
-            
-        })
+    $('.DemandCollapse').on('shown.bs.collapse', function () {
+        $(this).parent().find("[data-toggle='collapse']").html("点击收起");
+    })
+
+    $('.DemandCollapse').on('hidden.bs.collapse', function () {
+        $(this).parent().find("[data-toggle='collapse']").html("点击展开");
+    })
 
 
-    });
+
+
+
 
 </script>
+
+

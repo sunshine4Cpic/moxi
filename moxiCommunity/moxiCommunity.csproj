@@ -170,13 +170,7 @@
     <Compile Include="Models\BuySolution.cs">
       <DependentUpon>moxiDataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\BuySolutionHandle.cs">
-      <DependentUpon>moxiDataModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\CommunityUser.cs">
-      <DependentUpon>moxiDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\eventEnum.cs">
       <DependentUpon>moxiDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\moxiDataModel.Context.cs">
@@ -366,15 +360,19 @@
     <Content Include="Views\Topic\Index.cshtml" />
     <Content Include="Views\Topic\add.cshtml" />
     <Content Include="Views\Topic\_topicAdd.cshtml" />
-    <Content Include="Views\Topic\Topic.cshtml" />
+    <Content Include="Views\Topic\Solutions.cshtml" />
     <Content Include="Views\Topic\_BuySolutionAdd.cshtml" />
     <Content Include="Views\Topic\_TopicReplyAdd.cshtml" />
-    <Content Include="Views\Solution\Index.cshtml" />
     <Content Include="Views\Topic\_SolutionHandle.cshtml" />
     <Content Include="Views\User\userInfo.cshtml" />
-    <Content Include="Views\User\_Topics.cshtml" />
-    <Content Include="Views\User\_Replys.cshtml" />
+    <Content Include="Views\User\_Demands.cshtml" />
+    <Content Include="Views\Topic\Replys.cshtml" />
+    <Content Include="Views\Topic\_DemandSolutions.cshtml" />
+    <Content Include="Views\Solution\_BuySolutionEdit.cshtml" />
+    <Content Include="Views\Topic\_topicEdit.cshtml" />
     <Content Include="Views\User\_Solutions.cshtml" />
+    <Content Include="Views\Topic\_mySolutions.cshtml" />
+    <Content Include="Views\Topic\search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\customError\" />

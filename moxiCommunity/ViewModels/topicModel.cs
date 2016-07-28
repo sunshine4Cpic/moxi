@@ -33,6 +33,13 @@ namespace moxiCommunity.ViewModels
        
     }
 
+    public class topicEditModel : topicAddModel
+    {
+        public int ID { get; set; }
+    }
+
+    
+
     public class topicIndexViewModel
     {
         public List<topicPrevModel> topicList { get; set; }
@@ -91,6 +98,8 @@ namespace moxiCommunity.ViewModels
         public List<replyViewModel> replies { get; set; }
 
         public List<SolutionModel> Solutions { get; set; }
+
+        public SolutionModel AdoptSolution { get; set; }
     }
 
     public class replyViewModel
@@ -109,9 +118,9 @@ namespace moxiCommunity.ViewModels
 
 
 
-     
 
-        public UserModel User;
+
+        public UserModel User { get; set; }
 
         public int floor { get; set; }
     }
@@ -121,6 +130,14 @@ namespace moxiCommunity.ViewModels
         public string goodsLink { get; set; }
 
     }
+
+    public class SolutionInfoModel : SolutionModel
+    {
+        public string deleteBody { get; set; }
+
+    }
+
+
 
 
     public class UserModel
@@ -140,6 +157,23 @@ namespace moxiCommunity.ViewModels
         [Required]
         [Display(Name = "商品链接：")]
         [RegularExpression(@"http(s)?://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?", ErrorMessage="必须为超链接")]
+        [StringLength(200, MinimumLength = 10, ErrorMessage = "标题必须在10~200个字")]
+        public string goodsLink { get; set; }
+
+        [Required]
+        [Display(Name = "推荐理由：")]
+        [StringLength(500, MinimumLength = 10, ErrorMessage = "推荐理由必须在10~500个字")]
+        public string body { get; set; }
+    }
+
+    public class BuySolutionEditModel
+    {
+        [Required]
+        public int ID { get; set; }
+
+        [Required]
+        [Display(Name = "商品链接：")]
+        [RegularExpression(@"http(s)?://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?", ErrorMessage = "必须为超链接")]
         [StringLength(200, MinimumLength = 10, ErrorMessage = "标题必须在10~200个字")]
         public string goodsLink { get; set; }
 

@@ -2,7 +2,7 @@
 @model BuySolutionAddModel
 <div class="panel" id="topicSolution">
     <div class="panel-body">
-        <p class="moxi--"><span>推荐解决方案 </span></p>
+        <p class="moxi--"><span class="active">解决方案 </span></p>
         @if (User.Identity.IsAuthenticated)
         {
             using (Html.BeginForm("AddSolution", "Topic", FormMethod.Post, new { @class = "form-horizontal addForm" }))
@@ -37,7 +37,7 @@
         else
         {
             <div style="padding:20px;">
-                需要 <a class="btn btn-moxiDefault" href="/user/login">登录</a> 后回复方可回复, 如果你还没有账号你可以 <a class="btn btn-primary" href="#">注册</a> 一个帐号。
+                需要 <a class="btn btn-danger" href="/user/login">登录</a> 后方可回复, 如果你还没有账号你可以 <a class="btn btn-primary" href="#">注册</a> 一个帐号。
             </div>
         }
 

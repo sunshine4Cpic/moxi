@@ -1,5 +1,19 @@
 ﻿$(function () {
-    $("a[method=post]").click(function () {
+    aPostInit();
+
+    $("#pagination-from").submit(function () {
+        location.href = '?page=' + $('#fase-input').val();
+        return false;
+    })
+});
+
+function aPostInit(obja)
+{
+
+    if (obja == undefined)
+        obja = $("a[method=post]");
+
+    obja.click(function () {
         var cf = true;
         if (this.getAttribute("confirm"))
             cf = confirm(this.getAttribute("confirm"));
@@ -13,5 +27,5 @@
         }
         return false;
     });
-});
+}
 

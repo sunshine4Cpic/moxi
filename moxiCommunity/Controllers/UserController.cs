@@ -16,7 +16,7 @@ namespace moxiCommunity.Controllers
 {
     public class UserController : Controller
     {
-        
+
         [AllowAnonymous]
         public ActionResult Login(string ReturnUrl)
         {
@@ -38,13 +38,13 @@ namespace moxiCommunity.Controllers
                 return View(model);
             }
 
-            if(loginLocal(model.UserName,model.Password))
+            if (loginLocal(model.UserName, model.Password))
             {
                 return Redirect("/");
             }
-            
 
-          
+
+
             if (!moxiLogin(model.UserName, model.Password))
             {
                 ModelState.AddModelError("", "用户名或密码错误。");
@@ -71,84 +71,144 @@ namespace moxiCommunity.Controllers
 
 
 
+        //[Authorize]
+        //public ActionResult userInfo(int page = 1)
+        //{
+        //    string userName = User.Identity.userName();
+        //    userInfoModel model = new userInfoModel(userName);
+
+        //    moxiAgentBuyEntities db = new moxiAgentBuyEntities();
+        //    int userID = User.Identity.userID();
+        //    var tps = from t in db.Topic
+        //              where t.userID == userID
+        //              orderby t.ID descending
+        //              select new userTopicModel
+        //              {
+        //                  ID = t.ID,
+        //                  title = t.title,
+        //                  replyCount = t.replys,
+        //                  solutionCount = t.BuySolution.Count,
+        //                  state = t.state,
+        //                  nodeID = t.node,
+        //                  createDate = t.creatDate
+        //              };
+        //    ViewBag.action = "Topics";
+        //    ViewBag.panelList = tps.Skip(20 * (page - 1)).Take(20).ToList();
+
+        //    return View(model);
+        //}
+
+
         [Authorize]
-        public ActionResult userInfo(int page = 1)
+        public ActionResult Demands(int id = 1000, int page = 1, int row = 200)
         {
-            string userName = User.Identity.userName();
-            userInfoModel model = new userInfoModel(userName);
+            int userID = User.Identity.userID();
+
 
             moxiAgentBuyEntities db = new moxiAgentBuyEntities();
-            int userID = User.Identity.userID();
-            var tps = from t in db.Topic
+
+            var userInfo = (from t in db.CommunityUser
+                            where t.ID == userID
+                            select new userInfoModel
+                            {
+                                ID = t.ID,
+                                Name = t.Name,
+                                Avatar = t.avatar,
+                                creatDate = t.joinDate,
+                                userName = t.userName
+                            }).First();
+
+
+            //筛选
+            bool a = id / 100 % 10 > 0;//已有解决方案
+            bool b = id / 10 % 10 > 0;//未采纳
+            bool c = id % 10 > 0;//已采纳
+            bool all = id > 999;
+
+            IQueryable<Topic> baseTopics = db.Topic;
+
+            if (all)
+                ;
+            else if (a && b && c)
+                ;
+            else if (a && b)
+                baseTopics = baseTopics.Where(t => t.BuySolution.Count > 0 || t.state != 2);
+            else if (a && c)
+                baseTopics = baseTopics.Where(t => t.BuySolution.Count > 0 || t.state == 2);
+            else if (b && c)
+                ;
+            else if (a)
+                baseTopics = baseTopics.Where(t => t.BuySolution.Count > 0);
+            else if (b)
+                baseTopics = baseTopics.Where(t => t.state != 2);
+            else if (c)
+                baseTopics = baseTopics.Where(t => t.state == 2);
+            else
+                baseTopics = baseTopics.Where(t => t.ID < 0);// 什么都不选 随便搜索一下 出个空值
+            // abc 都不选 和 选择bc 等于all 所以不处理
+
+            var tps = from t in baseTopics
                       where t.userID == userID
                       orderby t.ID descending
-                      select new userTopicModel
+                      select new userDemandsModel
                       {
                           ID = t.ID,
                           title = t.title,
-                          replyCount = t.replys,
-                          solutionCount = t.BuySolution.Count,
-                          state = t.state,
+                          budget = t.BuyDemand.budget,
                           nodeID = t.node,
+                          state = t.state,
+                          solutionCount = t.BuySolution.Count,
                           createDate = t.creatDate
                       };
-            ViewBag.action = "Topics";
-            ViewBag.panelList = tps.Skip(20 * (page - 1)).Take(20).ToList();
+            userInfo.Demands = tps.Skip(row * (page - 1)).Take(row).ToList();
 
-            return View(model);
+            ViewBag.action = "Demands";
+            ViewBag.all = all;
+            ViewBag.a = a;
+            ViewBag.b = b;
+            ViewBag.c = c;
+
+
+            return View("userInfo", userInfo);
         }
 
-     
+
         [Authorize]
-        public ActionResult Solutions(int page = 1)
+        public ActionResult Solutions(int page = 1, int row = 200)
         {
-            string userName = User.Identity.userName();
-            userInfoModel model = new userInfoModel(userName);
+            int userID = User.Identity.userID();
+
 
             moxiAgentBuyEntities db = new moxiAgentBuyEntities();
-            int userID = User.Identity.userID();
-            var tps = from t in db.BuySolution
+
+            var userInfo = (from t in db.CommunityUser
+                            where t.ID == userID
+                            select new userInfoModel
+                            {
+                                ID = t.ID,
+                                Name = t.Name,
+                                Avatar = t.avatar,
+                                creatDate = t.joinDate,
+                                userName = t.userName
+                            }).First();
+
+            var tps = (from t in db.BuySolution
                       where t.userID == userID
-                      orderby t.ID descending
-                      select new userSolutionModel
+                      select new userDemandsModel
                       {
-                          ID = t.ID,
-                          topicID = t.topicID,
-                          topicTitle = t.Topic.title,
-                          body = t.body,
-                          state = t.state,
-                          createDate = t.creatDate,
-                          goodsLink = t.goodsLink
-                      };
+                          ID = t.Topic.ID,
+                          title = t.Topic.title,
+                          budget = t.Topic.BuyDemand.budget,
+                          nodeID = t.Topic.node,
+                          state = t.Topic.state,
+                          solutionCount = t.Topic.BuySolution.Count,
+                          createDate = t.Topic.creatDate
+                      }).Distinct().OrderByDescending(t=>t.ID);
+            userInfo.Demands = tps.Skip(row * (page - 1)).Take(row).ToList();
+
             ViewBag.action = "Solutions";
-            ViewBag.panelList = tps.Skip(20 * (page - 1)).Take(20).ToList();
-
-            return View("userInfo",model);
-        }
-        [Authorize]
-        public ActionResult Replys(int page =1 )
-        {
-            string userName = User.Identity.userName();
-            userInfoModel model = new userInfoModel(userName);
-
-            moxiAgentBuyEntities db = new moxiAgentBuyEntities();
-            int userID = User.Identity.userID();
-            var tps = from t in db.TopicReply
-                      where t.userID == userID
-                      orderby t.ID descending
-                      select new userReplyModel
-                      {
-                          ID = t.ID,
-                          topicID = t.topicID,
-                          topicTitle = t.Topic.title,
-                          body = t.body,
-                          state = t.state,
-                          createDate = t.creatDate
-                      };
-            ViewBag.action = "Replys";
-            ViewBag.panelList = tps.Skip(20 * (page - 1)).Take(20).ToList();
-
-            return View("userInfo", model);
+            
+            return View("userInfo", userInfo);
         }
 
 
@@ -167,7 +227,7 @@ namespace moxiCommunity.Controllers
             var response = _httpClient.PostAsync("api/Login/Login", new FormUrlEncodedContent(parameters)).Result;
             var responseValue = response.Content.ReadAsStringAsync().Result;
 
-            var user =  JsonConvert.DeserializeObject<loginModel>(responseValue);
+            var user = JsonConvert.DeserializeObject<loginModel>(responseValue);
 
 
             if (!user.IsSuccess)
@@ -220,12 +280,12 @@ namespace moxiCommunity.Controllers
         }
 
 
-      
+
         [NonAction]
         private bool loginLocal(string userName, string password)
         {
             moxiAgentBuyEntities db = new moxiAgentBuyEntities();
-            var localUser = db.CommunityUser.FirstOrDefault(t => t.userName == userName && t.password == password && t.lv==99);//暂时只支持admin用户登录
+            var localUser = db.CommunityUser.FirstOrDefault(t => t.userName == userName && t.password == password && t.lv == 99);//暂时只支持admin用户登录
             if (localUser != null)
             {
                 ClaimsIdentity _identity = new ClaimsIdentity("ApplicationCookie");
@@ -252,11 +312,11 @@ namespace moxiCommunity.Controllers
             {
                 return false;
             }
-            
+
         }
 
 
     }
 
-    
+
 }

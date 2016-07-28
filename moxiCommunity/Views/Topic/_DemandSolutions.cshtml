@@ -1,0 +1,59 @@
+﻿@using moxiCommunity.ViewModels
+@model DemandSolutionsModel
+
+
+<div class="moxi-hr"> <s><i></i></s><hr /></div>
+<div id="Solutions" class="f115">
+    <p class="f120"><b>详细需求内容 : </b></p>
+    <p>@Model.body</p>
+
+    @if (Model.moxiSolutions.Count > 0)
+    {
+        <p class="f120 moxi-color"><b>摩西解决方案</b></p>
+        foreach (var m in Model.moxiSolutions)
+        {
+            <div class="@(m.state==2?"AdoptSolution":"")">
+                <p> <b>商品链接：</b> <a target="_blank" href="@m.goodsLink"> @m.goodsLink</a></p>
+                <p> 推荐理由： @m.body</p>
+
+                @if (Model.state == 1)
+                {
+                <a class="btn btn-moxiDefault" method="post" href="/topic/adopt/@m.ID">采用该解决方案</a>
+                }
+            </div>
+            <hr />
+        }
+    }
+
+    @if (Model.userSolutions.Count > 0)
+    {
+        <p class="f120 moxi-color"><b>用户解决方案</b></p>
+        foreach (var m in Model.userSolutions)
+        {
+            <div class="userInfo @(m.state==2?"AdoptSolution":"")">
+                <div class="avatar media-left">
+                    <img class="media-object avatar-48" src="@m.User.avatar">
+                </div>
+                <div class="infos media-body">
+                    <div class="title media-heading">
+                        <span> 用户：@m.User.Name</span> <span>推荐的方案</span>
+
+                    </div>
+                    <div class="info small">
+                        时间：@m.creatDate.ToString("yyyy-M-d hh:mm")
+                    </div>
+                </div>
+            </div>
+            <p> <b>商品链接：</b> <a target="_blank" href="@m.goodsLink"> @m.goodsLink</a></p>
+            <p> 推荐理由： @m.body</p>
+
+            if (Model.state == 1)
+            {
+                <a class="btn btn-moxiDefault" method="post" href="/topic/adopt/@m.ID">采用该解决方案</a>
+            }
+            <hr />
+        }
+    }
+
+
+</div>

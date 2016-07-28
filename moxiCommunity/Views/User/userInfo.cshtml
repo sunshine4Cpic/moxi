@@ -3,22 +3,23 @@
 
 
 @section Scripts {
-    
+    @Scripts.Render("~/bundles/jqueryval")
+
+    @Styles.Render("~/Content/bootstrap-select")
+    @Scripts.Render("~/bundles/bootstrap-select")
     
 }
 
 
 <div class="row">
-    <div class="sidebar col-md-4">
+    <div class="sidebar col-md-3">
         <div class="panel profile panel-default">
             <div class="panel-body">
                 <div class="media">
                     <div class="avatar media-left">
-
                         <div class="image">
                             <img class="media-object avatar-120" id="userAvatar" src="@Model.Avatar" />
                         </div>
-
                     </div>
                     <div class="media-body">
                         <div class="item">
@@ -29,9 +30,9 @@
                         <div class="item number">
                             第 <span>@Model.ID</span> 位会员 / <span title="注册日期">@Model.creatDate.ToString("yyyy-MM-dd")</span>
                         </div>
-                        <div class="item counts">
+                        @*<div class="item counts">
                             <span>@Model.topicCount</span> 篇帖子 • <span>@Model.replyCount</span> 条回帖 • <span>0</span> 积分
-                        </div>
+                        </div>*@
                         <div class="item social">
                             @*<button type="button" class="btn btn-primary" id="uploadF"><img style="width:20px;margin-right:10px;display:none;" src="~/Content/images/loading.gif" />更换头像</button>*@
 
@@ -54,19 +55,15 @@
 
     </div>
 
-    <div class="col-md-8">
+    <div class="col-md-9">
 
-        @if (ViewBag.action == "Topics")
+        @if (ViewBag.action == "Demands")
         {
-            @Html.Partial("_Topics", ViewBag.panelList as object);
-        }
-        else if (ViewBag.action == "Replys")
-        {
-            @Html.Partial("_Replys", ViewBag.panelList as object);
+            @Html.Partial("_Demands", Model.Demands);
         }
         else if (ViewBag.action == "Solutions")
         {
-            @Html.Partial("_Solutions", ViewBag.panelList as object);
+            @Html.Partial("_Solutions", Model.Demands);
         }
 
     </div>
