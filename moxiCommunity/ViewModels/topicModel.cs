@@ -24,10 +24,13 @@ namespace moxiCommunity.ViewModels
         [StringLength(500, MinimumLength = 10, ErrorMessage = "详细描述必须在10~500个字")]
         public string body { get; set; }
 
+
+
+
         [Required]
         [Display(Name = "节点")]
         [Range(1, 999, ErrorMessage = "非法节点")]
-        public int? nodeID { get; set; }
+        public int nodeID { get; set; }
 
 
        
@@ -123,11 +126,38 @@ namespace moxiCommunity.ViewModels
         public UserModel User { get; set; }
 
         public int floor { get; set; }
+
+        public int agree_up { get; set; }
+        public int agree_down { get; set; }
+
+        public ReplyAgree agree { get; set; }
     }
 
-    public class SolutionModel : replyViewModel
+    public class SolutionGoodsModel 
     {
-        public string goodsLink { get; set; }
+        public  string goodsLink {get;set;}
+        public  int ID {get;set;}
+        public  string body {get;set;}
+    }
+
+    public class SolutionModel
+    {
+
+        public int ID { get; set; }
+
+
+        public int? state { get; set; }
+
+
+        public DateTime creatDate { get; set; }
+
+        public List<SolutionGoodsModel> goods { get; set; }
+
+
+
+        public UserModel User { get; set; }
+
+
 
     }
 
@@ -151,8 +181,7 @@ namespace moxiCommunity.ViewModels
 
     public class BuySolutionAddModel
     {
-        [Required]
-        public int topicID { get; set; }
+
 
         [Required]
         [Display(Name = "商品链接：")]
@@ -202,7 +231,7 @@ namespace moxiCommunity.ViewModels
 
         [Required]
         [Display(Name = "原因")]
-        [StringLength(500, MinimumLength = 5, ErrorMessage = "必须在5~500个字之间")]
+        [StringLength(50, MinimumLength = 5, ErrorMessage = "必须在5~50个字之间")]
         public string body { get; set; }
     }
     

@@ -1,7 +1,6 @@
 ﻿@using moxiCommunity.ViewModels
 @model topicAddModel
 
-
 @using (Html.BeginForm("Add", "Topic", FormMethod.Post, new { id = "new_topic", @class = "form-horizontal addForm" }))
 {
     @Html.AntiForgeryToken()
@@ -26,12 +25,9 @@
         <div class="form-group">
             @Html.LabelFor(m => m.nodeID, new { @class = "col-md-2 control-label" })
             <div class="col-md-9 col-xs-12">
-            
-                    <span class="node-select input-group-btn">
-                        @Html.DropDownListFor(t => t.nodeID, ViewBag.nodesList as List<SelectListItem>, new { @class = "selectpicker", @data_live_search = "true", @data_width = "180px" })
-                    </span>
-                    @Html.ValidationMessageFor(m => m.nodeID, "", new { @class = "text-danger" })
-             
+
+                @Html.nodeSelect()
+               
             </div>
         </div>
         <div class="form-group">
@@ -43,10 +39,7 @@
                 </div>
                 @Html.ValidationMessageFor(m => m.budget, "", new { @class = "text-danger" })
             </div>
-
         </div>
-
-
 
         <div class="form-group">
             @Html.LabelFor(m => m.body, new { @class = "col-md-2 control-label" })
@@ -55,8 +48,6 @@
                 @Html.ValidationMessageFor(m => m.body, "", new { @class = "text-danger" })
             </div>
         </div>
-
-
 
     </div>
     <div class="modal-footer">
@@ -69,7 +60,4 @@
         </button>
     </div>
 }
-
-
-
 

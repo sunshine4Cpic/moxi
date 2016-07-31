@@ -29,11 +29,11 @@ namespace moxiCommunity
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
 
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap-select").Include(
-                      "~/Scripts/bootstrap-select.js"));
+            //bundles.Add(new ScriptBundle("~/bundles/bootstrap-select").Include(
+            //          "~/Scripts/bootstrap-select.js"));
 
-            bundles.Add(new StyleBundle("~/Content/bootstrap-select").Include(
-                       "~/Content/bootstrap-select.css"));
+            //bundles.Add(new StyleBundle("~/Content/bootstrap-select").Include(
+            //           "~/Content/bootstrap-select.css"));
         }
     }
 }

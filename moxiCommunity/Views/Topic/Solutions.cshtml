@@ -36,22 +36,25 @@
     </div>
     <div class="col-md-9">
         <div class="panel topicView">
-            <div class="panel-heading">
-                <div class="title"> @Model.title</div>
-                <div><span class="user">@Model.User.Name</span><span>发布于：@Model.creatDate.ToString("yyyy年M月d日 hh:mm:sss")</span></div>
-            </div>
 
             <div class="panel-body">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        @Model.body
-                    </div>
+               
+                <div class="title"> @Model.title</div>
+                <p><span class="user">@Model.User.Name</span><span>发布于：@Model.creatDate.ToString("yyyy年M月d日 hh:mm:sss")</span></p>
+                <div class="panel panel-default topicBody">
+
+                    @Model.body
+
                 </div>
                 <div class="pull-right">预算：@Model.budget 元</div>
+                @if (User.IsInRole("admin") && Model.state != 2)
+                {
+                    <button class="btn btn-warning pull-left AE" topicid="@Model.ID"><i class="fa fa-edit"></i> 管理员修改</button>
+                }
+               
+                 
             </div>
-
         </div>
-
 
         <div id="topicReplyTab">
             <ul class="nav nav-tabs">
@@ -91,8 +94,12 @@
                                         </div>
                                     </div>
                                 }
-                                <p class="goodsLink"> <b>商品链接：</b> <a target="_blank" href="@Model.AdoptSolution.goodsLink"> @Model.AdoptSolution.goodsLink</a><a href="#" class="bwy">帮我买</a></p>
-                                <p> 推荐理由： @Model.AdoptSolution.body</p>
+                                @foreach (var s in Model.AdoptSolution.goods)
+                                {
+                                    <p class="goodsLink"> <b>商品链接：</b> <a target="_blank" href="@s.goodsLink"> @s.goodsLink</a><a href="#" class="bwy">帮我买</a></p>
+                                    <p> 推荐理由： @s.body</p>
+                                }
+
                             </div>
                         </div>
                     }
@@ -101,6 +108,9 @@
 
                 <div class="panel">
                     <div class="panel-body">
+
+
+
                         @foreach (var m in Model.Solutions)
                         {
                             if (m.User.lv == 99)
@@ -124,8 +134,11 @@
                                     </div>
                                 </div>
                             }
-                            <p class="goodsLink"> <b>商品链接：</b> <a target="_blank" href="@m.goodsLink"> @m.goodsLink</a><a href="#" class="bwy">帮我买</a></p>
-                            <p> 推荐理由： @m.body</p>
+                            foreach (var s in m.goods)
+                            {
+                                <p class="goodsLink"> <b>商品链接：</b> <a target="_blank" href="@s.goodsLink"> @s.goodsLink</a><a href="#" class="bwy">帮我买</a></p>
+                                <p> 推荐理由： @s.body</p>
+                            }
                             <div class="opts">
 
                                 @if (User.Identity.userID() == Model.User.ID && Model.state != 2)
@@ -135,23 +148,23 @@
 
                                 @if (User.IsInRole("admin") && m.state != 2)
                                 {
-                                    <button class="btn btn-danger" data-toggle="modal" data-target="#SolutionHandleModal" title="删除解决方案" id="AD" data-id="@m.ID"><i class="fa fa-trash"></i>删除</button>
+                                    <button class="btn btn-warning AD" data-toggle="modal" data-target="#SolutionHandleModal" title="删除解决方案"  data-id="@m.ID"><i class="fa fa-trash"></i> 管理员删除</button>
                                 }
                             </div>
                             <hr />
                         }
-                        @if (ViewBag.all != true && @Model.solutionCnt >0)
+
+                        @if (ViewBag.all != true && @Model.solutionCnt > 5)
                         {
                             <p class="text-center"><a class="btn btn-default" style="color:#ff6a00" href="/topic/allSolutions/@Model.ID">加载更多解决方案</a>&nbsp;<span class="info">找到相关方案 @Model.solutionCnt 条</span></p>
                         }
-                       
+
                     </div>
                 </div>
                 <br />
-
-                @Html.Partial("_BuySolutionAdd", new BuySolutionAddModel { topicID = Model.ID })
+                @Html.Partial("_BuySolutionAdd", new List<BuySolutionAddModel> { new BuySolutionAddModel() }, new ViewDataDictionary { { "id", Model.ID } })
             </div>
-            
+
         </div>
 
 
@@ -163,6 +176,15 @@
 @if (User.IsInRole("admin"))
 {
     @Html.Partial("_SolutionHandle", new SolutionHandleModel(), new ViewDataDictionary { { "actionName", "adminDelete" } });
+
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
 }
 
 
@@ -172,7 +194,7 @@
     <script>
         $(function () {
             //删除解决方案
-            $("#Solutions .opts #AD").click(function () {
+            $("#Solutions .opts .AD").click(function () {
                 var bsID = $(this).attr("data-id");
                 var tar = $(this).attr("data-target");
                 var title = $(this).attr("title");
@@ -181,6 +203,16 @@
                 $(tar + " #SHMtitle").val(title);
 
             });
+
+
+            $(".btn.AE[topicID]").click(function () {
+                $("#editModal .modal-content").html("<div class='modal-body'>加载中......</div>");
+                var topicID = $(this).attr("topicID");
+                $('#editModal').modal('show');
+                $("#editModal .modal-content").load("/topic/edit/" + topicID, function () {
+                    $.validator.unobtrusive.parse($(this));
+                });
+            })
 
             //$('#SolutionWarnForm').submit(function () {
             //    jQuery.ajax({

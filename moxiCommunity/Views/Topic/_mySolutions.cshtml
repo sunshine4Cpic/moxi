@@ -12,8 +12,12 @@
     @foreach (var m in Model.mySolutions)
     {
         <div>
-            <p> <b>商品链接：</b> <a target="_blank" href="@m.goodsLink"> @m.goodsLink</a></p>
-            <p> 推荐理由： @m.body</p>
+            @foreach (var s in m.goods)
+            {
+                <p> <b>商品链接：</b> <a target="_blank" href="@s.goodsLink"> @s.goodsLink</a></p>
+                <p> 推荐理由： @s.body</p>
+            }
+            
             @if (Model.state == 1)
             {<div>
                 <button class="btn btn-moxiDefault" sID="@m.ID" >修改该解决方案</button>
@@ -23,7 +27,7 @@
             {
                 <div>
                     <span>&nbsp;</span>
-                    <div class="pull-right"><span class="moxi-color">提示</span> : 因不符合要求的原因，您解决方案审查不通过</div>
+                    <div class="pull-right"><span class="moxi-color">提示</span> : @m.deleteBody</div>
                 </div>
             }
         </div>

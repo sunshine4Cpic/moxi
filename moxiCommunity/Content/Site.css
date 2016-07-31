@@ -8,8 +8,8 @@
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -28,6 +28,19 @@ textarea {
 
 i {
     cursor: pointer;
+}
+
+p{
+    word-break: break-all;
+    margin-bottom:15px;
+}
+
+hr{
+    border-color:#ddd;
+}
+.panel > .panel-body{
+    padding:20px 35px;
+
 }
 
 /*整体风格 红色*/
@@ -85,7 +98,7 @@ a {
     }
 
 .modal-header {
-    padding: 5spx 15px;
+    padding: 5px 15px;
 }
 
 .modal input, .modal textarea {
@@ -158,6 +171,15 @@ a {
     position: static;
 }
 
+
+.node-select select.form-control {
+    width:150px;
+    display:inline;
+    padding: 6px 8px;
+    margin-right:10px;
+    border-radius: 0px;
+}
+
 .deleted {
     text-decoration: line-through;
 }
@@ -190,6 +212,18 @@ a {
     color: #ff3d3b;
 }
 
+/*默认按钮风格2*/
+.btn-moxi2 {
+    color: #ff3d3b;
+    background-color: #ffffff;
+    border-color: #ff3d3b;
+}
+
+    .btn-moxi2:hover, .btn-moxi2:focus, .btn-moxi2:active, .btn-moxi2.active, .open .dropdown-toggle.btn-moxi2 {
+        color: #f21a18;
+    background-color: #f6f6f6;
+    border-color:#f21a18;
+    }
 
 .moxi-active {
     font-weight: bold;
@@ -221,11 +255,19 @@ a {
 .node-list .node .name a:link, .node-list .node .name a:visited {
     color: #333;
 }
+#nodeNav{
+    padding:15px;
+}
 
 #nodeNav a.active {
     font-weight: bold;
     color: #ff3d3b;
 }
+
+#nodeNav .node {
+    margin-bottom: 5px;
+}
+
 
 .index-sections.panel .panel-title a {
     text-decoration: none;
@@ -240,6 +282,7 @@ a {
     border-bottom: 1px solid #E2E2E2;
     font-weight: bold;
     padding-bottom: 10px;
+    margin-bottom:10px;
 }
 
     .node-heading .select-node {
@@ -258,11 +301,13 @@ a {
     background-color: #E2E2E2;
 }
 
+
+
 .panel.topics-sort {
     border-top: 3px solid #ff3d3b;
     margin: 10px 0px;
     border-radius: 0px;
-    padding-left: 10px;
+   
 }
 
 .topics-sort.panel .btn {
@@ -271,6 +316,33 @@ a {
     border-radius: 0px;
 }
 
+
+.topics .topic .info {
+    color: #aaa;
+    margin-top: 5px;
+}
+
+.topics .topic td {
+    font-weight:bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: #fff;
+}
+
+.topics .topic td:first-child {
+    padding-left:20px;
+}
+
+    .topics th, .topics .topic td:not(:first-child){
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .topics th:nth-child(3),.topics .topic td:nth-child(3){
+        text-align: left;
+        vertical-align: middle;
+        padding-left:50px;
+    }
 
 
 /*分页相关*/
@@ -332,22 +404,10 @@ a {
     border: 1px dotted red;
 }
 
-.topics .topic .info {
-    color: #aaa;
-    margin-top: 5px;
-}
 
-.topics .topic td {
-    font-weight: bold;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    background-color: #fff;
-}
+     
 
-    .topics th:not(:first-child), .topics .topic td:not(:first-child) {
-        text-align: center;
-        vertical-align: middle;
-    }
+     
 
 
 
@@ -364,11 +424,11 @@ a {
 .topicView .title {
     font-weight: bold;
     margin-bottom: 5px;
-    font-size: 24px;
+    font-size: 150%;
 }
 
-.topicView > .panel-body {
-    padding-top: 0px;
+.topicView .topicBody{
+    padding:10px;
 }
 
 
@@ -413,7 +473,9 @@ a {
     line-height: 0;
 }
 
-
+.topics.table .AdoptSolution {
+    background: url(img/Adopt.png) right -6px no-repeat;
+}
 
 .AdoptSolution {
     background: url(img/Adopt.png) right 5px no-repeat;
@@ -448,7 +510,8 @@ a {
 }
     /*回复显示*/
     #replies .reply {
-        padding: 10px 15px;
+        padding: 15px;
+        padding-bottom:10px;
         position: relative;
         border-bottom: 1px solid #eee;
         padding-left: 74px;
@@ -461,7 +524,6 @@ a {
         #replies .reply .avatar {
             text-align: center;
             position: absolute;
-            top: 10px;
             left: 15px;
         }
 
@@ -475,7 +537,6 @@ a {
     }
 
     #replies .info {
-        margin-bottom: 6px;
         color: #aaa;
     }
 
@@ -514,20 +575,13 @@ a {
     background-color: #f5f5f5;
 }
 
-#nodeNav .node {
-    margin-bottom: 5px;
-}
-
-
-
-
 .tooltip {
     width: 500px !important;
 }
 
-
 .nodes-panel {
     margin-bottom: 0px;
+    border-top: 3px solid #ff3d3b;
 }
 
 .node-col {
@@ -614,7 +668,7 @@ a {
 }
 
 .userDemand #Solutions {
-    padding: 0px 40px;
+    padding: 0px 50px;
 }
 
 .f110 {
@@ -644,4 +698,10 @@ a {
     color:#c7c7c7;
 }
 
-
+.agree-down,.agree-up{
+    margin-left:5px;
+    cursor: pointer;
+}
+.agree-down.active i,.agree-up.active i{
+    color:#ff3d3b;
+}

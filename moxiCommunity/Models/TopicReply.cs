@@ -18,6 +18,15 @@ using System;
 public partial class TopicReply
 {
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+    public TopicReply()
+    {
+
+        this.ReplyAgree = new HashSet<ReplyAgree>();
+
+    }
+
+
     public int ID { get; set; }
 
     public int topicID { get; set; }
@@ -37,6 +46,10 @@ public partial class TopicReply
     public virtual CommunityUser CommunityUser { get; set; }
 
     public virtual Topic Topic { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<ReplyAgree> ReplyAgree { get; set; }
 
 }
 

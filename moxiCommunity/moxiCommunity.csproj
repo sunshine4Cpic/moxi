@@ -156,6 +156,8 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\customErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\NodeController.cs" />
+    <Compile Include="Controllers\ReplyController.cs" />
     <Compile Include="Controllers\SolutionController.cs" />
     <Compile Include="Controllers\TopicController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -189,6 +191,12 @@
       <DependentUpon>moxiDataModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\proNode.cs" />
+    <Compile Include="Models\ReplyAgree.cs">
+      <DependentUpon>moxiDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SolutionGoods.cs">
+      <DependentUpon>moxiDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Topic.cs">
       <DependentUpon>moxiDataModel.tt</DependentUpon>
     </Compile>
@@ -219,6 +227,7 @@
     <Content Include="Content\img\发布_03.png" />
     <Content Include="Content\moxi_footer.png" />
     <Content Include="Content\moxi_head.png" />
+    <None Include="App_Data\node.json" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Scripts\bootstrap-select.js" />
     <Content Include="Scripts\bootstrap-select.min.js" />
@@ -313,7 +322,6 @@
       <DependentUpon>moxiDataModel.edmx</DependentUpon>
       <LastGenOutput>moxiDataModel.cs</LastGenOutput>
     </Content>
-    <Content Include="App_Data\node.json" />
     <Content Include="fonts\fontawesome-webfont.woff2" />
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\fontawesome-webfont.ttf" />
@@ -377,6 +385,7 @@
   <ItemGroup>
     <Folder Include="Views\customError\" />
     <Folder Include="Views\Node\" />
+    <Folder Include="Views\Reply\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

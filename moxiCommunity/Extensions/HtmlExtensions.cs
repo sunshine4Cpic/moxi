@@ -95,7 +95,90 @@ namespace System.Web.Mvc
 
 
 
+        public static HtmlString nodeSelect(this HtmlHelper helper,int id)
+        {
+            StringBuilder sb = new StringBuilder();
 
+            var nodes = moxiCommunity.Controllers.TopicController.nodes;
+
+
+
+            var selectNode = nodes.FirstOrDefault(t => t.ThirdJsons.FirstOrDefault(s => s.proClassID == id) != null);
+            if (selectNode==null)
+                return new HtmlString("");//有问题,以后处理
+
+            sb.Append("<div class='node-select'>");
+
+            sb.Append("<select class=\"form-control\" data-val=\"true\" data-val-number=\"\" data-val-range=\"\" data-val-range-max=\"999\" data-val-range-min=\"1\" data-val-required=\"\" name=\"rootNode\">");
+            foreach (var n in nodes)
+            {
+                if (selectNode == n)
+                    sb.Append("<option value=\"" + n.proClassID + "\" selected=\"selected\">" + n.proClassName + "</option>");
+                else
+                    sb.Append("<option value=\"" + n.proClassID + "\">" + n.proClassName + "</option>");
+            }
+            sb.Append("</select>");
+
+
+
+            sb.Append("<select class=\"form-control\" data-val=\"true\" data-val-number=\"字段 节点 必须是一个数字。\" data-val-range=\"非法节点\" data-val-range-max=\"999\" data-val-range-min=\"1\" data-val-required=\"节点 字段是必需的。\" id=\"nodeID\" name=\"nodeID\">");
+
+            sb.Append("<option value=\"0\">请选择</option>");
+            foreach (var n in selectNode.ThirdJsons)
+            {
+                if (n.proClassID == id)
+                    sb.Append("<option value=\"" + n.proClassID + "\" selected=\"selected\">" + n.proClassName + "</option>");
+                else
+                    sb.Append("<option value=\"" + n.proClassID + "\">" + n.proClassName + "</option>");
+            }
+            sb.Append("</select>");
+
+            //错误提示
+            sb.Append(" <span class=\"text-danger field-validation-valid\" data-valmsg-for=\"nodeID\" data-valmsg-replace=\"true\"></span>");
+            sb.Append("</div>");
+            nodeSelectJS(sb);
+
+           
+
+            return new HtmlString(sb.ToString());
+        }
+
+        public static HtmlString nodeSelect(this HtmlHelper helper)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            var nodes = moxiCommunity.Controllers.TopicController.nodes;
+
+            sb.Append("<div class='node-select'>");
+
+            sb.Append("<select class=\"form-control\" data-val=\"true\" data-val-number=\"\" data-val-range=\"\" data-val-range-max=\"999\" data-val-range-min=\"1\" data-val-required=\"\" name=\"rootNode\">");
+            sb.Append("<option value=\"0\">请选择</option>");
+            foreach (var n in nodes)
+            {
+                    sb.Append("<option value=\"" + n.proClassID + "\">" + n.proClassName + "</option>");
+            }
+            sb.Append("</select>");
+
+            sb.Append("<select class=\"form-control\" data-val=\"true\" data-val-number=\"字段 节点 必须是一个数字。\" data-val-range=\"请选择节点\" data-val-range-max=\"999\" data-val-range-min=\"1\" data-val-required=\"节点 字段是必需的。\" id=\"nodeID\" name=\"nodeID\">");
+            sb.Append("<option value=\"0\">请选择</option>");
+            sb.Append("</select>");
+
+            //错误提示
+            sb.Append(" <span class=\"text-danger field-validation-valid\" data-valmsg-for=\"nodeID\" data-valmsg-replace=\"true\"></span>");
+            sb.Append("</div>");
+            nodeSelectJS(sb);
+         
+            
+             
+            return new HtmlString(sb.ToString());
+        }
+
+        private static void nodeSelectJS(StringBuilder sb)
+        {
+            
+            //js
+            sb.Append("<script>$(\"select[name='rootNode']\").change(function(){var id=$(this).val();var nodeSel=$(\"select[name='nodeID']\");nodeSel.empty();nodeSel.append(\"<option value='0'>请选择</option>\");if(id<1)return;$.get('/node/'+id,function(data){for(var i=0;i<data.ThirdJsons.length;i++){var node=data.ThirdJsons[i];nodeSel.append(\"<option value='\"+node.proClassID+\"'>\"+node.proClassName+\"</option>\")}})});</script>");
+        }
 
     }
 

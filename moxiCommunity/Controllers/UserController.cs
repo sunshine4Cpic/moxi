@@ -100,7 +100,7 @@ namespace moxiCommunity.Controllers
 
 
         [Authorize]
-        public ActionResult Demands(int id = 1000, int page = 1, int row = 200)
+        public ActionResult Demands(string id="all", int page = 1, int row = 200)
         {
             int userID = User.Identity.userID();
 
@@ -118,34 +118,27 @@ namespace moxiCommunity.Controllers
                                 userName = t.userName
                             }).First();
 
-
-            //筛选
-            bool a = id / 100 % 10 > 0;//已有解决方案
-            bool b = id / 10 % 10 > 0;//未采纳
-            bool c = id % 10 > 0;//已采纳
-            bool all = id > 999;
-
             IQueryable<Topic> baseTopics = db.Topic;
+            switch (id)
+            {
+                case "all":
 
-            if (all)
-                ;
-            else if (a && b && c)
-                ;
-            else if (a && b)
-                baseTopics = baseTopics.Where(t => t.BuySolution.Count > 0 || t.state != 2);
-            else if (a && c)
-                baseTopics = baseTopics.Where(t => t.BuySolution.Count > 0 || t.state == 2);
-            else if (b && c)
-                ;
-            else if (a)
-                baseTopics = baseTopics.Where(t => t.BuySolution.Count > 0);
-            else if (b)
-                baseTopics = baseTopics.Where(t => t.state != 2);
-            else if (c)
-                baseTopics = baseTopics.Where(t => t.state == 2);
-            else
-                baseTopics = baseTopics.Where(t => t.ID < 0);// 什么都不选 随便搜索一下 出个空值
-            // abc 都不选 和 选择bc 等于all 所以不处理
+                    break;
+                case "have":
+                    baseTopics = baseTopics.Where(t => t.BuySolution.Count > 0);
+                    break;
+                case "noAdopt":
+                    baseTopics = baseTopics.Where(t => t.state != 2);
+                    break;
+                case "Adopt":
+                    baseTopics = baseTopics.Where(t => t.state == 2);
+                    break;
+                default:
+                    break;
+            }
+            
+
+            
 
             var tps = from t in baseTopics
                       where t.userID == userID
@@ -157,16 +150,13 @@ namespace moxiCommunity.Controllers
                           budget = t.BuyDemand.budget,
                           nodeID = t.node,
                           state = t.state,
-                          solutionCount = t.BuySolution.Count,
+                          solutionCount = t.BuySolution.Count(s => s.state > 0),
                           createDate = t.creatDate
                       };
             userInfo.Demands = tps.Skip(row * (page - 1)).Take(row).ToList();
 
             ViewBag.action = "Demands";
-            ViewBag.all = all;
-            ViewBag.a = a;
-            ViewBag.b = b;
-            ViewBag.c = c;
+            ViewBag.id = id;
 
 
             return View("userInfo", userInfo);
@@ -201,7 +191,7 @@ namespace moxiCommunity.Controllers
                           budget = t.Topic.BuyDemand.budget,
                           nodeID = t.Topic.node,
                           state = t.Topic.state,
-                          solutionCount = t.Topic.BuySolution.Count,
+                          solutionCount = t.Topic.BuySolution.Count(s => s.state > 0),
                           createDate = t.Topic.creatDate
                       }).Distinct().OrderByDescending(t=>t.ID);
             userInfo.Demands = tps.Skip(row * (page - 1)).Take(row).ToList();

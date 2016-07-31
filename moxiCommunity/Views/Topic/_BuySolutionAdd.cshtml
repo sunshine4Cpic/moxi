@@ -1,31 +1,42 @@
 ﻿@using moxiCommunity.ViewModels
-@model BuySolutionAddModel
+@model List<BuySolutionAddModel>
+
 <div class="panel" id="topicSolution">
     <div class="panel-body">
         <p class="moxi--"><span class="active">解决方案 </span></p>
         @if (User.Identity.IsAuthenticated)
         {
-            using (Html.BeginForm("AddSolution", "Topic", FormMethod.Post, new { @class = "form-horizontal addForm" }))
+            using (Html.BeginForm("AddSolution", "Topic", new { id = ViewData["id"] }, FormMethod.Post, new { @id = "BuySolutionAddForm", @class = "form-horizontal addForm" }))
             {
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                @Html.HiddenFor(m => m.topicID)
+                <div id="goods-list">
+                    <div class="goods-groups">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m[0].goodsLink, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-9 col-xs-12">
+                                @Html.TextBoxFor(m => m[0].goodsLink, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m[0].goodsLink, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(m => m.goodsLink, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-9 col-xs-12">
-                        @Html.TextBoxFor(m => m.goodsLink, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.goodsLink, "", new { @class = "text-danger" })
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m[0].body, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-9 col-xs-12">
+                                @Html.TextAreaFor(m => m[0].body, new { @class = "form-control", @rows = "6" })
+                                @Html.ValidationMessageFor(m => m[0].body, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
-
                 <div class="form-group">
-                    @Html.LabelFor(m => m.body, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-9 col-xs-12">
-                        @Html.TextAreaFor(m => m.body, new { @class = "form-control", @rows = "10" })
-                        @Html.ValidationMessageFor(m => m.body, "", new { @class = "text-danger" })
+                    <div class="col-md-offset-2 col-md-10">
+                        <span class="btn btn-moxi2 new-goods"> <i class="glyphicon glyphicon-plus"></i> 增加推荐产品</span>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input type="submit" value="确认发布" class="btn btn-moxiDefault" />
@@ -45,3 +56,43 @@
     </div>
 
 </div>
+
+<script>
+    $(function () {
+
+        var form = $("#BuySolutionAddForm");
+        var goods_div = $(".goods-groups:first").clone();
+        var removeI = $("<i class='glyphicon glyphicon-remove-sign pull-left'></i>");
+        removeI.click(function () {
+            $(this).parents(".goods-groups").remove();
+
+            form.find(".goods-groups").each(function (index) {
+                $(this).find("input").attr("name", "[" + index + "].goodsLink");
+                $(this).find("input").next("span").attr("data-valmsg-for", "[" + index + "].goodsLink");
+                $(this).find("textarea").attr("name", "[" + index + "].body");
+                $(this).find("textarea").next("span").attr("data-valmsg-for", "[" + index + "].body");
+            })
+
+        });
+        goods_div.find(".form-group:first").append(removeI);
+
+        $(".new-goods").click(function () {
+            var index = $(".goods-groups").length;
+            var tmp = goods_div.clone(true);
+
+            tmp.find("[name='[0].goodsLink']").attr("name", "[" + index + "].goodsLink");
+            tmp.find("[data-valmsg-for='[0].goodsLink']").attr("data-valmsg-for", "[" + index + "].goodsLink");
+            tmp.find("[name='[0].body']").attr("name", "[" + index + "].body");
+            tmp.find("[data-valmsg-for='[0].body']").attr("data-valmsg-for", "[" + index + "].body");
+
+            $("#goods-list").append(tmp);
+
+            //validator必须删除缓存数据
+
+            form.removeData('validator');
+            form.removeData('unobtrusiveValidation');
+
+            $.validator.unobtrusive.parse(form);
+        });
+    });
+</script>

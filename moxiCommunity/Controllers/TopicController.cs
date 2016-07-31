@@ -152,16 +152,14 @@ namespace moxiCommunity.Controllers
 
             string order = "time";
             string by = "desc";
-            string Adopt = "false";
-            string have = "false";
+            string check = "false";
 
             if (catchall != null)
             {
                 string[] ps = catchall.Split('-');
                 order = ps[0];
                 by = ps[1];
-                Adopt = ps[2];
-                have = ps[3];
+                check = ps[2];
             }
 
             moxiAgentBuyEntities db = new moxiAgentBuyEntities();
@@ -173,12 +171,10 @@ namespace moxiCommunity.Controllers
                 tps = tps.Where(t => t.node == nodeID);
 
 
-            if (Adopt == "adopt" && have == "have")
-                ;
-            else if (Adopt == "adopt")
+            else if (check == "adopt")
                 tps = tps.Where(t => t.state == 2);
-            else if (have == "have")
-                tps = tps.Where(t => t.BuySolution.Count > 0 );
+            else if (check == "have")
+                tps = tps.Where(t => t.BuySolution.Count > 0 && t.state > 0);
             else
                 tps = tps.Where(t => t.state > 0);
 
@@ -220,7 +216,7 @@ namespace moxiCommunity.Controllers
                           User = new UserModel { ID = t.CommunityUser.ID, Name = t.CommunityUser.Name, avatar = t.CommunityUser.avatar, lv = t.CommunityUser.lv },
                           budget = t.BuyDemand.budget,
                           replyCnt = t.replys,
-                          solutionCnt = t.BuySolution.Count
+                          solutionCnt = t.BuySolution.Where(s => s.state > 0).Count()
                       };
             return lsv.Skip((page - 1) * 20).Take(20).ToList();
         }
@@ -252,12 +248,13 @@ namespace moxiCommunity.Controllers
                             select new SolutionModel
                             {
                                 ID = t.ID,
-                                body = t.body,
                                 state = t.state,
                                 creatDate = t.creatDate,
                                 User = new UserModel { ID = t.CommunityUser.ID, Name = t.CommunityUser.Name, avatar = t.CommunityUser.avatar, lv = t.CommunityUser.lv },
-                                goodsLink = t.goodsLink
+                                goods = t.SolutionGoods.Select(s => new SolutionGoodsModel { ID = s.ID, goodsLink = s.goodsLink, body = s.body }).ToList()
                             }).ToList();
+
+            
 
             md.AdoptSolution = (from t in tic.BuySolution
                                 where t.state == 2
@@ -265,11 +262,11 @@ namespace moxiCommunity.Controllers
                                 select new SolutionModel
                                 {
                                     ID = t.ID,
-                                    body = t.body,
                                     state = t.state,
                                     creatDate = t.creatDate,
                                     User = new UserModel { ID = t.CommunityUser.ID, Name = t.CommunityUser.Name, avatar = t.CommunityUser.avatar, lv = t.CommunityUser.lv },
-                                    goodsLink = t.goodsLink
+                                    goods = t.SolutionGoods.Select(s => new SolutionGoodsModel { ID = s.ID, goodsLink = s.goodsLink, body = s.body }).ToList()
+                                  
                                 }).FirstOrDefault();
             ViewBag.all = true;
             return View("Solutions", md);
@@ -303,12 +300,11 @@ namespace moxiCommunity.Controllers
                             select new SolutionModel
                             {
                                 ID = t.ID,
-                                body = t.body,
                                 state = t.state,
                                 creatDate = t.creatDate,
                                 User = new UserModel { ID = t.CommunityUser.ID, Name = t.CommunityUser.Name, avatar = t.CommunityUser.avatar, lv = t.CommunityUser.lv },
-                                goodsLink = t.goodsLink
-                            }).Take(2).ToList();
+                                goods = t.SolutionGoods.Select(s => new SolutionGoodsModel { ID = s.ID, goodsLink = s.goodsLink, body = s.body }).ToList()
+                            }).Take(5).ToList();
 
             md.AdoptSolution = (from t in tic.BuySolution
                                 where t.state == 2
@@ -316,11 +312,10 @@ namespace moxiCommunity.Controllers
                                 select new SolutionModel
                                 {
                                     ID = t.ID,
-                                    body = t.body,
                                     state = t.state,
                                     creatDate = t.creatDate,
                                     User = new UserModel { ID = t.CommunityUser.ID, Name = t.CommunityUser.Name, avatar = t.CommunityUser.avatar, lv = t.CommunityUser.lv },
-                                    goodsLink = t.goodsLink
+                                    goods = t.SolutionGoods.Select(s => new SolutionGoodsModel { ID = s.ID, goodsLink = s.goodsLink, body = s.body }).ToList()
                                 }).FirstOrDefault();
 
             return View("Solutions", md);
@@ -353,18 +348,45 @@ namespace moxiCommunity.Controllers
             md.budget = tic.BuyDemand.budget;
             md.User = new UserModel { ID = tic.CommunityUser.ID, Name = tic.CommunityUser.Name, avatar = tic.CommunityUser.avatar, lv = tic.CommunityUser.lv };
 
-            md.replies = (from t in tic.TopicReply
-                          where t.state > 0
-                          orderby t.ID descending
-                          select new replyViewModel
-                          {
-                              ID = t.ID,
-                              body = t.body,
-                              state = t.state,
-                              creatDate = t.creatDate,
-                              floor = t.floor,
-                              User = new UserModel { ID = t.CommunityUser.ID, Name = t.CommunityUser.Name, avatar = t.CommunityUser.avatar, lv = t.CommunityUser.lv }
-                          }).Skip((page - 1) * 15).Take(15).ToList();
+            if(User.Identity.IsAuthenticated)
+            {
+                int userID = User.Identity.userID();
+
+                md.replies = (from t in tic.TopicReply
+                              where t.state > 0
+                              orderby t.ID descending
+                              select new replyViewModel
+                              {
+                                  ID = t.ID,
+                                  body = t.body,
+                                  state = t.state,
+                                  creatDate = t.creatDate,
+                                  floor = t.floor,
+                                  agree_up = t.ReplyAgree.Count(r => r.agree == true),
+                                  agree_down = t.ReplyAgree.Count(r => r.agree == false),
+                                  agree = t.ReplyAgree.FirstOrDefault(r => r.replyID == t.ID && r.userID == userID),
+                                  User = new UserModel { ID = t.CommunityUser.ID, Name = t.CommunityUser.Name, avatar = t.CommunityUser.avatar, lv = t.CommunityUser.lv }
+                              }).Skip((page - 1) * 15).Take(15).ToList();
+            }else
+            {
+                string IP = User.userIP();
+                md.replies = (from t in tic.TopicReply
+                              where t.state > 0
+                              orderby t.ID descending
+                              select new replyViewModel
+                              {
+                                  ID = t.ID,
+                                  body = t.body,
+                                  state = t.state,
+                                  creatDate = t.creatDate,
+                                  floor = t.floor,
+                                  agree_up = t.ReplyAgree.Count(r => r.agree == true),
+                                  agree_down = t.ReplyAgree.Count(r => r.agree == false),
+                                  agree = t.ReplyAgree.FirstOrDefault(r => r.replyID == t.ID && r.IP == IP),
+                                  User = new UserModel { ID = t.CommunityUser.ID, Name = t.CommunityUser.Name, avatar = t.CommunityUser.avatar, lv = t.CommunityUser.lv }
+                              }).Skip((page - 1) * 15).Take(15).ToList();
+            }
+            
 
             ViewBag.page = page;
             ViewBag.row = 15;
@@ -400,7 +422,7 @@ namespace moxiCommunity.Controllers
         [HttpGet]
         public ActionResult add()
         {
-            ViewBag.nodesList = NodesList();
+            //ViewBag.nodesList = NodesList();
 
             return PartialView("_topicAdd", new topicAddModel());
         }
@@ -424,7 +446,7 @@ namespace moxiCommunity.Controllers
             tp.title = md.title;
             tp.body = md.body;
             tp.state = 1;
-            tp.node = md.nodeID.Value;
+            tp.node = md.nodeID;
             db.Topic.Add(tp);
 
             BuyDemand bd = new BuyDemand();
@@ -447,8 +469,14 @@ namespace moxiCommunity.Controllers
             moxiAgentBuyEntities db = new moxiAgentBuyEntities();
 
             //是否有效主题
-            var tic = db.Topic.FirstOrDefault(t => t.ID == id && t.state > 0 && t.userID == userID);
-            if (tic == null) throw new HttpException(404, "page not found");
+            var tic = db.Topic.FirstOrDefault(t => t.ID == id && t.state > 0 );
+            if (tic == null) 
+                throw new HttpException(404, "page not found");
+            
+            if(!User.IsInRole("admin") && tic.userID!=User.Identity.userID())
+                throw new HttpException(500, "非法请求");
+
+
             topicEditModel model = new topicEditModel();
             model.ID = tic.ID;
             model.title = tic.title;
@@ -456,7 +484,7 @@ namespace moxiCommunity.Controllers
             model.budget = tic.BuyDemand.budget;
             model.nodeID = tic.node;
 
-            ViewBag.nodesList = NodesList();
+            //ViewBag.nodesList = NodesList();
             return PartialView("_topicEdit", model);
         }
 
@@ -474,12 +502,16 @@ namespace moxiCommunity.Controllers
             moxiAgentBuyEntities db = new moxiAgentBuyEntities();
 
             //是否有效主题
-            var tic = db.Topic.FirstOrDefault(t => t.ID == md.ID && t.state > 0 && t.userID == userID);
-            if (tic == null) throw new HttpException(404, "page not found");
+            var tic = db.Topic.FirstOrDefault(t => t.ID == md.ID && t.state > 0);
+            if (tic == null)
+                throw new HttpException(404, "page not found");
+
+            if (!User.IsInRole("admin") && tic.userID != User.Identity.userID())
+                throw new HttpException(500, "非法请求");
 
             tic.title = md.title;
             tic.body = md.body;
-            tic.node = md.nodeID.Value;
+            tic.node = md.nodeID;
             tic.BuyDemand.budget = md.budget.Value;
 
             db.SaveChanges();
@@ -490,7 +522,7 @@ namespace moxiCommunity.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult AddSolution(BuySolutionAddModel md)
+        public ActionResult AddSolution(int id,List<BuySolutionAddModel> md)
         {
             if (!ModelState.IsValid)
             {
@@ -501,26 +533,35 @@ namespace moxiCommunity.Controllers
             moxiAgentBuyEntities db = new moxiAgentBuyEntities();
 
             //是否有效主题
-            var tic = db.Topic.FirstOrDefault(t => t.ID == md.topicID && t.state > 0);
+            var tic = db.Topic.FirstOrDefault(t => t.ID == id && t.state > 0);
             if (tic == null) throw new HttpException(404, "page not found");
 
             //tic.replys += 1;
 
 
             var bs = new BuySolution();
-            bs.topicID = md.topicID;
+            bs.topicID = id;
             bs.userID = userID;
-            bs.body = md.body;
-            bs.goodsLink = md.goodsLink;
+            //bs.body = md.body;
+            //bs.goodsLink = md.goodsLink;
             bs.creatDate = DateTime.Now;
             bs.state = 1;
 
             db.BuySolution.Add(bs);
 
+            foreach(var g in md)
+            {
+                var goods = new SolutionGoods();
+                goods.sID = bs.ID;
+                goods.body = g.body;
+                goods.goodsLink = g.goodsLink;
+                db.SolutionGoods.Add(goods);
+            }
+            
 
             db.SaveChanges();
 
-            return RedirectToAction(md.topicID.ToString());
+            return RedirectToAction(id.ToString());
 
 
         }
@@ -586,8 +627,7 @@ namespace moxiCommunity.Controllers
                                       ID = t.ID,
                                       state = t.state,
                                       creatDate = t.creatDate,
-                                      body = t.body,
-                                      goodsLink = t.goodsLink
+                                      goods = t.SolutionGoods.Select(s => new SolutionGoodsModel { ID = s.ID, goodsLink = s.goodsLink, body = s.body }).ToList()
                                   }).ToList();
 
             model.userSolutions = (from t in topic.BuySolution
@@ -598,8 +638,7 @@ namespace moxiCommunity.Controllers
                                        ID = t.ID,
                                        state = t.state,
                                        creatDate = t.creatDate,
-                                       body = t.body,
-                                       goodsLink = t.goodsLink,
+                                       goods = t.SolutionGoods.Select(s => new SolutionGoodsModel { ID = s.ID, goodsLink = s.goodsLink, body = s.body }).ToList(),
                                        User = new UserModel { ID = t.CommunityUser.ID, Name = t.CommunityUser.Name, avatar = t.CommunityUser.avatar, lv = t.CommunityUser.lv }
                                    }).ToList();
 
@@ -628,16 +667,14 @@ namespace moxiCommunity.Controllers
                                     ID = t.ID,
                                     state = t.state,
                                     creatDate = t.creatDate,
-                                    body = t.body,
-                                    goodsLink = t.goodsLink,
+                                    goods = t.SolutionGoods.Select(s => new SolutionGoodsModel { ID = s.ID, goodsLink = s.goodsLink, body = s.body }).ToList(),
                                     deleteBody = t.deleteBody
                                 }).ToList();
 
             return PartialView("_mySolutions", model);
-                                  
         }
 
-        
+
 
 
 
@@ -645,7 +682,7 @@ namespace moxiCommunity.Controllers
         /// 用户可用节点
         /// </summary>
         [NonAction]
-        private List<SelectListItem> NodesList()
+        private List<SelectListItem> NodesList(int? rootNode=null)
         {
             List<SelectListItem> SLI = new List<SelectListItem>();
             SLI.Add(new SelectListItem { Text = "请选择节点", Value = "" });
@@ -664,6 +701,9 @@ namespace moxiCommunity.Controllers
             return SLI;
 
         }
+
+
+      
 
 
 

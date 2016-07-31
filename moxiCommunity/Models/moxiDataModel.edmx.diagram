@@ -5,18 +5,23 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="d14150c6a5a64e67a083eba0c1ba3a8a" Name="Diagram1">
-        <EntityTypeShape EntityType="moxiAgentBuyModel.BuyDemand" Width="1.5" PointX="5.25" PointY="8.125" />
-        <EntityTypeShape EntityType="moxiAgentBuyModel.BuySolution" Width="1.5" PointX="8.25" PointY="4.125" />
+        <EntityTypeShape EntityType="moxiAgentBuyModel.BuyDemand" Width="1.5" PointX="5.25" PointY="11.5" />
+        <EntityTypeShape EntityType="moxiAgentBuyModel.BuySolution" Width="1.5" PointX="5.25" PointY="5.875" />
         <EntityTypeShape EntityType="moxiAgentBuyModel.CommunityUser" Width="1.5" PointX="0.75" PointY="3.875" />
-        <EntityTypeShape EntityType="moxiAgentBuyModel.Topic" Width="1.5" PointX="3" PointY="3.875" />
-        <EntityTypeShape EntityType="moxiAgentBuyModel.TopicReply" Width="1.5" PointX="5.25" PointY="4.25" />
+        <EntityTypeShape EntityType="moxiAgentBuyModel.SolutionGoods" Width="1.5" PointX="7.5" PointY="10.25" />
+        <EntityTypeShape EntityType="moxiAgentBuyModel.Topic" Width="1.5" PointX="3" PointY="7.125" />
+        <EntityTypeShape EntityType="moxiAgentBuyModel.TopicReply" Width="1.5" PointX="8.25" PointY="5.875" />
         <AssociationConnector Association="moxiAgentBuyModel.FK_BuyDemand_topicID" />
         <AssociationConnector Association="moxiAgentBuyModel.FK_BuySolution_topicID" />
         <AssociationConnector Association="moxiAgentBuyModel.FK_BuySolution_userID" />
+        <AssociationConnector Association="moxiAgentBuyModel.FK_SolutionGoods_sID" />
         <AssociationConnector Association="moxiAgentBuyModel.FK_Topic_userID" />
         <AssociationConnector Association="moxiAgentBuyModel.FK_TopicReply_userID" />
         <AssociationConnector Association="moxiAgentBuyModel.FK_TopicReply_topicID" />
-      </Diagram>
+        <EntityTypeShape EntityType="moxiAgentBuyModel.ReplyAgree" Width="1.5" PointX="10.5" PointY="5.125" />
+        <AssociationConnector Association="moxiAgentBuyModel.FK_ReplyAgree_userID" />
+        <AssociationConnector Association="moxiAgentBuyModel.FK_ReplyAgree_replyID" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

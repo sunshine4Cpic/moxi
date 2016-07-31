@@ -28,10 +28,7 @@
             @Html.LabelFor(m => m.nodeID, new { @class = "col-md-2 control-label" })
             <div class="col-md-9 col-xs-12">
             
-                    <span class="node-select input-group-btn">
-                        @Html.DropDownListFor(t => t.nodeID, ViewBag.nodesList as List<SelectListItem>, new { @class = "selectpicker", @data_live_search = "true", @data_width = "180px" })
-                    </span>
-                    @Html.ValidationMessageFor(m => m.nodeID, "", new { @class = "text-danger" })
+                   @Html.nodeSelect(Model.nodeID)
              
             </div>
         </div>

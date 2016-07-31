@@ -3,38 +3,12 @@
 <p class="moxi--"><a class="active">需求管理 </a><a href="/user/Solutions">解决方案</a></p>
 
 <div class="checkList">
-    @if (ViewBag.all)
-    {
-        <span class="btn btn-lg active"><i class="fa fa-check-square-o"> </i> 全部</span>
-    }
-    else
-    {
-        <span class="btn btn-lg"><i class="fa fa-square-o"> </i> 全部</span>
-    }
-    @if (ViewBag.a)
-    {
-        <span class="btn btn-lg active"><i class="fa fa-check-square-o"> </i> 已有解决方案</span>
-    }
-    else
-    {
-        <span class="btn btn-lg"><i class="fa fa-square-o"> </i> 已有解决方案</span>
-    }
-    @if (ViewBag.b)
-    {
-        <span class="btn btn-lg active"><i class="fa fa-check-square-o"> </i> 未采纳</span>
-    }
-    else
-    {
-        <span class="btn btn-lg"><i class="fa fa-square-o"> </i> 未采纳</span>
-    }
-    @if (ViewBag.c)
-    {
-        <span class="btn btn-lg active"><i class="fa fa-check-square-o"> </i> 已采纳</span>
-    }
-    else
-    {
-        <span class="btn btn-lg"><i class="fa fa-square-o"> </i> 已采纳</span>
-    }
+
+    <a href="/user/Demands/all" class="btn btn-lg @(ViewBag.id == "all" ? "active" : "")"> 全部</a>
+    <a href="/user/Demands/have" class="btn btn-lg @(ViewBag.id == "have" ? "active" : "")"> 已有解决方案</a>
+    <a href="/user/Demands/noAdopt" class="btn btn-lg @(ViewBag.id == "noAdopt" ? "active" : "")"> 未采纳</a>
+    <a href="/user/Demands/Adopt" class="btn btn-lg @(ViewBag.id == "Adopt" ? "active" : "")"> 已采纳</a>
+
 </div>
 @foreach (var m in Model)
 {
@@ -94,24 +68,6 @@
     })
 
 
-    //多选框
-    $(".checkList .btn").click(function () {
-
-
-        if ($(this).hasClass("active"))
-            $(this).removeClass("active")
-        else
-            $(this).addClass("active")
-
-        var rwx = "";
-        $(".checkList .btn").each(function () {
-            if ($(this).hasClass("active"))
-                rwx += "1";
-            else
-                rwx += "0";
-        });
-        location.href = "/user/Demands/" + rwx;
-    })
 
     $(".btn[topicID]").click(function () {
         $("#editModal .modal-content").html("<div class='modal-body'>加载中......</div>");
@@ -119,7 +75,6 @@
         $('#editModal').modal('show');
         $("#editModal .modal-content").load("/topic/edit/" + topicID, function () {
             $.validator.unobtrusive.parse($(this));
-            $(".selectpicker").selectpicker({});
 
         });
     })

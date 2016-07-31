@@ -91,8 +91,8 @@ namespace moxiCommunity.Controllers
             //tic.replys += 1;
 
 
-            bs.body = md.body;
-            bs.goodsLink = md.goodsLink;
+            //bs.body = md.body;
+            //bs.goodsLink = md.goodsLink;
 
 
 
@@ -117,8 +117,8 @@ namespace moxiCommunity.Controllers
 
             BuySolutionEditModel bem = new BuySolutionEditModel();
             bem.ID = bs.ID;
-            bem.body = bs.body;
-            bem.goodsLink = bs.goodsLink;
+            //bem.body = bs.body;
+            //bem.goodsLink = bs.goodsLink;
 
             return PartialView("_BuySolutionEdit", bem);
         }

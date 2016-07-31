@@ -18,13 +18,18 @@ using System;
 public partial class BuySolution
 {
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+    public BuySolution()
+    {
+
+        this.SolutionGoods = new HashSet<SolutionGoods>();
+
+    }
+
+
     public int ID { get; set; }
 
     public int topicID { get; set; }
-
-    public string goodsLink { get; set; }
-
-    public string body { get; set; }
 
     public int userID { get; set; }
 
@@ -39,6 +44,10 @@ public partial class BuySolution
     public virtual Topic Topic { get; set; }
 
     public virtual CommunityUser CommunityUser { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<SolutionGoods> SolutionGoods { get; set; }
 
 }
 

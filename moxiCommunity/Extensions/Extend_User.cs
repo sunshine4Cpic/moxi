@@ -25,6 +25,16 @@ namespace System.Web.Mvc
             return "未知";
         }
 
-       
+
+
+        public static string userIP(this IPrincipal User)
+        {
+            string ip = string.Empty;
+            if (!string.IsNullOrEmpty(System.Web.HttpContext.Current.Request.ServerVariables["HTTP_VIA"]))
+                ip = Convert.ToString(System.Web.HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"]);
+            if (string.IsNullOrEmpty(ip))
+                ip = Convert.ToString(System.Web.HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"]);
+            return ip;
+        }
     }
 }

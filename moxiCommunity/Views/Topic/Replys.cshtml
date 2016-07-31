@@ -36,16 +36,13 @@
     </div>
     <div class="col-md-9">
         <div class="panel topicView">
-            <div class="panel-heading">
-                <div class="title"> @Model.title</div>
-                <div><span class="user">@Model.User.Name</span><span>发布于：@Model.creatDate.ToString("yyyy年MM月dd日 hh:mm:sss")</span></div>
-            </div>
-
             <div class="panel-body">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        @Model.body
-                    </div>
+                <div class="title"> @Model.title</div>
+                <p><span class="user">@Model.User.Name</span><span>发布于：@Model.creatDate.ToString("yyyy年M月d日 hh:mm:sss")</span></p>
+                <div class="panel panel-default topicBody">
+
+                    @Model.body
+
                 </div>
                 <div class="pull-right">预算：@Model.budget 元</div>
             </div>
@@ -68,10 +65,10 @@
                 <div class="panel">
                     <div class="panel-body">
 
-                        @Html.Partial("_TopicReplyAdd", new TopicReplyAddModel { topicID = Model.ID }, new ViewDataDictionary { { "total", ViewBag.total} })
+                        @Html.Partial("_TopicReplyAdd", new TopicReplyAddModel { topicID = Model.ID }, new ViewDataDictionary { { "total", ViewBag.total } })
 
                         <div id="replies">
-                            
+
                             <p class="moxi--"><span class="active">全部评论 </span></p>
 
                             @foreach (var s in Model.replies)
@@ -88,7 +85,27 @@
                                             </span>
                                         </div>
                                         <div class="panel-body">
-                                            <p>@s.body</p>
+                                            <div>@s.body</div>
+
+                                            @if(s.agree==null || s.agree.agree == null)
+                                            {
+                                                <span class="pull-right small info agree-down" replyid="@s.ID"><i class="fa fa-thumbs-down"></i> ( <span class="cnt">@s.agree_down</span> ) </span>
+                                                <span class="pull-right small info agree-up" replyid="@s.ID"> <i class="fa fa-thumbs-up"></i> ( <span class="cnt">@s.agree_up</span> ) </span>
+
+                                            }
+                                            else if (s.agree.agree==true)
+                                            {
+                                                <span class="pull-right small info agree-down" replyid="@s.ID"><i class="fa fa-thumbs-down"></i> ( <span class="cnt">@s.agree_down</span> ) </span>
+                                                <span class="pull-right small info agree-up active" replyid="@s.ID"> <i class="fa fa-thumbs-up"></i> ( <span class="cnt">@s.agree_up</span> ) </span>
+
+                                            }
+                                            else if (s.agree.agree == false)
+                                            {
+                                                <span class="pull-right small info agree-down active" replyid="@s.ID"><i class="fa fa-thumbs-down"></i> ( <span class="cnt">@s.agree_down</span> ) </span>
+                                                <span class="pull-right small info agree-up" replyid="@s.ID"> <i class="fa fa-thumbs-up"></i> ( <span class="cnt">@s.agree_up</span> ) </span>
+
+                                            }
+                                            
                                         </div>
                                     </div>
 
@@ -121,6 +138,59 @@
 
     @Scripts.Render("~/bundles/jqueryval")
     <script>
+        $(function () {
+            $(".agree-up[replyID]").click(function () {
 
+                var btn = $(this);
+
+                var replyID = btn.attr("replyID");
+                var btn_sib = btn.siblings(".agree-down");
+                if (btn_sib.hasClass("active"))
+                {
+                    btn_sib.removeClass("active");
+                    btn_sib.children(".cnt").text(btn_sib.children(".cnt").text()-1);
+                }
+                   
+                if (btn.hasClass("active")) {
+                    var url = "/reply/unUp/" + replyID;
+                    $.post(url, function (data) {
+                        btn.removeClass("active");
+                        btn.children(".cnt").text(data);
+                    });
+                } else {
+                    var url = "/reply/up/" + replyID;
+                    $.post(url, function (data) {
+                        btn.addClass("active");
+                        btn.children(".cnt").text(data);
+                    });
+                }
+
+            });
+            $(".agree-down[replyID]").click(function () {
+                var btn = $(this);
+
+                var replyID = btn.attr("replyID");
+
+                var btn_sib = btn.siblings(".agree-up");
+                if (btn_sib.hasClass("active")) {
+                    btn_sib.removeClass("active");
+                    btn_sib.children(".cnt").text(btn_sib.children(".cnt").text() - 1);
+                }
+
+                if (btn.hasClass("active")) {
+                    var url = "/reply/unDown/" + replyID;
+                    $.post(url, function (data) {
+                        btn.removeClass("active");
+                        btn.children(".cnt").text(data);
+                    });
+                } else {
+                    var url = "/reply/down/" + replyID;
+                    $.post(url, function (data) {
+                        btn.addClass("active");
+                        btn.children(".cnt").text(data);
+                    });
+                }
+            });
+        });
     </script>
 }

@@ -13,16 +13,23 @@
         foreach (var m in Model.moxiSolutions)
         {
             <div class="@(m.state==2?"AdoptSolution":"")">
-                <p> <b>商品链接：</b> <a target="_blank" href="@m.goodsLink"> @m.goodsLink</a></p>
-                <p> 推荐理由： @m.body</p>
+
+                @foreach (var s in m.goods)
+                {
+                    <p> <b>商品链接：</b> <a target="_blank" href="@s.goodsLink"> @s.goodsLink</a></p>
+                    <p> 推荐理由： @s.body</p>
+                }
+
+
 
                 @if (Model.state == 1)
                 {
-                <a class="btn btn-moxiDefault" method="post" href="/topic/adopt/@m.ID">采用该解决方案</a>
+                    <a class="btn btn-moxiDefault" method="post" href="/topic/adopt/@m.ID">采用该解决方案</a>
                 }
             </div>
-            <hr />
+
         }
+        <hr />
     }
 
     @if (Model.userSolutions.Count > 0)
@@ -44,8 +51,13 @@
                     </div>
                 </div>
             </div>
-            <p> <b>商品链接：</b> <a target="_blank" href="@m.goodsLink"> @m.goodsLink</a></p>
-            <p> 推荐理由： @m.body</p>
+
+            foreach (var s in m.goods)
+            {
+                <p> <b>商品链接：</b> <a target="_blank" href="@s.goodsLink"> @s.goodsLink</a></p>
+                <p> 推荐理由： @s.body</p>
+            }
+
 
             if (Model.state == 1)
             {
