@@ -75,37 +75,21 @@ namespace moxiCommunity.Controllers
         }
 
 
-        public ActionResult search(string q,int page=1,int row = 20)
+        public ActionResult search(string id,string q,int page=1,int row = 20)
         {
             if(string.IsNullOrEmpty(q))
             {
                 return Redirect("/");
             }
 
-            moxiAgentBuyEntities db = new moxiAgentBuyEntities();
 
 
-            var lsv = from t in db.Topic
-                      where t.state > 0 && t.title.Contains(q)
-                      orderby t.ID descending
-                      select new topicPrevModel
-                      {
-                          ID = t.ID,
-                          title = t.title,
-                          creatDate = t.creatDate,
-                          state = t.state,
-                          User = new UserModel { ID = t.CommunityUser.ID, Name = t.CommunityUser.Name, avatar = t.CommunityUser.avatar, lv = t.CommunityUser.lv },
-                          budget = t.BuyDemand.budget,
-                          replyCnt = t.replys,
-                          solutionCnt = t.BuySolution.Count
-                      };
+            var lsv = this.getTopics(null, id, page, q);
 
-            ViewBag.row = row;
-            ViewBag.page = page;
-            ViewBag.total = lsv.Count();
             ViewBag.q = q;
+            ViewBag.catchall = id;
 
-            return View(lsv.Skip(row * (page - 1) * row).Take(row).ToList());
+            return View(lsv);
 
 
         }
@@ -113,6 +97,7 @@ namespace moxiCommunity.Controllers
         // GET: Topic
         public ActionResult Index(string id, int page = 1)
         {
+
 
             var topics = this.getTopics(null, id, page);
 
@@ -147,7 +132,7 @@ namespace moxiCommunity.Controllers
         }
 
         [NonAction]
-        private List<topicPrevModel> getTopics(int? nodeID, string catchall, int page)
+        private List<topicPrevModel> getTopics(int? nodeID, string catchall, int page,string q=null)
         {
 
             string order = "time";
@@ -178,6 +163,12 @@ namespace moxiCommunity.Controllers
             else
                 tps = tps.Where(t => t.state > 0);
 
+
+            if (q != null)
+                tps = tps.Where(t => t.title.Contains(q));
+
+
+
             //分页
             ViewBag.page = page;
             ViewBag.total = tps.Count();
@@ -205,6 +196,8 @@ namespace moxiCommunity.Controllers
                     tps = tps.OrderByDescending(t => t.creatDate);
                 }
             }
+
+            
 
             var lsv = from t in tps
                       select new topicPrevModel
@@ -416,6 +409,14 @@ namespace moxiCommunity.Controllers
             }
             var url = Request.ServerVariables["Http_Referer"];
             return Redirect(url);
+            //return RedirectToAction(tid.ToString());
+        }
+
+
+        [Authorize]
+        public string adoptBuy(int id)
+        {
+            return "购买链接.....";
             //return RedirectToAction(tid.ToString());
         }
 

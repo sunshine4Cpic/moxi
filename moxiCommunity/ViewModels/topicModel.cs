@@ -28,8 +28,8 @@ namespace moxiCommunity.ViewModels
 
 
         [Required]
-        [Display(Name = "节点")]
-        [Range(1, 999, ErrorMessage = "非法节点")]
+        [Display(Name = "分类")]
+        [Range(1, 999, ErrorMessage = "非法分类")]
         public int nodeID { get; set; }
 
 

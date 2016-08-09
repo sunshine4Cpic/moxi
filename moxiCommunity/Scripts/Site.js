@@ -1,11 +1,14 @@
 ﻿$(function () {
     aPostInit();
+    
 
-    $("#pagination-from").submit(function () {
-        location.href = '?page=' + $('#fase-input').val();
-        return false;
-    })
 });
+
+function getvl(name) {
+    var reg = new RegExp("(^|\\?|&)" + name + "=([^&]*)(\\s|&|$)", "i");
+    if (reg.test(location.href)) return unescape(RegExp.$2.replace(/\+/g, " "));
+    return "";
+}
 
 function aPostInit(obja)
 {

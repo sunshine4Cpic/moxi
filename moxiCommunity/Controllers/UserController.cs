@@ -51,10 +51,10 @@ namespace moxiCommunity.Controllers
                 return View(model);
             }
             //跳转到请求页面
-            //if (Url.IsLocalUrl(ReturnUrl))
-            //{
-            //    return Redirect(ReturnUrl);
-            //}
+            if (Url.IsLocalUrl(ReturnUrl))
+            {
+                return Redirect(ReturnUrl);
+            }
             return Redirect("/");
 
 

@@ -3,23 +3,26 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-    
+
     <div id="topicReply">
         <p><label>发表评论 </label><span class="info"> 文明上网理性发言</span><span class="pull-right info">@ViewData["total"] 条评论</span></p>
         @using (Html.BeginForm("Reply", "Topic", FormMethod.Post, new { @class = "form-horizontal addForm" }))
         {
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             @Html.HiddenFor(m => m.topicID)
-            <p>
+            <div>
                 @Html.TextAreaFor(m => m.body, new { @class = "form-control moxi-border", @rows = "5" })
                 @Html.ValidationMessageFor(m => m.body, "", new { @class = "text-danger" })
-            </p>
-            <p>
-                <input type="submit" value="发表" class="btn btn-moxiDefault pull-right" />
-            </p>
+
+            </div>
+
+
+            <br />
+            <input type="submit" value="发表" class="btn btn-moxiDefault pull-right" />
+
 
         }
-        
+
     </div>
 }
 else
@@ -28,5 +31,4 @@ else
         需要 <a class="btn btn-danger" href="/user/login">登录</a> 后方可回复, 如果你还没有账号你可以 <a class="btn btn-primary" href="#">注册</a> 一个帐号。
     </div>
 }
-
 

@@ -43,6 +43,58 @@ hr{
 
 }
 
+/*验证控件,显示样式*/
+.input-validation-error {
+    border: 1px dotted red;
+}
+
+
+.text-danger.field-validation-error s {
+    position: absolute;
+    top: -16px;
+    left: 25%;
+    display: block;
+    height: 0;
+    width: 0;
+    font-size: 0;
+    line-height: 0;
+    border-color: transparent transparent #ff3d3b transparent;
+    border-style: dashed dashed solid dashed;
+    border-width: 8px;
+}
+
+.text-danger.field-validation-error s c {
+    position: absolute;
+    top: -7px;
+    left: -8px;
+    display: block;
+    height: 0;
+    width: 0;
+    font-size: 0;
+    line-height: 0;
+    border-color: transparent transparent #FFFFFF transparent;
+    border-style: dashed dashed solid dashed;
+    border-width: 8px;
+}
+
+
+.text-danger.field-validation-error{
+    color:#333;
+    padding-left:5px;
+    padding-right:5px;
+    position: absolute;
+    z-index: 9999;
+    border:1px solid #FF3D3B;
+    background-color:#fff;
+    margin-top:2px;
+}
+
+/*modal 样式*/
+button[type=button].close
+{
+    font-size:250%;
+}
+
 /*整体风格 红色*/
 .navbar.navbar-fixed-top {
     background: #fe6260;
@@ -79,8 +131,10 @@ a {
     color: #333;
 }
 
+
+
     a:hover, a:focus {
-        text-decoration: none;
+        color: #ff3d3b;
     }
 
 
@@ -236,6 +290,19 @@ a {
     max-width: none;
 }
 
+.form-search .input-group-addon {
+   background-color:#FF3D3B;
+    padding: 0px;
+}
+
+.form-search button {
+    height:100%;
+    padding:0px 12px;
+    color:#fff;
+    background-color:#FF3D3B;
+    border:none;
+}
+
 
 /*导航节点*/
 .node-list .node .media-left {
@@ -314,6 +381,11 @@ a {
     border: 0px;
     border-left: 1px solid #dddddd;
     border-radius: 0px;
+    padding:10px;
+}
+.topics-sort.panel div {
+    padding:10px;
+    font-weight:bold;
 }
 
 
@@ -399,10 +471,7 @@ a {
     border-radius: 0px;
 }
 
-/*验证控件,显示样式*/
-.input-validation-error {
-    border: 1px dotted red;
-}
+
 
 
      
@@ -458,9 +527,9 @@ a {
     .nav-tabs li.active > a {
         background-color: #ff3d3b !important;
         color: #fff !important;
-        -webkit-box-shadow: 2px 2px 1px #D2D0D0;
-        -moz-box-shadow: 2px 2px 1px #D2D0D0;
-        box-shadow: 2px 2px 1px #D2D0D0;
+        -webkit-box-shadow: 2px 0px 2px #D2D0D0;
+        -moz-box-shadow: 2px 0px 2px #D2D0D0;
+        box-shadow: 2px 0px 2px #D2D0D0;
     }
 
 .nav-tabs {

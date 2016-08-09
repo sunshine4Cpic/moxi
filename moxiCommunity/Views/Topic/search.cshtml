@@ -6,30 +6,30 @@
 
 
 
-<div class="panel clearfix">
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-xs-4 col-md-3">
+<br />
+<div class="row">
+    <div class="col-xs-4 col-md-3">
 
 
+    </div>
+
+    <div class="col-md-5 " style="padding-left:0px">
+
+        @using (Html.BeginForm("search", "Topic", FormMethod.Get, new { @class = "form-search" }))
+        {
+            <div class="input-group">
+                <input class="form-control moxi-border" name="q" type="text" value="@ViewBag.q" placeholder="搜索需求">
+                <span class="input-group-addon moxi-border"><button> <i class="glyphicon glyphicon-search "></i></button></span>
             </div>
-
-            <div class="col-md-5 " style="padding-left:0px">
-
-                @using (Html.BeginForm("search", "Topic", FormMethod.Get, new { @class = "form-search" }))
-                {
-                    <div class="input-group">
-                        <input class="form-control moxi-border" name="q" type="text" value="@ViewBag.q" placeholder="搜索需求">
-                        <span class="input-group-addon moxi-border" style="background-color:#ff3d3b;color:#ffffff">  <span class="glyphicon glyphicon-search "></span></span>
-                    </div>
-                }
+        }
 
 
 
-            </div>
-        </div>
     </div>
 </div>
+<br />
+
+ @Html.sortTopic("/topic/search",(int)ViewBag.page, (int)ViewBag.total, (int)ViewBag.row,(string)ViewBag.catchall,"?q="+(string)ViewBag.q)
 
 
 @if (Model.Count == 0)
@@ -43,6 +43,9 @@
 }
 else
 {
+
+    
+   
     <div class="panel panel-default">
         <table class="topics table" style="table-layout:fixed">
 
@@ -90,13 +93,5 @@ else
 
 
 @section Scripts {
-
-    <script>
-        $(function () {
-            $("#pagination-from").submit(function () {
-                location.href = '?page=' + $('#fase-input').val()+@Html.Raw("\"&q=" + ViewBag.q + "\"");
-                return false;
-            })
-        });
-    </script>
+   
 }

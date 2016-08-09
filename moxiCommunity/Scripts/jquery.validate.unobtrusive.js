@@ -63,6 +63,7 @@
         if (replace) {
             container.empty();
             error.removeClass("input-validation-error").appendTo(container);
+            container.append("<s><c></c></s>");
         }
         else {
             error.hide();

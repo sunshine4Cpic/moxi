@@ -100,6 +100,8 @@
                                     <p> 推荐理由： @s.body</p>
                                 }
 
+                                <a class="btn btn-moxiDefault" href="/topic/adoptBuy/@Model.AdoptSolution.ID">采用该解决方案</a>
+
                             </div>
                         </div>
                     }
@@ -144,6 +146,10 @@
                                 @if (User.Identity.userID() == Model.User.ID && Model.state != 2)
                                 {
                                     <a class="btn btn-moxiDefault" method="post" href="/topic/adopt/@m.ID">采用该解决方案</a>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-moxiDefault"  href="/topic/adoptBuy/@m.ID">采用该解决方案</a>
                                 }
 
                                 @if (User.IsInRole("admin") && m.state != 2)
