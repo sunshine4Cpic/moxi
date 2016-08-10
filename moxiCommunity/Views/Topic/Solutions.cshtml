@@ -38,7 +38,7 @@
         <div class="panel topicView">
 
             <div class="panel-body">
-               
+
                 <div class="title"> @Model.title</div>
                 <p><span class="user">@Model.User.Name</span><span>发布于：@Model.creatDate.ToString("yyyy年M月d日 hh:mm:sss")</span></p>
                 <div class="panel panel-default topicBody">
@@ -51,8 +51,8 @@
                 {
                     <button class="btn btn-warning pull-left AE" topicid="@Model.ID"><i class="fa fa-edit"></i> 管理员修改</button>
                 }
-               
-                 
+
+
             </div>
         </div>
 
@@ -96,7 +96,13 @@
                                 }
                                 @foreach (var s in Model.AdoptSolution.goods)
                                 {
-                                    <p class="goodsLink"> <b>商品链接：</b> <a target="_blank" href="@s.goodsLink"> @s.goodsLink</a><a href="#" class="bwy">帮我买</a></p>
+                                    <p class="goodsLink">
+                                        <b>商品链接：</b> <a target="_blank" href="@s.goodsLink"> @s.goodsLink</a>
+                                        @if (Model.AdoptSolution.goods.Count > 1)
+                                        {
+                                            <a href="#" class="bwy">帮我买</a>
+                                        }
+                                    </p>
                                     <p> 推荐理由： @s.body</p>
                                 }
 
@@ -138,10 +144,17 @@
                             }
                             foreach (var s in m.goods)
                             {
-                                <p class="goodsLink"> <b>商品链接：</b> <a target="_blank" href="@s.goodsLink"> @s.goodsLink</a><a href="#" class="bwy">帮我买</a></p>
+                                <p class="goodsLink">
+                                    <b>商品链接：</b> <a target="_blank" href="@s.goodsLink"> @s.goodsLink</a>
+                                    @if (m.goods.Count > 1)
+                                    {
+                                        <a href="#" class="bwy">帮我买</a>
+                                    }
+
+                                </p>
                                 <p> 推荐理由： @s.body</p>
                             }
-                            <div class="opts">
+                            <div>
 
                                 @if (User.Identity.userID() == Model.User.ID && Model.state != 2)
                                 {
@@ -149,12 +162,12 @@
                                 }
                                 else
                                 {
-                                    <a class="btn btn-moxiDefault"  href="/topic/adoptBuy/@m.ID">采用该解决方案</a>
+                                    <a class="btn btn-moxiDefault" href="/topic/adoptBuy/@m.ID">采用该解决方案</a>
                                 }
 
                                 @if (User.IsInRole("admin") && m.state != 2)
                                 {
-                                    <button class="btn btn-warning AD" data-toggle="modal" data-target="#SolutionHandleModal" title="删除解决方案"  data-id="@m.ID"><i class="fa fa-trash"></i> 管理员删除</button>
+                                    <button class="btn btn-warning AD" data-toggle="modal" data-target="#SolutionHandleModal" title="删除解决方案" data-id="@m.ID"><i class="fa fa-trash"></i> 管理员删除</button>
                                 }
                             </div>
                             <hr />

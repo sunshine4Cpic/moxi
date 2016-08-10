@@ -13,12 +13,12 @@ namespace moxiCommunity.Controllers
         public int up(int id)
         {
             moxiAgentBuyEntities db = new moxiAgentBuyEntities();
-           
-            if(User.Identity.IsAuthenticated)//登录用户
+
+            if (User.Identity.IsAuthenticated)//登录用户
             {
                 int userID = User.Identity.userID();
-                var ra =  db.ReplyAgree.SingleOrDefault(t => t.replyID == id && t.userID == userID );
-                if(ra==null)
+                var ra = db.ReplyAgree.SingleOrDefault(t => t.replyID == id && t.userID == userID);
+                if (ra == null)
                 {
                     ra = new ReplyAgree();
                     ra.replyID = id;
@@ -26,8 +26,9 @@ namespace moxiCommunity.Controllers
                     db.ReplyAgree.Add(ra);
                 }
                 ra.agree = true;
-                    
-            }else
+
+            }
+            else
             {
                 string IP = User.userIP();
                 var ra = db.ReplyAgree.SingleOrDefault(t => t.replyID == id && t.IP == IP);
@@ -154,6 +155,14 @@ namespace moxiCommunity.Controllers
             return db.ReplyAgree.Count(t => t.replyID == id && t.agree == false);
         }
 
-    
+        [HttpPost]
+        [Authorize(Roles="admin")]
+        public void delete(int id)
+        {
+            moxiAgentBuyEntities db = new moxiAgentBuyEntities();
+            var rp = db.TopicReply.FirstOrDefault(t => t.ID == id);
+            rp.state = 0;
+            db.SaveChanges();
+        }
     }
 }

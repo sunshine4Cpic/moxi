@@ -24,10 +24,14 @@ input,
 select,
 textarea {
     max-width: 280px;
+    resize: none;
 }
 
 i {
     cursor: pointer;
+}
+div{
+    word-break: break-all;
 }
 
 p{
@@ -89,10 +93,17 @@ hr{
     margin-top:2px;
 }
 
+button[type=button].close:hover,button[type=button].close:focus
+{
+    opacity:.8;
+
+}
 /*modal 样式*/
 button[type=button].close
 {
+    opacity:.5;
     font-size:250%;
+    color:#FFFFFF;
 }
 
 /*整体风格 红色*/
@@ -491,7 +502,6 @@ a {
 
 
 .topicView .title {
-    font-weight: bold;
     margin-bottom: 5px;
     font-size: 150%;
 }
@@ -616,9 +626,10 @@ a {
 }
 
 
-.opts .pull-right a {
+.opts a {
     margin-left: 5px;
     margin-right: 0px;
+    color: #fe6260;
 }
 
 .avatar-120 {
@@ -700,7 +711,7 @@ a {
 .moxi-hr s {
     position: relative;
     top: 0px;
-    left: 150px;
+    left: 160px;
     display: block;
     height: 0;
     width: 0;
@@ -711,7 +722,7 @@ a {
     border-width: 10px;
 }
 
-.moxi-hr i {
+.moxi-hr c {
     position: relative;
     top: -9px;
     *top: -9px;

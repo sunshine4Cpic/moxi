@@ -76,6 +76,12 @@
                                 <div class="reply">
                                     <div class="avatar"><a href="#"><img class="media-object avatar-48" src="@s.User.avatar"></a></div>
                                     <div class="infos">
+                                        @if (User.IsInRole("admin"))
+                                        {
+                                            <span class="pull-right opts">
+                                                <a class="fa fa-trash replyD" href="/reply/Delete/@s.ID"></a>
+                                            </span>
+                                        }
                                         <div class="info">
                                             <span class="name">
                                                 @s.User.Name
@@ -87,13 +93,13 @@
                                         <div class="panel-body">
                                             <div>@s.body</div>
 
-                                            @if(s.agree==null || s.agree.agree == null)
+                                            @if (s.agree == null || s.agree.agree == null)
                                             {
                                                 <span class="pull-right small info agree-down" replyid="@s.ID"><i class="fa fa-thumbs-down"></i> ( <span class="cnt">@s.agree_down</span> ) </span>
                                                 <span class="pull-right small info agree-up" replyid="@s.ID"> <i class="fa fa-thumbs-up"></i> ( <span class="cnt">@s.agree_up</span> ) </span>
 
                                             }
-                                            else if (s.agree.agree==true)
+                                            else if (s.agree.agree == true)
                                             {
                                                 <span class="pull-right small info agree-down" replyid="@s.ID"><i class="fa fa-thumbs-down"></i> ( <span class="cnt">@s.agree_down</span> ) </span>
                                                 <span class="pull-right small info agree-up active" replyid="@s.ID"> <i class="fa fa-thumbs-up"></i> ( <span class="cnt">@s.agree_up</span> ) </span>
@@ -105,7 +111,7 @@
                                                 <span class="pull-right small info agree-up" replyid="@s.ID"> <i class="fa fa-thumbs-up"></i> ( <span class="cnt">@s.agree_up</span> ) </span>
 
                                             }
-                                            
+
                                         </div>
                                     </div>
 
@@ -145,12 +151,11 @@
 
                 var replyID = btn.attr("replyID");
                 var btn_sib = btn.siblings(".agree-down");
-                if (btn_sib.hasClass("active"))
-                {
+                if (btn_sib.hasClass("active")) {
                     btn_sib.removeClass("active");
-                    btn_sib.children(".cnt").text(btn_sib.children(".cnt").text()-1);
+                    btn_sib.children(".cnt").text(btn_sib.children(".cnt").text() - 1);
                 }
-                   
+
                 if (btn.hasClass("active")) {
                     var url = "/reply/unUp/" + replyID;
                     $.post(url, function (data) {
@@ -191,6 +196,18 @@
                     });
                 }
             });
+
+            $(".replyD").click(function () {
+                var a = $(this);
+
+                cf = confirm("确认删除这个回复吗?");
+                if (cf) {
+                    $.post(a.attr("href"), function (data) {
+                        a.parents(".reply").remove();
+                    });
+                }
+                return false;
+            })
         });
     </script>
 }
