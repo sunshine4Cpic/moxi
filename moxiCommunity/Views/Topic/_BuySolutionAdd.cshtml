@@ -62,7 +62,9 @@
 
         var form = $("#BuySolutionAddForm");
         var goods_div = $(".goods-groups:first").clone();
-        var removeI = $("<i class='glyphicon glyphicon-remove-sign pull-left'></i>");
+
+       
+        var removeI = $("<i class='pull-left glyphicon glyphicon-remove-sign delete'></i>");
         removeI.click(function () {
             $(this).parents(".goods-groups").remove();
 

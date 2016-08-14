@@ -751,6 +751,18 @@ a {
     padding: 0px 50px;
 }
 
+.userDemand .btn[aria-expanded='true']{
+    border-color:#ff3d3b;
+    color:#ff3d3b;
+}
+.delete{
+    left:-10px;
+    margin-top:8px;
+    cursor: pointer;
+    color:#727272;
+    font-size:18px;
+}
+
 .f110 {
     font-size: 110%;
 }

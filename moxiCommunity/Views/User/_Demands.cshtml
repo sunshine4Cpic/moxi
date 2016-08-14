@@ -59,11 +59,11 @@
         });
     })
 
-    $('.DemandCollapse').on('shown.bs.collapse', function () {
+    $('.DemandCollapse').on('show.bs.collapse', function () {
         $(this).parent().find("[data-toggle='collapse']").html("点击收起");
     })
 
-    $('.DemandCollapse').on('hidden.bs.collapse', function () {
+    $('.DemandCollapse').on('hide.bs.collapse', function () {
         $(this).parent().find("[data-toggle='collapse']").html("点击展开");
     })
 
