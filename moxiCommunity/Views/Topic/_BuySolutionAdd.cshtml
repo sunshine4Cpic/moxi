@@ -13,7 +13,7 @@
                     <div class="goods-groups">
                         <div class="form-group">
                             @Html.LabelFor(m => m[0].goodsLink, new { @class = "col-md-2 control-label" })
-                            <div class="col-md-9 col-xs-12">
+                            <div class="col-md-9">
                                 @Html.TextBoxFor(m => m[0].goodsLink, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m[0].goodsLink, "", new { @class = "text-danger" })
                             </div>
@@ -22,7 +22,7 @@
 
                         <div class="form-group">
                             @Html.LabelFor(m => m[0].body, new { @class = "col-md-2 control-label" })
-                            <div class="col-md-9 col-xs-12">
+                            <div class="col-md-9">
                                 @Html.TextAreaFor(m => m[0].body, new { @class = "form-control", @rows = "6" })
                                 @Html.ValidationMessageFor(m => m[0].body, "", new { @class = "text-danger" })
                             </div>
@@ -54,7 +54,7 @@
 
 
     </div>
-
+   
 </div>
 
 <script>
@@ -64,7 +64,7 @@
         var goods_div = $(".goods-groups:first").clone();
 
        
-        var removeI = $("<i class='pull-left glyphicon glyphicon-remove-sign delete'></i>");
+        var removeI = $(" <img class='delete' src='/Content/img/close.png' />");
         removeI.click(function () {
             $(this).parents(".goods-groups").remove();
 

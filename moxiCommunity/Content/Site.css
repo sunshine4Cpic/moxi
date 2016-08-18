@@ -47,6 +47,8 @@ hr{
 
 }
 
+
+
 /*验证控件,显示样式*/
 .input-validation-error {
     border: 1px dotted red;
@@ -204,6 +206,9 @@ a {
     padding: 5px 0px;
 }
 
+.moxi-- a{
+    text-decoration:none;
+}
     .moxi-- > * {
         font-weight: bold;
         padding: 4px 0px;
@@ -466,6 +471,10 @@ a {
         background-color: #fff;
         border: 1px solid #ddd;
     }
+    .pagination > li > a, .pagination > li > span {
+    
+    color: #333;
+}
 
 
 .no-topic {
@@ -585,7 +594,7 @@ a {
 }
 
 #replies {
-    margin-top: 20px;
+    margin-top: 10px;
 }
     /*回复显示*/
     #replies .reply {
@@ -711,7 +720,7 @@ a {
 .moxi-hr s {
     position: relative;
     top: 0px;
-    left: 160px;
+    left: 168px;
     display: block;
     height: 0;
     width: 0;
@@ -756,8 +765,7 @@ a {
     color:#ff3d3b;
 }
 .delete{
-    left:-10px;
-    margin-top:8px;
+    margin-top:6px;
     cursor: pointer;
     color:#727272;
     font-size:18px;
@@ -796,4 +804,8 @@ a {
 }
 .agree-down.active i,.agree-up.active i{
     color:#ff3d3b;
+}
+
+#BuySolutionAddForm #goods-list .form-group > div{
+    padding-right:5px;
 }

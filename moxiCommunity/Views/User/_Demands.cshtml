@@ -47,7 +47,7 @@
 
     $('.DemandCollapse').on('show.bs.collapse', function () {
         var Demand = $(this);
-        Demand.html("<div class='moxi-hr'> <s><i></i></s><hr></div><div id='Solutions'>加载中......</div>");
+        Demand.html("<div class='moxi-hr'> <s><c></c></s><hr></div><div id='Solutions'>加载中......</div>");
         $.ajax({
             type: "get",
             url: "/topic/DemandSolutions/" + Demand.attr("data-id"),

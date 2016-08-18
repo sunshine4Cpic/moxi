@@ -21,6 +21,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <TargetFrameworkProfile />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -223,6 +224,7 @@
     <Content Include="Content\img\cry_03.png" />
     <Content Include="Content\img\icon-mark_6324efc.png" />
     <Content Include="Content\img\发布_03.png" />
+    <Content Include="Content\img\close.png" />
     <Content Include="Content\moxi_footer.png" />
     <Content Include="Content\moxi_head.png" />
     <None Include="App_Data\node.json" />
