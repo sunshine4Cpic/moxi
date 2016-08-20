@@ -73,7 +73,7 @@
                     if (Model.AdoptSolution != null)
                     {
                         <div class="panel" data-id="@Model.AdoptSolution.ID">
-                            <div class="panel-body AdoptSolution">
+                            <div class="panel-body AdoptSolution Solution">
                                 @if (Model.AdoptSolution.User.lv == 99)
                                 {
                                     <p class="moxi--"><span class="active">摩西解决方案 </span></p>
@@ -97,7 +97,7 @@
                                 @foreach (var s in Model.AdoptSolution.goods)
                                 {
                                     <p class="goodsLink">
-                                        <b>商品链接：</b> <a target="_blank" href="@s.goodsLink"> @s.goodsLink</a>
+                                        <b>商品链接：</b> <a target="_blank" class="gl" href="@s.goodsLink"> @s.goodsLink</a>
                                         @if (Model.AdoptSolution.goods.Count > 1)
                                         {
                                             <a href="#" class="bwy">帮我买</a>
@@ -106,7 +106,7 @@
                                     <p> 推荐理由： @s.body</p>
                                 }
 
-                                <a class="btn btn-moxiDefault" href="/topic/adoptBuy/@Model.AdoptSolution.ID">采用该解决方案</a>
+                                <a class="btn btn-moxiDefault buy" href="http://www.moximoxi.net/ajax/AjaxDaigou.aspx">采用该解决方案</a>
 
                             </div>
                         </div>
@@ -121,56 +121,56 @@
 
                         @foreach (var m in Model.Solutions)
                         {
-                            if (m.User.lv == 99)
-                            {
-                                <p class="moxi--"><span class="active">摩西解决方案 </span></p>
-                            }
-                            else
-                            {
-                                <div class="userInfo">
-                                    <div class="avatar media-left">
-                                        <img class="media-object avatar-48" src="@m.User.avatar">
-                                    </div>
-                                    <div class="infos media-body">
-                                        <div class="title media-heading">
-                                            <span> 用户：@m.User.Name</span> <span>推荐的方案</span>
-
+                            <div class="Solution">
+                                @if (m.User.lv == 99)
+                                {
+                                    <p class="moxi--"><span class="active">摩西解决方案 </span></p>
+                                }
+                                else
+                                {
+                                    <div class="userInfo">
+                                        <div class="avatar media-left">
+                                            <img class="media-object avatar-48" src="@m.User.avatar">
                                         </div>
-                                        <div class="info small">
-                                            时间：@m.creatDate.ToString("yyyy-M-d hh:mm")
+                                        <div class="infos media-body">
+                                            <div class="title media-heading">
+                                                <span> 用户：@m.User.Name</span> <span>推荐的方案</span>
+
+                                            </div>
+                                            <div class="info small">
+                                                时间：@m.creatDate.ToString("yyyy-M-d hh:mm")
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            }
-                            foreach (var s in m.goods)
-                            {
-                                <p class="goodsLink">
-                                    <b>商品链接：</b> <a target="_blank" href="@s.goodsLink"> @s.goodsLink</a>
-                                    @if (m.goods.Count > 1)
-                                    {
-                                        <a href="#" class="bwy">帮我买</a>
-                                    }
+                                }
+                                @foreach (var s in m.goods)
+                                {
+                                    <p class="goodsLink">
+                                        <b>商品链接：</b> <a target="_blank" class="gl" href="@s.goodsLink"> @s.goodsLink</a>
+                                        @if (m.goods.Count > 1)
+                                        {
+                                            <a href="#" class="bwy">帮我买</a>
+                                        }
 
-                                </p>
-                                <p> 推荐理由： @s.body</p>
-                            }
-                            <div>
-
+                                    </p>
+                                    <p> 推荐理由： @s.body</p>
+                                }
                                 @if (User.Identity.userID() == Model.User.ID && Model.state != 2)
                                 {
                                     <a class="btn btn-moxiDefault" method="post" href="/topic/adopt/@m.ID">采用该解决方案</a>
                                 }
                                 else
                                 {
-                                    <a class="btn btn-moxiDefault" href="/topic/adoptBuy/@m.ID">采用该解决方案</a>
+                                    <a class="btn btn-moxiDefault buy" href="http://www.moximoxi.net/ajax/AjaxDaigou.aspx">采用该解决方案</a>
                                 }
 
                                 @if (User.IsInRole("admin") && m.state != 2)
                                 {
                                     <button class="btn btn-warning AD" data-toggle="modal" data-target="#SolutionHandleModal" title="删除解决方案" data-id="@m.ID"><i class="fa fa-trash"></i> 管理员删除</button>
                                 }
+
+                                <hr />
                             </div>
-                            <hr />
                         }
 
                         @if (ViewBag.all != true && @Model.solutionCnt > 5)
@@ -231,6 +231,35 @@
                 $("#editModal .modal-content").load("/topic/edit/" + topicID, function () {
                     $.validator.unobtrusive.parse($(this));
                 });
+            })
+
+            $(".btn.buy").click(function () {
+                var temp = document.createElement("form");
+                temp.action = this.href;
+                temp.method = "post";
+                temp.style.display = "none";
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "Method";
+                input.value = "GetDaigouListBuy";
+                temp.appendChild(input);
+
+                var strT = "";
+                $(this).parent().find("a.gl").each(function () {
+                    strT += $(this).attr("href") + ",";
+                })
+                var FromData = strT.substring(0, strT.length - 1);
+
+                var input2 = document.createElement("input");
+                input2.type = "text";
+                input2.name = "FromData";
+                input2.value = FromData;
+                temp.appendChild(input2);
+
+                document.body.appendChild(temp);
+                temp.submit();
+                return false;
             })
 
             //$('#SolutionWarnForm').submit(function () {
