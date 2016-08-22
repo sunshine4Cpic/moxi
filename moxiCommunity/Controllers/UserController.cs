@@ -9,8 +9,6 @@ using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json;
 using moxiCommunity.Models;
-using Newtonsoft.Json.Linq;
-using System.Configuration;
 
 namespace moxiCommunity.Controllers
 {
@@ -20,9 +18,6 @@ namespace moxiCommunity.Controllers
         [AllowAnonymous]
         public ActionResult Login(string ReturnUrl)
         {
-            //Request.IsAjaxRequest();
-            //headh中 X-Requested-With:XMLHttpRequest
-            //ajax 调用时反悔错误信息(coding)
             ViewBag.returnUrl = ReturnUrl;
             return View();
         }
@@ -56,10 +51,30 @@ namespace moxiCommunity.Controllers
                 return Redirect(ReturnUrl);
             }
             return Redirect("/");
-
-
-
         }
+
+        public ActionResult Login302()
+        {
+            var logincookie = HttpContext.Request.Cookies["logincookie"];
+
+            try
+            {
+                var userstr = encode.AESDecrypt(logincookie.Value, "moxi");
+
+                var lg = JsonConvert.DeserializeObject<LoginCookieViewModel>(userstr);
+
+                moxiRegister(lg.username, lg.name, lg.id, lg.overtime);
+            }
+            catch (Exception)
+            {
+                //出错处理
+            }
+            
+
+            return Redirect("/");
+        }
+        
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -100,7 +115,7 @@ namespace moxiCommunity.Controllers
 
 
         [Authorize]
-        public ActionResult Demands(string id="all", int page = 1, int row = 200)
+        public ActionResult Demands(string id = "all", int page = 1, int row = 200)
         {
             int userID = User.Identity.userID();
 
@@ -136,9 +151,9 @@ namespace moxiCommunity.Controllers
                 default:
                     break;
             }
-            
 
-            
+
+
 
             var tps = from t in baseTopics
                       where t.userID == userID
@@ -183,21 +198,21 @@ namespace moxiCommunity.Controllers
                             }).First();
 
             var tps = (from t in db.BuySolution
-                      where t.userID == userID
-                      select new userDemandsModel
-                      {
-                          ID = t.Topic.ID,
-                          title = t.Topic.title,
-                          budget = t.Topic.BuyDemand.budget,
-                          nodeID = t.Topic.node,
-                          state = t.Topic.state,
-                          solutionCount = t.Topic.BuySolution.Count(s => s.state > 0),
-                          createDate = t.Topic.creatDate
-                      }).Distinct().OrderByDescending(t=>t.ID);
+                       where t.userID == userID
+                       select new userDemandsModel
+                       {
+                           ID = t.Topic.ID,
+                           title = t.Topic.title,
+                           budget = t.Topic.BuyDemand.budget,
+                           nodeID = t.Topic.node,
+                           state = t.Topic.state,
+                           solutionCount = t.Topic.BuySolution.Count(s => s.state > 0),
+                           createDate = t.Topic.creatDate
+                       }).Distinct().OrderByDescending(t => t.ID);
             userInfo.Demands = tps.Skip(row * (page - 1)).Take(row).ToList();
 
             ViewBag.action = "Solutions";
-            
+
             return View("userInfo", userInfo);
         }
 
@@ -270,6 +285,53 @@ namespace moxiCommunity.Controllers
         }
 
 
+        private bool moxiRegister(string username, string name,int id,DateTime overtime)
+        {
+            
+
+            //注册本地用户
+            moxiAgentBuyEntities db = new moxiAgentBuyEntities();
+            var localUser = db.CommunityUser.FirstOrDefault(t => t.moxiID == id);
+            if (localUser == null)
+            {
+                CommunityUser u = new CommunityUser();
+                u.Name = name;
+                u.moxiID = id;
+                //u.UserLoginToken = moxiUser.UserLoginToken;
+                u.joinDate = DateTime.Now;
+                u.userName = username;//email作为帐号;
+                u.avatar = "/Content/img/auto.jpg";
+                Random random = new Random();
+                u.password = random.Next(10000001, 99999999).ToString();//随机密码
+                db.CommunityUser.Add(u);
+                db.SaveChanges();
+                localUser = u;
+                
+            }
+            
+
+
+            ClaimsIdentity _identity = new ClaimsIdentity("ApplicationCookie");
+            _identity.AddClaim(new Claim(ClaimTypes.Name, name));
+            _identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, localUser.ID.ToString()));
+            _identity.AddClaim(new Claim("http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider", "ASP.NET Identity"));
+
+            _identity.AddClaim(new Claim("userName", username));
+
+            _identity.AddClaim(new Claim(ClaimTypes.Role, "user"));
+
+            
+            var auth = new AuthenticationProperties() { IssuedUtc = DateTime.UtcNow, ExpiresUtc = overtime, IsPersistent=true };
+
+
+
+            HttpContext.GetOwinContext().Authentication.SignOut("ApplicationCookie");
+            HttpContext.GetOwinContext().Authentication.SignIn(auth, _identity);
+
+            return true;
+
+        }
+        
 
         [NonAction]
         private bool loginLocal(string userName, string password)

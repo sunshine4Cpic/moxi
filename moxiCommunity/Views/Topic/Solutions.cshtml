@@ -63,7 +63,7 @@
                         解决方案
                     </a>
                 </li>
-                <li><a href="/topic/replys/@Model.ID">评论</a></li>
+                <li>@Html.ActionLink("评论", "replys", "Topic", new { area = "" , id = Model.ID },null) </li>
             </ul>
         </div>
         <div id="myTabContent" class="tab-content">

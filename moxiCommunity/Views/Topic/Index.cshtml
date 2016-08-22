@@ -15,7 +15,7 @@
                 }
                 else
                 {
-                    <a class="btn btn-moxiDefault btn-lg" href="/user/login?ReturnUrl=/"> <span class="glyphicon glyphicon-edit"></span> 发布需求</a>
+                    <a class="btn btn-moxiDefault" href="/user/login?ReturnUrl=/"> <span class="glyphicon glyphicon-edit"></span> 发布需求</a>
                 }
 
             </div>
@@ -53,7 +53,7 @@
             @foreach (var m in Model.nodes.Take(2))
             {
                 <div class="node">
-                    <label class="media-left">@m.proClassName:</label>
+                    <span class="media-left">@m.proClassName:</span>
                     <span class="nodes media-body">
                         @foreach (var n in m.ThirdJsons)
                         {
@@ -69,7 +69,7 @@
                 @foreach (var m in Model.nodes.Skip(2))
                 {
                     <div class="node">
-                        <label class="media-left">@m.proClassName:</label>
+                        <span class="media-left">@m.proClassName:</span>
                         <span class="nodes media-body">
                             @foreach (var n in m.ThirdJsons)
                             {

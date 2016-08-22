@@ -27,7 +27,20 @@ namespace moxiCommunity
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/font-awesome.css",
                       "~/Content/bootstrap.css",
+                      "~/Content/global.css",
+                      "~/Content/index.css",
+                      "~/Content/main.css",
                       "~/Content/site.css"));
+
+
+            bundles.Add(new StyleBundle("~/Content/uploader").Include(
+                      "~/Scripts/plupload/jquery.ui.plupload/css/jquery.ui.plupload.css", "~/Scripts/plupload/jquery-ui.css"));
+
+            //bundles.Add(new ScriptBundle("~/bundles/uploader").Include(
+            //         "~/Scripts/plupload/plupload.full.min.js",
+            //         "~/Scripts/plupload/i18n/zh_CN.js"));
+
+
 
             //bundles.Add(new ScriptBundle("~/bundles/bootstrap-select").Include(
             //          "~/Scripts/bootstrap-select.js"));

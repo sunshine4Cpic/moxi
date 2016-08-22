@@ -3,53 +3,110 @@
     ViewBag.Title = "Index";
 }
 
+
+
 <h2>Index</h2>
+<textarea id="preview3" style="width:100%;max-width:none" rows="30"></textarea><br />
+<span class="fileinput-button">
+    <span class="btn btn-success ">上传</span>
+    <input id="files3" type="file">
+</span>
 
-@using (Html.BeginForm("UploadNode", "Setting", FormMethod.Post))
-{
-   
-    <div class="editor-field">
-        <div><input type="file" name="node" /></div>
+<style>
+     .fileinput-button {
+            position: relative;
+            display: inline-block;
+            overflow: hidden;
+        }
 
-    </div>
+        .fileinput-button input{
+            position: absolute;
+            cursor: pointer;
+            left: 0px;
+            top: 0px;
+            opacity: 0;
+            font-size: 200px;
+            -ms-filter: 'alpha(opacity=0)';
+        }
+</style>
+@section Scripts {
+    @*@Styles.Render("~/Content/uploader")
+    @Scripts.Render("~/bundles/uploader")*@
+    <script>
+
+        //$(function () {
+        //    //实例化一个plupload上传对象
+        //    var uploaderF = new plupload.Uploader({
+        //        browse_button: 'uploadF', //触发文件选择对话框的按钮，为那个元素id
+        //        runtimes: 'html5',
+        //        url: '/UploadFile/userAvatar', // 服务端上传路径
+        //        unique_names: false, // 上传的文件名是否唯一
+        //        max_file_size: '100kb', // 文件上传最大限制。
+        //        //// 是否生成缩略图（仅对图片文件有效）
+        //        //resize: { width: 320, height: 240, quality: 90 },
+        //        ////  这个数组是选择器，就是上传文件时限制的上传文件类型
+        //        //filters: [{ title: "Json files", extensions: "json,txt" }],
+        //        multi_selection: false
+        //    });
+
+        //    uploaderF.init();
+
+
+        //    uploaderF.bind('FilesAdded', function (uploader, files) {
+        //        var arr = ["json", "txt"];
+        //        var f = files[0].getNative();
+        //        var fileExtension = files[0].name.substring(files[0].name.lastIndexOf('.') + 1);
+        //        if(arr.indexOf(fileExtension)<0)
+        //        {
+        //            alert("只能选择" + arr.toString() + "类型文件!");
+        //        }
+        //        //预览
+        //        var p = document.getElementById('preview3');
+        //        var reader = new FileReader();
+        //        reader.onload = (function (file) {
+        //            return function (e) {
+        //                p.value = this.result;
+        //            };
+        //        })(f);
+        //        //读取文件内容
+        //        reader.readAsText(f);
+
+        //    });
+
+        //    uploaderF.bind('Error', function (uploader, errObject) {
+        //        $('#uploadF').removeAttr("disabled");
+        //        $('#uploadF img').hide();
+        //        alert("上传失败,请联系管理员");
+        //    });
+
+        //    //绑定各种事件，并在事件监听函数中做你想做的事
+        //    uploaderF.bind('FileUploaded', function (up, file, result) {
+        //        //$("#userAvatar").attr("src","new_src");
+        //        $('#uploadF').removeAttr("disabled");
+        //        $('#uploadF img').hide();
+        //        alert("上传成功,稍后生效");
+        //    });
+        //});
+
+
+        function fileSelect3(e) {
+            e = e || window.event;
+
+            var files = this.files;
+            var p = document.getElementById('preview3');
+
+            var f = files[0];
+
+            var reader = new FileReader();
+            reader.onload = (function (file) {
+                return function (e) {
+                    p.value = this.result;
+                };
+            })(f);
+            //读取文件内容
+            reader.readAsText(f);
+        }
+        document.getElementById('files3').addEventListener('change', fileSelect3, false);
+    </script>
+
 }
-
-
-<script>
-    //实例化一个plupload上传对象
-    var uploaderF = new plupload.Uploader({
-        browse_button: 'uploadF', //触发文件选择对话框的按钮，为那个元素id
-        runtimes: 'html5',
-        url: '/UploadFile/userFramework', // 服务端上传路径
-        unique_names: false, // 上传的文件名是否唯一
-        max_file_size: '128kb', // 文件上传最大限制。
-        //// 是否生成缩略图（仅对图片文件有效）
-        //resize: { width: 320, height: 240, quality: 90 },
-        ////  这个数组是选择器，就是上传文件时限制的上传文件类型
-        filters: [{ title: "xml", extensions: "xml" }
-        ],
-        multi_selection: false
-
-    });
-    //在实例对象上调用init()方法进行初始化
-    uploaderF.init();
-
-    //绑定各种事件，并在事件监听函数中做你想做的事
-    uploaderF.bind('FilesAdded', function (uploader, files) {
-        //$.messager.progress({ title: '请稍后', msg: '上传中...' });
-        uploader.start();
-
-    });
-
-    uploaderF.bind('Error', function (uploader, errObject) {
-
-        alert("上传失败,请检查xml格式或联系管理员");
-    });
-
-    //绑定各种事件，并在事件监听函数中做你想做的事
-    uploaderF.bind('FileUploaded', function (up, file, result) {
-
-        $("#framework code").html(hljs.highlight("xml", result.response).value);
-
-    });
-</script>

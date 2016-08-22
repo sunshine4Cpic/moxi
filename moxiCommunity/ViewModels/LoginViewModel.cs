@@ -21,7 +21,16 @@ namespace moxiCommunity.ViewModels
     }
 
 
-   
 
+    public class LoginCookieViewModel
+    {
+        
+        public int id { get; set; }
+
+        public string username { get; set; }
+
+        public string name { get; set; }
+        public DateTime overtime { get; set; }
+    }
 
 }
