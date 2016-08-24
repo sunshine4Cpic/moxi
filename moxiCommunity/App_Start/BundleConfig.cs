@@ -27,7 +27,6 @@ namespace moxiCommunity
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/font-awesome.css",
                       "~/Content/bootstrap.css",
-                      "~/Content/global.css",
                       "~/Content/index.css",
                       "~/Content/main.css",
                       "~/Content/site.css"));

@@ -13,7 +13,7 @@ namespace System.Web.Mvc
         public static HtmlString Pagination(this HtmlHelper helper, int page, int total, int row, string getP = "")
         {
 
-            int lastPage = total / row + 1;
+            int lastPage = (total + row - 1) / row;
 
             int prev = page - 1;
             int next = page + 1;

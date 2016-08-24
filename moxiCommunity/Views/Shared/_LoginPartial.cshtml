@@ -1,21 +1,39 @@
 ﻿@using Microsoft.AspNet.Identity
-@if (Request.IsAuthenticated)
-{
-    using (Html.BeginForm("LogOff", "User", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-    {
-    @Html.AntiForgeryToken()
 
-    <ul class="nav navbar-nav navbar-right">
-        <li>
-            @Html.ActionLink("你好，" + User.Identity.GetUserName() + "!", "Demands", "user", routeValues: null, htmlAttributes: new { title = "Manage" })
+
+<ul class="insideNavRight">
+    <li class="welcome">您好，欢迎来到摩西！</li>
+
+    @if (Request.IsAuthenticated)
+    {
+
+
+        <li id="toolbar_left">
+            <a href="/user/Demands">［@User.Identity.GetUserName()］</a>
+            <a href="http://www.moximoxi.net/action.aspx?action=exit">［退出］</a>
         </li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">注销</a></li>
-    </ul>
+
+
     }
-}
-else
-{
-    <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("登录", "Login", "User", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-    </ul>
-}
+    else
+    {
+
+        <li id="toolbar_left">
+            <a class="login loginbonder">【登录】</a>
+            <a class="register" href="http://www.moximoxi.net/login.aspx">【免费注册】</a>
+        </li>
+
+    }
+
+    <li id="toolbar_right"></li>
+    <li>
+        <a class="Shopping" href="http://www.moximoxi.net/buycart.aspx">
+            购物车 <strong style="font-weight:700;">0</strong>  件商品
+        </a>
+    </li>
+    <li>
+        <a class="Online_service" href="http://www.moximoxi.net/CustomSupport.aspx">
+            在线客服 400-660-6366
+        </a>
+    </li>
+</ul>

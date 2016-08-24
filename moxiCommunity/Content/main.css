@@ -1,5 +1,5 @@
 /**/
-html,body{
+.sideNav, .header, .footer{
     width: 100%;
     background-color: #fff;
     font-size: 12px;
@@ -126,13 +126,13 @@ display:none; left:36px; width:200px;font-size:12px; color:#666; line-height:15p
 .header .boxBody .car{ cursor:pointer; position: absolute;left:846px; top:38px;width:90px;height:34px;line-height:34px;background-position:9px -172px;background-color: #fafafa;border-
 
 radius:5px;padding-left:35px;}
-.header .boxBody .qrCode{width:179px;height:94px;border:1px solid #e3e3e3;border-radius:5px;position:absolute;right:0;top:7px;background: url(/images/v1504/qrcode.jpg) no-repeat center 
+.header .boxBody .qrCode{width:179px;height:94px;border:1px solid #e3e3e3;border-radius:5px;position:absolute;right:0;top:7px;background: url(http://www.moximoxi.net/images/v1504/qrcode.jpg) no-repeat center 
 
 center}
 /**/
 .header .boxFoot{height:34px;line-height:34px;border-bottom:2px solid #f86f76}
 .header .boxFoot .aAllPro {width:190px;float:left;position:relative;z-index:2}
-.header .boxFoot .aAllPro h2{line-height:34px;text-align:center;color:#fff;font-size:14px;font-weight:bold;background:#f86f76  url(/images/v1504/arrow_down.png)  165px 15px no-repeat;}
+.header .boxFoot .aAllPro h2{line-height:34px;text-align:center;color:#fff;font-size:14px;font-weight:bold;background:#f86f76  url(http://www.moximoxi.net/images/v1504/arrow_down.png)  165px 15px no-repeat;}
 /*
 .product_detail .header .boxFoot .aAllPro   h2{background:#f86f76  url(/images/v1504/arrow_down.png)  165px 15px no-repeat;}
 */
@@ -202,8 +202,8 @@ height:20px;
 .header .boxFoot .menuA li a.more{width:5px;height:34px;text-indent:-99999px;overflow:hidden;background-position:0 -200px;display: block;}
 
 /*fly*/
-body{background: url(/images/v1504/topbj.jpg) repeat-x top center;}
-.icon{background-image:url(/images/v1504/icon.png);background-repeat: no-repeat;padding-left:18px;}
+body{background: url(http://www.moximoxi.net/images/v1504/topbj.jpg) repeat-x top center;}
+.icon{background-image:url(http://www.moximoxi.net/images/v1504/icon.png);background-repeat: no-repeat;padding-left:18px;}
 .col{background-position:0 0;}
 .att{background-position:0 -28px;}
 .order{background-position:0 -60px;padding:0 20px 0 18px;}
@@ -261,7 +261,7 @@ body{background: url(/images/v1504/topbj.jpg) repeat-x top center;}
 }
 .kv_dot{
     display: inline-block;
-    background: url(/images/v1504/kv_dot.png) no-repeat right top;
+    background: url(http://www.moximoxi.net/images/v1504/kv_dot.png) no-repeat right top;
     width: 16px;
     height: 16px;
     margin: 0 3px;
@@ -352,16 +352,16 @@ body{background: url(/images/v1504/topbj.jpg) repeat-x top center;}
     line-height: 20px;
 }
 .buy_ico_01{
-    background-image: url(/images/v1504/buy_ico_01.png);
+    background-image: url(http://www.moximoxi.net/images/v1504/buy_ico_01.png);
 }
 .buy_ico_02{
     width: 160px;
-    background-image: url(/images/v1504/buy_ico_02.png) ;
+    background-image: url(http://www.moximoxi.net/images/v1504/buy_ico_02.png) ;
     padding-left: 70px;
 }
 .buy_ico_03{
     width: 180px;
-    background-image: url(/images/v1504/buy_ico_03.png);
+    background-image: url(http://www.moximoxi.net/images/v1504/buy_ico_03.png);
     padding-left: 50px;
 }
 .main_con{
@@ -400,7 +400,7 @@ body{background: url(/images/v1504/topbj.jpg) repeat-x top center;}
     vertical-align:middle;
 }
 .totop{
-    background:url(../../images/topbg.png);
+    background:url(http://www.moximoxi.net/images/topbg.png);
 }
 
 
@@ -408,7 +408,7 @@ body{background: url(/images/v1504/topbj.jpg) repeat-x top center;}
 .go_top
 {
     width:30px;
-    background: url(/images/v1504/go_top.png) no-repeat center center;
+    background: url(http://www.moximoxi.net/images/v1504/go_top.png) no-repeat center center;
 }
 .f_fast_link a.active,.f_fast_link a:hover{
     color: #fff;
@@ -431,7 +431,7 @@ body{background: url(/images/v1504/topbj.jpg) repeat-x top center;}
 .buy_title .ico01{
     display: inline-block;
     color:Red;
-    background: url(/images/v1504/ico_01.png) no-repeat left center;
+    background: url(http://www.moximoxi.net/images/v1504/ico_01.png) no-repeat left center;
     padding-left: 18px;
     margin-left: 18px;
     font-style: italic;
@@ -1234,37 +1234,37 @@ body{background: url(/images/v1504/topbj.jpg) repeat-x top center;}
     text-decoration: none;
 }
 .list_00{
-    background-image: url(/images/v1504/sider0.png);
+    background-image: url(http://www.moximoxi.net/images/v1504/sider0.png);
     padding-top: 46px;
 }
 .list_01{
-    background-image: url(/images/v1504/sider01.png);
+    background-image: url(http://www.moximoxi.net/images/v1504/sider01.png);
     padding-top: 46px;
 }
 .list_02{
-    background-image: url(/images/v1504/sider02.png);
+    background-image: url(http://www.moximoxi.net/images/v1504/sider02.png);
     padding-top: 42px;
 }
 .list_03{
-    background-image: url(/images/v1504/sider03.png);
+    background-image: url(http://www.moximoxi.net/images/v1504/sider03.png);
     padding-top: 42px;
 }
 .list_04{
-    background-image: url(/images/v1504/sider04.png);
+    background-image: url(http://www.moximoxi.net/images/v1504/sider04.png);
     padding-top: 45px;
 }
 .list_05{
-    background-image: url(/images/v1504/sider05.png);
+    background-image: url(http://www.moximoxi.net/images/v1504/sider05.png);
     padding-top: 42px;
 }
 .list_06{
     margin-top: 20px;
-    background-image: url(/images/v1504/sider06.png);
+    background-image: url(http://www.moximoxi.net/images/v1504/sider06.png);
     background-position: center center;
     padding: 20px 0;
 }
 .list_07{
-    background-image: url(/images/v1504/sider07.png);
+    background-image: url(http://www.moximoxi.net/images/v1504/sider07.png);
     background-position: center center;
     padding: 20px 0;
 }

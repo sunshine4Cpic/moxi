@@ -76,8 +76,7 @@ namespace moxiCommunity.Controllers
         
 
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpGet]
         public ActionResult LogOff()
         {
             HttpContext.GetOwinContext().Authentication.SignOut("ApplicationCookie");
