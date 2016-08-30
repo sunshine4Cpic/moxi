@@ -49,7 +49,8 @@
                 <div class="pull-right">预算：@Model.budget 元</div>
                 @if (User.IsInRole("admin") && Model.state != 2)
                 {
-                    <button class="btn btn-warning pull-left AE" topicid="@Model.ID"><i class="fa fa-edit"></i> 管理员修改</button>
+                    <a class="btn btn-danger" method="post" confirm="确认删除该需求?" href="/topic/delete/@Model.ID" ><i class="fa fa-edit"></i> 删除</a>
+                    <button class="btn btn-warning AE" topicid="@Model.ID"><i class="fa fa-edit"></i> 管理员修改</button>
                 }
 
 
@@ -100,13 +101,13 @@
                                         <b>商品链接：</b> <a target="_blank" class="gl" href="@s.goodsLink"> @s.goodsLink</a>
                                         @if (Model.AdoptSolution.goods.Count > 1)
                                         {
-                                            <a href="#" class="bwy">帮我买</a>
+                                            <button class="bwy" data-href="@s.goodsLink">单个购买</button>
                                         }
                                     </p>
                                     <p> 推荐理由： @s.body</p>
                                 }
 
-                                <a class="btn btn-moxiDefault buy" href="http://www.moximoxi.net/ajax/AjaxDaigou.aspx">采用该解决方案</a>
+                                <button class="btn btn-moxiDefault buy" href="http://www.moximoxi.net/ajax/AjaxDaigou.aspx">全部购买</button>
 
                             </div>
                         </div>
@@ -149,7 +150,7 @@
                                         <b>商品链接：</b> <a target="_blank" class="gl" href="@s.goodsLink"> @s.goodsLink</a>
                                         @if (m.goods.Count > 1)
                                         {
-                                            <a href="#" class="bwy">帮我买</a>
+                                            <button class="bwy" data-href="@s.goodsLink">单个购买</button>
                                         }
 
                                     </p>
@@ -161,12 +162,12 @@
                                 }
                                 else
                                 {
-                                    <a class="btn btn-moxiDefault buy" href="http://www.moximoxi.net/ajax/AjaxDaigou.aspx">采用该解决方案</a>
+                                    <button class="btn btn-moxiDefault buy">全部购买</button>
                                 }
 
                                 @if (User.IsInRole("admin") && m.state != 2)
                                 {
-                                    <button class="btn btn-warning AD" data-toggle="modal" data-target="#SolutionHandleModal" title="删除解决方案" data-id="@m.ID"><i class="fa fa-trash"></i> 管理员删除</button>
+                                    <button class="btn btn-warning AD" data-toggle="modal" onclick='$("#SolutionHandleModal #bsID").val(@m.ID)' data-target="#SolutionHandleModal" title="删除解决方案" data-id="@m.ID"><i class="fa fa-trash"></i> 管理员删除</button>
                                 }
 
                                 <hr />
@@ -234,8 +235,9 @@
             })
 
             $(".btn.buy").click(function () {
+                var actionUrl="http://www.moximoxi.net/ajax/AjaxDaigou.aspx";
                 var temp = document.createElement("form");
-                temp.action = this.href;
+                temp.action = actionUrl;
                 temp.method = "post";
                 temp.style.display = "none";
 
@@ -259,8 +261,33 @@
 
                 document.body.appendChild(temp);
                 temp.submit();
-                return false;
-            })
+            });
+
+            $(".bwy").click(function () {
+                var actionUrl="http://www.moximoxi.net/ajax/AjaxDaigou.aspx";
+                var temp = document.createElement("form");
+                temp.action = actionUrl;
+                temp.method = "post";
+                temp.style.display = "none";
+
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "Method";
+                input.value = "GetDaigouListBuy";
+                temp.appendChild(input);
+
+                var strT = $(this).data('href');
+                var input2 = document.createElement("input");
+                input2.type = "text";
+                input2.name = "FromData";
+                input2.value = strT;
+                temp.appendChild(input2);
+
+                document.body.appendChild(temp);
+                temp.submit();
+            });
+
+          
 
             //$('#SolutionWarnForm').submit(function () {
             //    jQuery.ajax({

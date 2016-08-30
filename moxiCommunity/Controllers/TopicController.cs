@@ -675,7 +675,16 @@ namespace moxiCommunity.Controllers
             return PartialView("_mySolutions", model);
         }
 
-
+        [HttpPost]
+        [Authorize(Roles ="admin")]
+        public ActionResult delete(int id)
+        {
+            moxiAgentBuyEntities db = new moxiAgentBuyEntities();
+            var topic =  db.Topic.First(t => t.ID == id);
+            topic.state = 0;
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
 
 
 

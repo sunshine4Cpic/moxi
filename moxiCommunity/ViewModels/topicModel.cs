@@ -186,12 +186,12 @@ namespace moxiCommunity.ViewModels
         [Required]
         [Display(Name = "商品链接：")]
         [RegularExpression(@"http(s)?://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?", ErrorMessage="必须为超链接")]
-        [StringLength(200, MinimumLength = 10, ErrorMessage = "标题必须在10~200个字")]
+        [StringLength(4000, MinimumLength = 10, ErrorMessage = "{0}必须在{2}~{1}个字")]
         public string goodsLink { get; set; }
 
         [Required]
         [Display(Name = "推荐理由：")]
-        [StringLength(500, MinimumLength = 10, ErrorMessage = "推荐理由必须在10~500个字")]
+        [StringLength(500, MinimumLength = 10, ErrorMessage = "{0}必须在{2}~{1}个字")]
         public string body { get; set; }
     }
 
@@ -203,12 +203,12 @@ namespace moxiCommunity.ViewModels
         [Required]
         [Display(Name = "商品链接：")]
         [RegularExpression(@"http(s)?://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?", ErrorMessage = "必须为超链接")]
-        [StringLength(200, MinimumLength = 10, ErrorMessage = "标题必须在10~200个字")]
+        [StringLength(4000, MinimumLength = 10, ErrorMessage = "{0}必须在{2}~{1}个字")]
         public string goodsLink { get; set; }
 
         [Required]
         [Display(Name = "推荐理由：")]
-        [StringLength(500, MinimumLength = 10, ErrorMessage = "推荐理由必须在10~500个字")]
+        [StringLength(500, MinimumLength = 10, ErrorMessage = "{0}必须在{2}~{1}个字")]
         public string body { get; set; }
     }
 

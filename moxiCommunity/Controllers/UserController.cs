@@ -14,6 +14,11 @@ namespace moxiCommunity.Controllers
 {
     public class UserController : Controller
     {
+        [AllowAnonymous]
+        public ActionResult Login2(string ReturnUrl)
+        {
+            return Redirect("http://www.moximoxi.net/login.aspx");
+        }
 
         [AllowAnonymous]
         public ActionResult Login(string ReturnUrl)
@@ -53,7 +58,7 @@ namespace moxiCommunity.Controllers
             return Redirect("/");
         }
 
-        public ActionResult Login302()
+        public ActionResult Login302(string ReturnUrl)
         {
             var logincookie = HttpContext.Request.Cookies["logincookie"];
 
@@ -69,9 +74,10 @@ namespace moxiCommunity.Controllers
             {
                 //出错处理
             }
-            
-
-            return Redirect("/");
+            if(ReturnUrl==null)
+                return Redirect("http://www.moximoxi.net/");
+            return Redirect(ReturnUrl);
+            //
         }
         
 
