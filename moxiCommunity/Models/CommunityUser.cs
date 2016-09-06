@@ -24,11 +24,11 @@ public partial class CommunityUser
 
         this.BuySolution = new HashSet<BuySolution>();
 
+        this.ReplyAgree = new HashSet<ReplyAgree>();
+
         this.Topic = new HashSet<Topic>();
 
         this.TopicReply = new HashSet<TopicReply>();
-
-        this.ReplyAgree = new HashSet<ReplyAgree>();
 
     }
 
@@ -59,15 +59,15 @@ public partial class CommunityUser
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
+    public virtual ICollection<ReplyAgree> ReplyAgree { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
     public virtual ICollection<Topic> Topic { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
     public virtual ICollection<TopicReply> TopicReply { get; set; }
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-
-    public virtual ICollection<ReplyAgree> ReplyAgree { get; set; }
 
 }
 

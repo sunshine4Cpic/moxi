@@ -1,0 +1,18 @@
+﻿
+
+@foreach (var b in moxiCommunity.Controllers.CacheExtend.banners) {
+    <div class="panel panel-default mybanner">
+        <div class="panel-heading">@b.name</div>
+        <ul class="list-group">
+            @foreach (var n in b.nodes) {
+                <li class="list-group-item">
+                    <a href="@n.url">
+                        <img src="@n.img" />
+                        <div>@n.txt</div>
+                        <div>￥<span class="moxi-color">@n.price</span></div>
+                </a>
+            </li>
+            }
+        </ul>
+    </div>
+}

@@ -55,11 +55,11 @@ public partial class Topic
 
     public virtual ICollection<BuySolution> BuySolution { get; set; }
 
-    public virtual CommunityUser CommunityUser { get; set; }
-
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
     public virtual ICollection<TopicReply> TopicReply { get; set; }
+
+    public virtual CommunityUser CommunityUser { get; set; }
 
 }
 

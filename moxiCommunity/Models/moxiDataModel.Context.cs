@@ -36,8 +36,6 @@ public partial class moxiAgentBuyEntities : DbContext
 
     public virtual DbSet<BuySolution> BuySolution { get; set; }
 
-    public virtual DbSet<CommunityUser> CommunityUser { get; set; }
-
     public virtual DbSet<SolutionGoods> SolutionGoods { get; set; }
 
     public virtual DbSet<Topic> Topic { get; set; }
@@ -45,6 +43,8 @@ public partial class moxiAgentBuyEntities : DbContext
     public virtual DbSet<TopicReply> TopicReply { get; set; }
 
     public virtual DbSet<ReplyAgree> ReplyAgree { get; set; }
+
+    public virtual DbSet<CommunityUser> CommunityUser { get; set; }
 
 }
 

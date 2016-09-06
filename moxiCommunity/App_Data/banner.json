@@ -1,0 +1,31 @@
+﻿[
+  {
+    "name": "商品推荐",
+    "nodes": [
+      {
+        "url": "http://goods0.moximoxi.net/goods-57721.html",
+        "img": "http://images.moximoxi.com/column/201608/86636082352183833231.jpg",
+        "txt": "JAPAN HEALTH ONE 浓缩深海鲨鱼肝油（儿童） 60粒装（约30日分）",
+        "price": 264.46
+      },
+      {
+        "url": "http://goods0.moximoxi.net/goods-47429.html",
+        "img": "http://images.moximoxi.com/column/201608/85636072102477041404.jpg",
+        "txt": "【日本直邮】让一切消失-爱吃的秘密 白芸豆减肥 120粒",
+        "price": 97.47
+      },
+      {
+        "url": "http://goods0.moximoxi.net/goods-43630.html",
+        "img": "http://images.moximoxi.com/column/201608/85636072160282041404.jpg",
+        "txt": "【包邮】【中国现货】资生堂/Shiseido 安热沙SPF50金瓶防晒霜 60ml",
+        "price": 169.02
+      },
+      {
+        "url": "http://goods0.moximoxi.net/goods-50973.html",
+        "img": "http://images.moximoxi.com/column/201605/96635997138125181857.jpg",
+        "txt": "【日本直邮】DHC/蝶翠诗睫毛增长液6.5ML+（赠送化妆水小样30ML）限量套装1个",
+        "price": 70.39
+      }
+    ]
+  }
+]

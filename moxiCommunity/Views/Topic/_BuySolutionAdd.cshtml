@@ -44,12 +44,8 @@
                 </div>
 
             }
-        }
-        else
-        {
-            <div style="padding:20px;">
-                需要 <a class="btn btn-danger" href="http://www.moximoxi.net/login.aspx">登录</a> 后方可回复。
-            </div>
+        } else {
+            @Html.Partial("_LoginButton")
         }
 
 

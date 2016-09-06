@@ -803,3 +803,15 @@ a {
 #BuySolutionAddForm #goods-list .form-group > div{
     padding-right:5px;
 }
+.mybanner .panel-heading{
+    padding:5px 10px;
+    background-color:white;
+    border-bottom:1px solid #ff3d3b;
+}
+
+.mybanner img { width:100%; display:block;}
+
+.mybanner a:hover {
+    text-decoration: underline;
+    color:#333;
+}

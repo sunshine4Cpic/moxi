@@ -30,9 +30,9 @@ public partial class ReplyAgree
 
 
 
-    public virtual CommunityUser CommunityUser { get; set; }
-
     public virtual TopicReply TopicReply { get; set; }
+
+    public virtual CommunityUser CommunityUser { get; set; }
 
 }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using moxiCommunity.Controllers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -146,7 +147,7 @@ namespace System.Web.Mvc
         {
             StringBuilder sb = new StringBuilder();
 
-            var nodes = moxiCommunity.Controllers.TopicController.nodes;
+            var nodes = CacheExtend.nodes;
 
 
 
@@ -194,7 +195,7 @@ namespace System.Web.Mvc
         {
             StringBuilder sb = new StringBuilder();
 
-            var nodes = moxiCommunity.Controllers.TopicController.nodes;
+            var nodes = CacheExtend.nodes;
 
             sb.Append("<div class='node-select'>");
 

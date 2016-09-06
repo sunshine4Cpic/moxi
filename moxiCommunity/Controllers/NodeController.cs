@@ -16,7 +16,7 @@ namespace moxiCommunity.Controllers
         [Route("node/{id:int}")]
         public ActionResult Node(int id)
         {
-            var nodes =  TopicController.nodes;
+            var nodes =  CacheExtend.nodes;
             return Json(nodes.FirstOrDefault(t => t.proClassID == id), JsonRequestBehavior.AllowGet);
             
         }

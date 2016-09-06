@@ -29,12 +29,12 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="moxiID" Type="int" />
-          <Property Name="Name" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="UserLoginToken" Type="nvarchar" MaxLength="20" />
           <Property Name="joinDate" Type="datetime" Nullable="false" />
           <Property Name="avatar" Type="nvarchar" MaxLength="50" />
           <Property Name="lv" Type="int" Nullable="false" />
-          <Property Name="userName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="userName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="password" Type="nvarchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="ReplyAgree">
@@ -53,8 +53,8 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="sID" Type="int" Nullable="false" />
-          <Property Name="goodsLink" Type="nvarchar" MaxLength="200" Nullable="false" />
-          <Property Name="body" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="goodsLink" Type="nvarchar" MaxLength="4000" Nullable="false" />
+          <Property Name="body" Type="nvarchar" MaxLength="1000" Nullable="false" />
         </EntityType>
         <EntityType Name="Topic">
           <Key>
@@ -242,7 +242,6 @@
         <EntityContainer Name="moxiAgentBuyEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="BuyDemand" EntityType="moxiAgentBuyModel.BuyDemand" />
           <EntitySet Name="BuySolution" EntityType="moxiAgentBuyModel.BuySolution" />
-          <EntitySet Name="CommunityUser" EntityType="moxiAgentBuyModel.CommunityUser" />
           <EntitySet Name="SolutionGoods" EntityType="moxiAgentBuyModel.SolutionGoods" />
           <EntitySet Name="Topic" EntityType="moxiAgentBuyModel.Topic" />
           <EntitySet Name="TopicReply" EntityType="moxiAgentBuyModel.TopicReply" />
@@ -254,13 +253,27 @@
             <End Role="Topic" EntitySet="Topic" />
             <End Role="BuySolution" EntitySet="BuySolution" />
           </AssociationSet>
+          <AssociationSet Name="FK_SolutionGoods_sID" Association="moxiAgentBuyModel.FK_SolutionGoods_sID">
+            <End Role="BuySolution" EntitySet="BuySolution" />
+            <End Role="SolutionGoods" EntitySet="SolutionGoods" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TopicReply_topicID" Association="moxiAgentBuyModel.FK_TopicReply_topicID">
+            <End Role="Topic" EntitySet="Topic" />
+            <End Role="TopicReply" EntitySet="TopicReply" />
+          </AssociationSet>
+          <EntitySet Name="ReplyAgree" EntityType="moxiAgentBuyModel.ReplyAgree" />
+          <AssociationSet Name="FK_ReplyAgree_replyID" Association="moxiAgentBuyModel.FK_ReplyAgree_replyID">
+            <End Role="TopicReply" EntitySet="TopicReply" />
+            <End Role="ReplyAgree" EntitySet="ReplyAgree" />
+          </AssociationSet>
+          <EntitySet Name="CommunityUser" EntityType="moxiAgentBuyModel.CommunityUser" />
           <AssociationSet Name="FK_BuySolution_userID" Association="moxiAgentBuyModel.FK_BuySolution_userID">
             <End Role="CommunityUser" EntitySet="CommunityUser" />
             <End Role="BuySolution" EntitySet="BuySolution" />
           </AssociationSet>
-          <AssociationSet Name="FK_SolutionGoods_sID" Association="moxiAgentBuyModel.FK_SolutionGoods_sID">
-            <End Role="BuySolution" EntitySet="BuySolution" />
-            <End Role="SolutionGoods" EntitySet="SolutionGoods" />
+          <AssociationSet Name="FK_ReplyAgree_userID" Association="moxiAgentBuyModel.FK_ReplyAgree_userID">
+            <End Role="CommunityUser" EntitySet="CommunityUser" />
+            <End Role="ReplyAgree" EntitySet="ReplyAgree" />
           </AssociationSet>
           <AssociationSet Name="FK_Topic_userID" Association="moxiAgentBuyModel.FK_Topic_userID">
             <End Role="CommunityUser" EntitySet="CommunityUser" />
@@ -269,19 +282,6 @@
           <AssociationSet Name="FK_TopicReply_userID" Association="moxiAgentBuyModel.FK_TopicReply_userID">
             <End Role="CommunityUser" EntitySet="CommunityUser" />
             <End Role="TopicReply" EntitySet="TopicReply" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TopicReply_topicID" Association="moxiAgentBuyModel.FK_TopicReply_topicID">
-            <End Role="Topic" EntitySet="Topic" />
-            <End Role="TopicReply" EntitySet="TopicReply" />
-          </AssociationSet>
-          <EntitySet Name="ReplyAgree" EntityType="moxiAgentBuyModel.ReplyAgree" />
-          <AssociationSet Name="FK_ReplyAgree_userID" Association="moxiAgentBuyModel.FK_ReplyAgree_userID">
-            <End Role="CommunityUser" EntitySet="CommunityUser" />
-            <End Role="ReplyAgree" EntitySet="ReplyAgree" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ReplyAgree_replyID" Association="moxiAgentBuyModel.FK_ReplyAgree_replyID">
-            <End Role="TopicReply" EntitySet="TopicReply" />
-            <End Role="ReplyAgree" EntitySet="ReplyAgree" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="BuyDemand">
@@ -303,26 +303,8 @@
           <Property Name="creatDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="deleteBody" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Topic" Relationship="moxiAgentBuyModel.FK_BuySolution_topicID" FromRole="BuySolution" ToRole="Topic" />
-          <NavigationProperty Name="CommunityUser" Relationship="moxiAgentBuyModel.FK_BuySolution_userID" FromRole="BuySolution" ToRole="CommunityUser" />
           <NavigationProperty Name="SolutionGoods" Relationship="moxiAgentBuyModel.FK_SolutionGoods_sID" FromRole="BuySolution" ToRole="SolutionGoods" />
-        </EntityType>
-        <EntityType Name="CommunityUser">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="moxiID" Type="Int32" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="UserLoginToken" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="joinDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="avatar" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="lv" Type="Int32" Nullable="false" />
-          <Property Name="userName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="password" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="BuySolution" Relationship="moxiAgentBuyModel.FK_BuySolution_userID" FromRole="CommunityUser" ToRole="BuySolution" />
-          <NavigationProperty Name="Topic" Relationship="moxiAgentBuyModel.FK_Topic_userID" FromRole="CommunityUser" ToRole="Topic" />
-          <NavigationProperty Name="TopicReply" Relationship="moxiAgentBuyModel.FK_TopicReply_userID" FromRole="CommunityUser" ToRole="TopicReply" />
-          <NavigationProperty Name="ReplyAgree" Relationship="moxiAgentBuyModel.FK_ReplyAgree_userID" FromRole="CommunityUser" ToRole="ReplyAgree" />
+          <NavigationProperty Name="CommunityUser" Relationship="moxiAgentBuyModel.FK_BuySolution_userID" FromRole="BuySolution" ToRole="CommunityUser" />
         </EntityType>
         <EntityType Name="SolutionGoods">
           <Key>
@@ -330,8 +312,8 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="sID" Type="Int32" Nullable="false" />
-          <Property Name="goodsLink" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="body" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="goodsLink" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="body" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="BuySolution" Relationship="moxiAgentBuyModel.FK_SolutionGoods_sID" FromRole="SolutionGoods" ToRole="BuySolution" />
         </EntityType>
         <EntityType Name="Topic">
@@ -349,8 +331,8 @@
           <Property Name="state" Type="Int32" Nullable="false" />
           <NavigationProperty Name="BuyDemand" Relationship="moxiAgentBuyModel.FK_BuyDemand_topicID" FromRole="Topic" ToRole="BuyDemand" />
           <NavigationProperty Name="BuySolution" Relationship="moxiAgentBuyModel.FK_BuySolution_topicID" FromRole="Topic" ToRole="BuySolution" />
-          <NavigationProperty Name="CommunityUser" Relationship="moxiAgentBuyModel.FK_Topic_userID" FromRole="Topic" ToRole="CommunityUser" />
           <NavigationProperty Name="TopicReply" Relationship="moxiAgentBuyModel.FK_TopicReply_topicID" FromRole="Topic" ToRole="TopicReply" />
+          <NavigationProperty Name="CommunityUser" Relationship="moxiAgentBuyModel.FK_Topic_userID" FromRole="Topic" ToRole="CommunityUser" />
         </EntityType>
         <EntityType Name="TopicReply">
           <Key>
@@ -363,9 +345,9 @@
           <Property Name="creatDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="floor" Type="Int32" Nullable="false" />
           <Property Name="state" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="CommunityUser" Relationship="moxiAgentBuyModel.FK_TopicReply_userID" FromRole="TopicReply" ToRole="CommunityUser" />
           <NavigationProperty Name="Topic" Relationship="moxiAgentBuyModel.FK_TopicReply_topicID" FromRole="TopicReply" ToRole="Topic" />
           <NavigationProperty Name="ReplyAgree" Relationship="moxiAgentBuyModel.FK_ReplyAgree_replyID" FromRole="TopicReply" ToRole="ReplyAgree" />
+          <NavigationProperty Name="CommunityUser" Relationship="moxiAgentBuyModel.FK_TopicReply_userID" FromRole="TopicReply" ToRole="CommunityUser" />
         </EntityType>
         <Association Name="FK_BuyDemand_topicID">
           <End Type="moxiAgentBuyModel.Topic" Role="Topic" Multiplicity="1" />
@@ -391,6 +373,72 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SolutionGoods_sID">
+          <End Type="moxiAgentBuyModel.BuySolution" Role="BuySolution" Multiplicity="1" />
+          <End Type="moxiAgentBuyModel.SolutionGoods" Role="SolutionGoods" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BuySolution">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SolutionGoods">
+              <PropertyRef Name="sID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TopicReply_topicID">
+          <End Type="moxiAgentBuyModel.Topic" Role="Topic" Multiplicity="1" />
+          <End Type="moxiAgentBuyModel.TopicReply" Role="TopicReply" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Topic">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TopicReply">
+              <PropertyRef Name="topicID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ReplyAgree">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="replyID" Type="Int32" Nullable="false" />
+          <Property Name="userID" Type="Int32" />
+          <Property Name="IP" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="agree" Type="Boolean" />
+          <NavigationProperty Name="TopicReply" Relationship="moxiAgentBuyModel.FK_ReplyAgree_replyID" FromRole="ReplyAgree" ToRole="TopicReply" />
+          <NavigationProperty Name="CommunityUser" Relationship="moxiAgentBuyModel.FK_ReplyAgree_userID" FromRole="ReplyAgree" ToRole="CommunityUser" />
+        </EntityType>
+        <Association Name="FK_ReplyAgree_replyID">
+          <End Type="moxiAgentBuyModel.TopicReply" Role="TopicReply" Multiplicity="1" />
+          <End Type="moxiAgentBuyModel.ReplyAgree" Role="ReplyAgree" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TopicReply">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ReplyAgree">
+              <PropertyRef Name="replyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CommunityUser">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="moxiID" Type="Int32" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserLoginToken" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="joinDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="avatar" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="lv" Type="Int32" Nullable="false" />
+          <Property Name="userName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="BuySolution" Relationship="moxiAgentBuyModel.FK_BuySolution_userID" FromRole="CommunityUser" ToRole="BuySolution" />
+          <NavigationProperty Name="ReplyAgree" Relationship="moxiAgentBuyModel.FK_ReplyAgree_userID" FromRole="CommunityUser" ToRole="ReplyAgree" />
+          <NavigationProperty Name="Topic" Relationship="moxiAgentBuyModel.FK_Topic_userID" FromRole="CommunityUser" ToRole="Topic" />
+          <NavigationProperty Name="TopicReply" Relationship="moxiAgentBuyModel.FK_TopicReply_userID" FromRole="CommunityUser" ToRole="TopicReply" />
+        </EntityType>
         <Association Name="FK_BuySolution_userID">
           <End Type="moxiAgentBuyModel.CommunityUser" Role="CommunityUser" Multiplicity="1" />
           <End Type="moxiAgentBuyModel.BuySolution" Role="BuySolution" Multiplicity="*" />
@@ -403,15 +451,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SolutionGoods_sID">
-          <End Type="moxiAgentBuyModel.BuySolution" Role="BuySolution" Multiplicity="1" />
-          <End Type="moxiAgentBuyModel.SolutionGoods" Role="SolutionGoods" Multiplicity="*" />
+        <Association Name="FK_ReplyAgree_userID">
+          <End Type="moxiAgentBuyModel.CommunityUser" Role="CommunityUser" Multiplicity="0..1" />
+          <End Type="moxiAgentBuyModel.ReplyAgree" Role="ReplyAgree" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="BuySolution">
+            <Principal Role="CommunityUser">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="SolutionGoods">
-              <PropertyRef Name="sID" />
+            <Dependent Role="ReplyAgree">
+              <PropertyRef Name="userID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -439,54 +487,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_TopicReply_topicID">
-          <End Type="moxiAgentBuyModel.Topic" Role="Topic" Multiplicity="1" />
-          <End Type="moxiAgentBuyModel.TopicReply" Role="TopicReply" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Topic">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="TopicReply">
-              <PropertyRef Name="topicID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="ReplyAgree">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="replyID" Type="Int32" Nullable="false" />
-          <Property Name="userID" Type="Int32" />
-          <Property Name="IP" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="agree" Type="Boolean" />
-          <NavigationProperty Name="CommunityUser" Relationship="moxiAgentBuyModel.FK_ReplyAgree_userID" FromRole="ReplyAgree" ToRole="CommunityUser" />
-          <NavigationProperty Name="TopicReply" Relationship="moxiAgentBuyModel.FK_ReplyAgree_replyID" FromRole="ReplyAgree" ToRole="TopicReply" />
-        </EntityType>
-        <Association Name="FK_ReplyAgree_userID">
-          <End Type="moxiAgentBuyModel.CommunityUser" Role="CommunityUser" Multiplicity="0..1" />
-          <End Type="moxiAgentBuyModel.ReplyAgree" Role="ReplyAgree" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CommunityUser">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="ReplyAgree">
-              <PropertyRef Name="userID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ReplyAgree_replyID">
-          <End Type="moxiAgentBuyModel.TopicReply" Role="TopicReply" Multiplicity="1" />
-          <End Type="moxiAgentBuyModel.ReplyAgree" Role="ReplyAgree" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TopicReply">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="ReplyAgree">
-              <PropertyRef Name="replyID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -509,21 +509,6 @@
                 <ScalarProperty Name="state" ColumnName="state" />
                 <ScalarProperty Name="userID" ColumnName="userID" />
                 <ScalarProperty Name="topicID" ColumnName="topicID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CommunityUser">
-            <EntityTypeMapping TypeName="moxiAgentBuyModel.CommunityUser">
-              <MappingFragment StoreEntitySet="CommunityUser">
-                <ScalarProperty Name="password" ColumnName="password" />
-                <ScalarProperty Name="userName" ColumnName="userName" />
-                <ScalarProperty Name="lv" ColumnName="lv" />
-                <ScalarProperty Name="avatar" ColumnName="avatar" />
-                <ScalarProperty Name="joinDate" ColumnName="joinDate" />
-                <ScalarProperty Name="UserLoginToken" ColumnName="UserLoginToken" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="moxiID" ColumnName="moxiID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -573,6 +558,21 @@
                 <ScalarProperty Name="IP" ColumnName="IP" />
                 <ScalarProperty Name="userID" ColumnName="userID" />
                 <ScalarProperty Name="replyID" ColumnName="replyID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CommunityUser">
+            <EntityTypeMapping TypeName="moxiAgentBuyModel.CommunityUser">
+              <MappingFragment StoreEntitySet="CommunityUser">
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="userName" ColumnName="userName" />
+                <ScalarProperty Name="lv" ColumnName="lv" />
+                <ScalarProperty Name="avatar" ColumnName="avatar" />
+                <ScalarProperty Name="joinDate" ColumnName="joinDate" />
+                <ScalarProperty Name="UserLoginToken" ColumnName="UserLoginToken" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="moxiID" ColumnName="moxiID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -15,7 +15,7 @@
                 }
                 else
                 {
-                    <a class="btn btn-moxiDefault" href="http://www.moximoxi.net/login.aspx"> <span class="glyphicon glyphicon-edit"></span> 发布需求</a>
+                    <a class="btn btn-moxiDefault" href="http://www.moximoxi.net/login.aspx?returnurl=http://club.moximoxi.net"> <span class="glyphicon glyphicon-edit"></span> 发布需求</a>
                 }
 
             </div>
@@ -96,7 +96,14 @@
         <p><img src="~/Content/img/cry_03.png" /></p>
         <p>抱歉，没有搜到与您匹配的需求</p>
         <p class="moxi-active">您可以发布需求，让摩西帮你解决</p>
-        <button class="btn btn-moxiDefault" style="width:120px;height:32px;" data-toggle="modal" data-target="#myModal"> 发布需求</button>
+
+        @if (User.Identity.IsAuthenticated) {
+            <button class="btn btn-moxiDefault" style="width:120px;height:32px;" data-toggle="modal" data-target="#myModal"> 发布需求</button>
+        } else {
+            <a class="btn btn-moxiDefault" style="width:120px;height:32px;" href="http://www.moximoxi.net/login.aspx?returnurl=http://club.moximoxi.net"> 发布需求</a>
+        }
+
+        
 
     </div>
 }

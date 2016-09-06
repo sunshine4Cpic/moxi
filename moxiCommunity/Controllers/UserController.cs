@@ -70,11 +70,11 @@ namespace moxiCommunity.Controllers
 
                 moxiRegister(lg.username, lg.name, lg.id, lg.overtime);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                //出错处理
+
             }
-            if(ReturnUrl==null)
+            if (ReturnUrl==null)
                 return Redirect("http://www.moximoxi.net/");
             return Redirect(ReturnUrl);
             //

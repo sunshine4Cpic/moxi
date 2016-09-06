@@ -166,9 +166,11 @@
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Extensions\Extend_User.cs" />
     <Compile Include="Extensions\HtmlExtensions.cs" />
+    <Compile Include="Extensions\CacheExtend.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\banner.cs" />
     <Compile Include="Models\BuyDemand.cs">
       <DependentUpon>moxiDataModel.tt</DependentUpon>
     </Compile>
@@ -226,13 +228,16 @@
     <Content Include="Content\img\auto.jpg" />
     <Content Include="Content\img\cry_03.png" />
     <Content Include="Content\img\icon-mark_6324efc.png" />
+    <Content Include="Content\img\return.png" />
     <Content Include="Content\img\发布_03.png" />
     <Content Include="Content\img\close.png" />
     <Content Include="Content\index.css" />
     <Content Include="Content\main.css" />
     <Content Include="Content\moxi_footer.png" />
     <Content Include="Content\moxi_head.png" />
+    <Content Include="App_Data\banner.json" />
     <None Include="App_Data\node.json" />
+    <Content Include="Content\Site.Mobile.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -315,7 +320,9 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -349,12 +356,17 @@
     <Content Include="Views\Topic\_mySolutions.cshtml" />
     <Content Include="Views\Topic\search.cshtml" />
     <Content Include="Views\Shared\_moxiFooter.cshtml" />
+    <Content Include="Views\Shared\_LoginButton.cshtml" />
+    <Content Include="Views\Topic\Index.Mobile.cshtml" />
+    <Content Include="Views\Shared\_Layout.Mobile.cshtml" />
+    <Content Include="Views\Topic\_banner.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Views\customError\" />
     <Folder Include="Views\Node\" />
     <Folder Include="Views\Reply\" />
+    <Folder Include="Views\TopicMobile\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

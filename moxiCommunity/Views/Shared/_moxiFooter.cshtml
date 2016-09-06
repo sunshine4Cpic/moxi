@@ -189,3 +189,81 @@
     </div>
 
 </div>
+
+<script type="text/javascript">
+
+        $(".topSmallBannerClose").click(function () {
+            $(".topSmallBanner").hide();
+        });
+
+        if (window.location.href == "http://www.moximoxi.net" ||
+            window.location.href == "http://www.moximoxi.net/" ||
+            window.location.href.indexOf("http://www.moximoxi.net/index.aspx") >= 0) {
+            $(".serverMenu").show();
+            $("#navAll").hover(function () {
+                $(".serverMenu").show();
+            }, function () {
+                $(".serverMenu").show();
+            });
+
+        } else {
+            $(".serverMenu").hide();
+            $("#navAll").hover(function () {
+                $(".serverMenu").show();
+            }, function () {
+                $(".serverMenu").hide();
+            });
+            $(".serverMenu").hover(function () {
+                $(".serverMenu").show();
+            }, function () {
+                $(".serverMenu").hide();
+            });
+            $(".inServerMenuB").hover(function () {
+                $(".serverMenu").show();
+            }, function () {
+                $(".serverMenu").hide();
+            });
+
+
+        }
+
+        $(function () {
+            var num = 0;
+            var a = 8;
+            var timer = null;
+            $('.inServerMenuB').each(function (i, item) {
+                num = 8 - i;
+                $(item).css('zIndex', num);
+            });
+
+            $('.inServerMenu li').mouseover(function () {
+                a++;
+                var index = $(this).index();
+                $(this).addClass('act').siblings().removeClass('act');
+                $('.inServerMenuB').eq(index).css('display', 'block').siblings().css('display', 'none');
+                clearTimeout(timer)
+            }).mouseout(function () {
+                timer = setTimeout(function () {
+                    $('.inServerMenuB').css('display', 'none');
+                }, 0);
+                $('.inServerMenu li').removeClass('act');
+
+            });
+
+            $('.inServerMenuB').mouseover(function () {
+                a++;
+                var index = $(this).index();
+                $('.inServerMenuB').eq(index).css('display', 'block').siblings().css('display', 'none');
+                $('.inServerMenu li').eq(index).addClass('act');
+
+                clearTimeout(timer)
+            }).mouseout(function () {
+                timer = setTimeout(function () {
+                    $('.inServerMenuB').css('display', 'none');
+                }, 0);
+                $('.inServerMenu li').removeClass('act');
+
+            });
+
+        });
+</script>

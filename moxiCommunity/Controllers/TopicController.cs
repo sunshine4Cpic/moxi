@@ -13,53 +13,11 @@ namespace moxiCommunity.Controllers
 {
     public class TopicController : Controller
     {
-
-        public static List<proNode> nodes
-        {
-            get
-            {
-                System.Web.Caching.Cache objCache = HttpRuntime.Cache;
-
-                List<proNode> ns = objCache.Get("nodes") as List<proNode>;
-                if (ns == null)
-                {
-                    var newNodes = getNodes();
-                    objCache.Insert("nodes", newNodes, null, DateTime.Now.AddMinutes(10), TimeSpan.Zero);
-                    return newNodes;
-                }
-                else
-                    return ns;
-
-            }
-        }
-
-        public static Dictionary<int, string> nodesDic { get; set; }
-
-        [NonAction]
-        private static List<proNode> getNodes()
-        {
-            //初始化节点信息
-
-            var _jsonFilePath = HostingEnvironment.MapPath("~/App_Data/node.json");
-
-            if (System.IO.File.Exists(_jsonFilePath))
-            {
-                var json = System.IO.File.ReadAllText(_jsonFilePath);
-                var jo = JObject.Parse(json);
-
-                var proNodeJson = jo["nodes"].ToString();
-
-                var objs = JsonConvert.DeserializeObject<List<proNode>>(proNodeJson);
-
-                return objs;
-            }
-            return null;
-        }
-
+        
         [NonAction]
         public static proNode getNode(int id)
         {
-            foreach (var rn in nodes)
+            foreach (var rn in CacheExtend.nodes)
             {
                 foreach (var n in rn.ThirdJsons)
                 {
@@ -102,7 +60,7 @@ namespace moxiCommunity.Controllers
             var topics = this.getTopics(null, id, page);
 
             topicIndexViewModel model = new topicIndexViewModel();
-            model.nodes = nodes;
+            model.nodes = CacheExtend.nodes;
             model.selectNode = new proNode { proClassID = 0, proClassName = "全部" };
             model.topicList = topics;
 
@@ -123,7 +81,7 @@ namespace moxiCommunity.Controllers
 
 
             topicIndexViewModel model = new topicIndexViewModel();
-            model.nodes = nodes;
+            model.nodes = CacheExtend.nodes;
             model.selectNode = getNode(id);
             model.topicList = topics;
 
@@ -698,7 +656,7 @@ namespace moxiCommunity.Controllers
             SLI.Add(new SelectListItem { Text = "请选择节点", Value = "" });
 
 
-            foreach (var Rnode in nodes)
+            foreach (var Rnode in CacheExtend.nodes)
             {
                 var group = new SelectListGroup { Name = Rnode.proClassName };
                 foreach (var node in Rnode.ThirdJsons)
@@ -713,8 +671,15 @@ namespace moxiCommunity.Controllers
         }
 
 
-      
 
+        #region 移动相关
+        public ActionResult MobileList(string id, int page = 1) {
+            var topics = this.getTopics(null, id, page);
+            return Json(topics);
+        }
+
+
+        #endregion
 
 
     }
